@@ -22,3 +22,14 @@ app.listen(3000, () => console.log("server running on port 3000"));
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/auth", authRoutes);
+
+// middleware to handle errors
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Something went wrong";
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
