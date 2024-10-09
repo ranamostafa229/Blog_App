@@ -1,6 +1,8 @@
 import {
+  Alert,
   Box,
   Button,
+  CircularProgress,
   FormControl,
   styled,
   TextField,
@@ -9,6 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import BgImg from "../assets/signupbg.png";
 import GoogleIcon from "@mui/icons-material/Google";
+import { useState } from "react";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -34,6 +37,48 @@ const CssTextField = styled(TextField)({
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formData.confirmPassword !== formData.password) {
+      setError("Password and confirm password do not match");
+      return;
+    }
+    const dataTosend = { ...formData, confirmPassword: undefined };
+    try {
+      setError("");
+      setLoading(true);
+      const res = await fetch("/api/v1/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataTosend),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+      }
+      if (res.ok) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   return (
     <Box
@@ -109,7 +154,7 @@ const SignUp = () => {
         >
           Create an <b>account</b> for full access:
         </Typography>
-        <form>
+        <form onSubmit={handleSubmit}>
           <FormControl
             sx={{
               width: "55ch",
@@ -127,6 +172,10 @@ const SignUp = () => {
               sx={{
                 "& .MuiFilledInput-root": {},
               }}
+              name="username"
+              value={formData.username}
+              onChange={(e) => handleChange(e)}
+              required
             />
             <CssTextField
               label="Enter your Email"
@@ -135,6 +184,10 @@ const SignUp = () => {
               sx={{
                 "& .MuiFilledInput-root": {},
               }}
+              name="email"
+              value={formData.email}
+              onChange={(e) => handleChange(e)}
+              required
             />
             <CssTextField
               label="Password"
@@ -143,6 +196,10 @@ const SignUp = () => {
               sx={{
                 "& .MuiFilledInput-root": {},
               }}
+              name="password"
+              value={formData.password}
+              onChange={(e) => handleChange(e)}
+              required
             />
             <CssTextField
               label="Confirm Password"
@@ -151,17 +208,31 @@ const SignUp = () => {
               sx={{
                 "& .MuiFilledInput-root": {},
               }}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={(e) => handleChange(e)}
+              required
             />
             <Button
               variant="contained"
-              // size="large"
+              type="submit"
               sx={{
                 bgcolor: "#6a4ee9",
                 ":hover": { bgcolor: "#000000" },
                 width: "100%",
+                textTransform: "none",
+                gap: "10px",
               }}
+              disabled={loading}
             >
-              Get Started
+              {loading ? (
+                <>
+                  <CircularProgress color="inherit" size={20} />{" "}
+                  <span>Loading ...</span>
+                </>
+              ) : (
+                "Get Started"
+              )}
             </Button>
             <Typography
               variant="subtitle1"
@@ -206,6 +277,7 @@ const SignUp = () => {
                 Sign In
               </Link>
             </Typography>
+            {error && <Alert severity="error">{error}</Alert>}
           </FormControl>
         </form>
       </Box>
