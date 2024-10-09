@@ -12,6 +12,8 @@ import { Link, useNavigate } from "react-router-dom";
 import BgImg from "../assets/signupbg.png";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signInFailure, signInStart, signInSuccess } from "../redux/userSlice";
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#A0AAB4",
@@ -36,8 +38,9 @@ const CssTextField = styled(TextField)({
 const SignIn = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -45,7 +48,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch("/api/v1/auth/signin", {
         method: "POST",
         headers: {
@@ -54,16 +57,15 @@ const SignIn = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      setLoading(false);
       if (data.success === false) {
-        setError(data.message);
+        dispatch(signInFailure(data.message));
       }
       if (res.ok) {
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      setError(error.message);
-      setLoading(false);
+      dispatch(signInFailure(error.message));
     }
   };
 
