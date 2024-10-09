@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
@@ -12,16 +13,16 @@ export const signup = async (req, res, next) => {
     email === "" ||
     password === ""
   ) {
-    next(errorHandler(400, "All fields are required"));
+    return next(errorHandler(400, "All fields are required"));
   }
   const emailExist = await User.findOne({ email });
   const usernameExist = await User.findOne({ username });
   if (usernameExist) {
     // username and email must be unique
-    next(errorHandler(409, "Username already exists"));
+    return next(errorHandler(409, "Username already exists"));
   }
   if (emailExist) {
-    next(errorHandler(409, "Email already exists"));
+    return next(errorHandler(409, "Email already exists"));
   }
   const hashedpassword = bcryptjs.hashSync(password, 10);
 
@@ -36,5 +37,27 @@ export const signup = async (req, res, next) => {
     res.status(201).json({ message: "User created successfully" });
   } catch (err) {
     next(err);
+  }
+};
+export const signin = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+    const validPassword = bcryptjs.compareSync(password, user.password);
+    if (!validPassword) {
+      return next(errorHandler(400, "Wrong password"));
+    }
+    const { password: pass, ...rest } = user._doc;
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res
+      .status(200)
+      .cookie("access_token", token, { httpOnly: true })
+      .json(rest);
+  } catch (error) {
+    next(error);
   }
 };
