@@ -1,6 +1,8 @@
 import {
+  Alert,
   Box,
   Button,
+  CircularProgress,
   FormControl,
   styled,
   TextField,
@@ -9,30 +11,61 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import BgImg from "../assets/signupbg.png";
 import GoogleIcon from "@mui/icons-material/Google";
-
+import { useState } from "react";
+const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#A0AAB4",
+    bgcolor: "red",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiFilledInput-root": {
+    backgroundColor: "white",
+    "& fieldset": {
+      borderColor: "#E0E3E7",
+    },
+    "&:hover fieldset": {
+      borderColor: "#B2BAC2",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#6F7E8C",
+    },
+  },
+});
 const SignIn = () => {
   const navigate = useNavigate();
-  const CssTextField = styled(TextField)({
-    "& label.Mui-focused": {
-      color: "#A0AAB4",
-      bgcolor: "red",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#B2BAC2",
-    },
-    "& .MuiFilledInput-root": {
-      backgroundColor: "white",
-      "& fieldset": {
-        borderColor: "#E0E3E7",
-      },
-      "&:hover fieldset": {
-        borderColor: "#B2BAC2",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#6F7E8C",
-      },
-    },
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await fetch("/api/v1/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+      }
+      if (res.ok) {
+        navigate("/");
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <Box
@@ -107,7 +140,7 @@ const SignIn = () => {
         >
           Sign In into your <b>account</b> for full access:
         </Typography>
-        <form>
+        <form onSubmit={handleSubmit}>
           <FormControl
             sx={{
               width: "55ch",
@@ -125,6 +158,10 @@ const SignIn = () => {
               sx={{
                 "& .MuiFilledInput-root": {},
               }}
+              name="email"
+              value={formData.email}
+              onChange={(e) => handleChange(e)}
+              required
             />
             <CssTextField
               label="Password"
@@ -133,18 +170,36 @@ const SignIn = () => {
               sx={{
                 "& .MuiFilledInput-root": {},
               }}
+              name="password"
+              value={formData.password}
+              onChange={(e) => handleChange(e)}
+              required
             />
 
             <Button
               variant="contained"
-              // size="large"
               sx={{
                 bgcolor: "#6a4ee9",
                 ":hover": { bgcolor: "#000000" },
                 width: "100%",
+                textTransform: "none",
+                gap: "10px",
               }}
+              type="submit"
+              disabled={loading}
             >
-              Login
+              {loading ? (
+                <>
+                  <CircularProgress
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                  Loading...
+                </>
+              ) : (
+                "Login"
+              )}
             </Button>
             <Typography
               variant="subtitle1"
@@ -189,6 +244,17 @@ const SignIn = () => {
                 Sign Up
               </Link>
             </Typography>
+            {error && (
+              <Alert
+                severity="error"
+                sx={{
+                  width: "55ch",
+                  justifyContent: "center",
+                }}
+              >
+                {error}
+              </Alert>
+            )}
           </FormControl>
         </form>
       </Box>
