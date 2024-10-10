@@ -12,12 +12,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import ProfileIcon from "./ProfileIcon";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ModeButton from "./ModeButton";
 
 const RoundedAppBar = styled(AppBar)(({ theme }) => ({
   marginInline: "auto",
   marginTop: "25px",
   padding: "10px",
-  backgroundColor: "#FFFFFF",
+  backgroundColor: theme.palette.background.paper,
   color: "black",
   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
   transition: theme.transitions.create("width", {
@@ -84,18 +85,22 @@ const Header = () => {
           {/* <img src={Logo} alt="logo" height={"50px"} width={"150px"} /> */}
           <strong style={{ color: "#6A4EE9" }}>DEV</strong> JOURNEY
         </Typography>
-        {currentUser ? (
-          <ProfileIcon />
-        ) : (
-          <Link to={"/signin"}>
-            <Button
-              size="large"
-              sx={{ textTransform: "none", color: "#6A4EE9" }}
-            >
-              Login
-            </Button>
-          </Link>
-        )}
+        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <ModeButton />
+
+          {currentUser ? (
+            <ProfileIcon />
+          ) : (
+            <Link to={"/signin"}>
+              <Button
+                size="large"
+                sx={{ textTransform: "none", color: "#6A4EE9" }}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
+        </Box>
       </Toolbar>
     </RoundedAppBar>
   );

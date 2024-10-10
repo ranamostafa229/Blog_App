@@ -11,16 +11,16 @@ const RelatedPosts = () => {
   };
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         display: "flex",
         flexDirection: "column",
-        bgcolor: "white",
         marginLeft: "20px",
         borderRadius: "20px",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
         padding: "35px",
         gap: "30px",
-      }}
+        bgcolor: theme.palette.background.banner,
+      })}
     >
       <Box
         sx={{
@@ -67,11 +67,21 @@ const RelatedPosts = () => {
             }}
           >
             <span>
-              More in this <b style={{ color: "#282424" }}>Category</b>
+              More in this {/* /{ color: "#282424" } */}
+              <Box
+                component={"span"}
+                sx={(theme) => ({ color: theme.palette.text.subtitle })}
+              >
+                Category
+              </Box>
             </span>
             <Typography
               variant="h4"
-              sx={{ color: "#282424", fontWeight: "bold" }}
+              sx={(theme) => ({
+                //  color: "#282424",
+                color: theme.palette.text.primary,
+                fontWeight: "bold",
+              })}
             >
               CSS
             </Typography>
@@ -91,16 +101,18 @@ const RelatedPosts = () => {
       >
         <Typography
           variant="h6"
-          sx={{
+          sx={(theme) => ({
             display: "flex",
             gap: "10px",
-            color: "#2d2929",
+            // color: "#2d2929",
+            color: theme.palette.text.subtitle,
             fontSize: "18px",
-          }}
+          })}
         >
           <Box
             sx={{
               bgcolor: "#282424",
+              // bgcolor: theme.palette.background.paper,
               color: "white",
               borderRadius: "5px",
               paddingX: "9px",
@@ -115,12 +127,13 @@ const RelatedPosts = () => {
         <Divider></Divider>
         <Typography
           variant="h6"
-          sx={{
+          sx={(theme) => ({
             display: "flex",
             gap: "10px",
-            color: "#2d2929",
+            // color: "#2d2929",
+            color: theme.palette.text.subtitle,
             fontSize: "18px",
-          }}
+          })}
         >
           <Box
             sx={{

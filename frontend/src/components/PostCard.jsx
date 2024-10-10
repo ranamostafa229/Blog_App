@@ -13,16 +13,6 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 const PostCard = ({ cmd, csize }) => {
-  //   const Item = styled(Paper)(({ theme }) => ({
-  //     backgroundColor: "#fff",
-  //     ...theme.typography.body2,
-  //     padding: theme.spacing(2),
-  //     textAlign: "center",
-  //     color: theme.palette.text.secondary,
-  //     ...theme.applyStyles("dark", {
-  //       backgroundColor: "#1A2027",
-  //     }),
-  //   }));
   const [value, setValue] = useState(2);
   return (
     <Grid2
@@ -97,9 +87,10 @@ const PostCard = ({ cmd, csize }) => {
               >
                 <Typography
                   variant="h6"
-                  sx={{
+                  sx={(theme) => ({
                     fontWeight: "bold",
-                    color: "#282424",
+                    // color: "#282424",
+                    color: theme.palette.text.label,
                     textAlign: "center",
                     paddingX: "24px",
                     fontSize: "22px",
@@ -108,7 +99,7 @@ const PostCard = ({ cmd, csize }) => {
                     ":hover": {
                       textDecoration: "underline",
                     },
-                  }}
+                  })}
                 >
                   Crafting Engaging CSS Animations Step by step guide
                 </Typography>
@@ -116,7 +107,7 @@ const PostCard = ({ cmd, csize }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  color: "#474444",
+                  // color: "#474444",
                   textAlign: "center",
                   lineHeight: "2",
                 }}

@@ -22,7 +22,6 @@ const ProfileIcon = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  console.log(currentUser?.profilePicture);
   return (
     <Box
       sx={{
@@ -35,7 +34,7 @@ const ProfileIcon = () => {
           <Avatar
             alt="Profile Picture"
             src={currentUser.profilePicture}
-            rounded
+            rounded="true"
           />
         </IconButton>
       </Tooltip>

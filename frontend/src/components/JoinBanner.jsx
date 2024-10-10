@@ -1,18 +1,18 @@
 import WavingHandIcon from "@mui/icons-material/WavingHand";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, styled, Typography } from "@mui/material";
 const JoinBanner = () => {
+  const BoxStyled = styled(Box)(({ theme }) => ({
+    display: "flex",
+    backgroundColor: theme.palette.background.banner,
+    color: theme.palette.text.primary,
+    height: "210px",
+    alignItems: "center",
+    overflow: "hidden",
+    justifyContent: "space-between",
+  }));
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        bgcolor: "white",
-        color: "black",
-        height: "210px",
-        alignItems: "center",
-        overflow: "hidden",
-        justifyContent: "space-between",
-      }}
-    >
+    <BoxStyled>
       <Box
         sx={{
           display: "flex",
@@ -61,7 +61,7 @@ const JoinBanner = () => {
             variant="h4"
             sx={{
               fontWeight: "bold",
-              color: "#282424",
+              // color: "#282424",
               display: "flex",
               alignItems: "center",
               gap: "10px",
@@ -77,7 +77,7 @@ const JoinBanner = () => {
           <Typography
             variant="subtitle1"
             sx={{
-              color: "#3d3939",
+              // color: "#3d3939",
               fontSize: {
                 lg: "20px",
                 xs: "14px",
@@ -105,11 +105,6 @@ const JoinBanner = () => {
             flexDirection: "column",
             gap: "20px",
             alignItems: "center",
-            // "&:hover": {
-            //   "& .hover-button": {
-            //     gap: "130px",
-            //   },
-            // },
           }}
         >
           <Typography variant="subtitle1">
@@ -158,7 +153,7 @@ const JoinBanner = () => {
           },
         }}
       ></Box>
-    </Box>
+    </BoxStyled>
   );
 };
 

@@ -79,7 +79,7 @@ function Post() {
   }, []);
 
   return (
-    <Container sx={{ color: "#121111", display: "flex", gap: "58px" }}>
+    <Container sx={{ display: "flex", gap: "58px" }}>
       <Box
         sx={{
           width: "650px",
@@ -96,13 +96,13 @@ function Post() {
 
         <Typography
           variant="h6"
-          sx={{
-            color: "#302d55",
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
             fontbold: "bold",
             display: "flex",
             alignItems: "center",
             gap: "8px",
-          }}
+          })}
         >
           <AutoAwesomeIcon sx={{ fontSize: "25px", color: "#ff2aac" }} />
           Table of Contents
@@ -118,19 +118,19 @@ function Post() {
                   .getElementById(section.id)
                   .scrollIntoView({ behavior: "smooth" });
               }}
-              sx={{
+              sx={(theme) => ({
                 padding: "4px 0",
                 cursor: "pointer",
-                color: activeSection === section.id ? "#6A4EE9" : "#302d55",
+                color:
+                  activeSection === section.id
+                    ? "#6A4EE9"
+                    : theme.palette.text.link,
                 borderLeft:
                   activeSection === section.id
                     ? "2px solid #6A4EE9"
                     : "2px solid #e9e8ff",
                 paddingLeft: "11px",
-                // ":active": {
-                //   color: activeSection === section.id ? "#6A4EE9" : "#302d55",
-                // },
-              }}
+              })}
             >
               <ListItemText primary={section.title} />
             </ListItem>

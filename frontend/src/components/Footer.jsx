@@ -10,8 +10,8 @@ const Footer = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        bgcolor: "#faf8ff",
-        color: "#282424",
+        // bgcolor: "#faf8ff",
+        // color: "#282424",
         padding: "20px",
         pt: "80px",
         gap: "60px",

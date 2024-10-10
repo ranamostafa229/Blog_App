@@ -7,7 +7,7 @@ import JoinBanner from "../components/JoinBanner";
 const Home = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Container sx={{ color: "#121111" }}>
+      <Container>
         <TrendTopics />
         <Toolbar />
         <Container

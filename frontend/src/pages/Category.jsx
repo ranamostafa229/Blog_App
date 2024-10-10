@@ -16,7 +16,7 @@ const Category = () => {
         display: "flex",
         flexDirection: "column",
         // textAlign: "center",
-        color: "#121111",
+        // color: "#121111",
       }}
     >
       <Container
@@ -63,13 +63,9 @@ const Category = () => {
               display: "flex",
               flexDirection: "column",
               fontWeight: "bold",
-              //   justifyContent: "end",
             }}
           >
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: "bold", color: "#282424" }}
-            >
+            <Typography variant="h4" sx={{ fontWeight: "bold" }}>
               CSS
               <Typography variant="subtitle1">
                 A collection of <b style={{ color: "#373333" }}>3 posts</b>
@@ -80,10 +76,11 @@ const Category = () => {
         <Divider orientation="vertical" flexItem />
 
         <Box
-          sx={{
-            color: "#4e4a4b",
+          sx={(theme) => ({
+            // color: "#4e4a4b",
+            color: theme.palette.text.subtitle,
             textAlign: "center",
-          }}
+          })}
         >
           <Typography variant="body1" sx={{ lineHeight: "30px" }}>
             CSS is a vital web development language for styling HTML elements.

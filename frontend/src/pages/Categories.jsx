@@ -70,7 +70,7 @@ const Categories = () => {
     ...theme.typography.body2,
     // padding: theme.spacing(2),
     // textAlign: "center",
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.primary,
     // ...theme.applyStyles("dark", {
     //   backgroundColor: "#1A2027",
     // }),
@@ -83,6 +83,7 @@ const Categories = () => {
       <Grid2 key={index} size={{ xs: 2, sm: 2, md: 3 }}>
         <Item onClick={() => navigate(`/categories/${icon.label}`)}>
           <Typography
+            component={"span"}
             key={index}
             sx={{
               display: "flex",
@@ -93,16 +94,15 @@ const Categories = () => {
               gap: "10px",
               alignItems: "center",
               fontWeight: "500",
-              color: "black",
+              // color: "black",
             }}
           >
             <Box
-              component="span"
               sx={{
                 position: "relative",
                 width: "70px",
                 height: "70px",
-                bgcolor: "white",
+                // bgcolor: "white",
                 borderRadius: "50%",
                 display: "flex",
                 alignItems: "center",
@@ -115,7 +115,6 @@ const Categories = () => {
               }}
             >
               <Box
-                component="span"
                 sx={{
                   ...shapeCircleStyles,
                   bgcolor: icon.bg,
@@ -160,7 +159,7 @@ const Categories = () => {
   return (
     <Box
       sx={{
-        color: "#121111",
+        // color: "#121111",
         display: "flex",
         flexDirection: "column",
         textAlign: "center",
@@ -172,25 +171,26 @@ const Categories = () => {
       </Typography>
       <Typography
         variant="body1"
-        sx={{
-          color: "#535051",
+        sx={(theme) => ({
+          color: theme.palette.text.subtitle,
           width: "60%",
           alignSelf: "center",
           fontSize: "20px",
-        }}
+        })}
       >
         Browse through our categories to find the best content for you to enjoy
         in no time at all and learn more about the topics you love.
       </Typography>
 
       <Container
-        sx={{
+        sx={(theme) => ({
           flexGrow: 1,
-          bgcolor: "white",
-          border: "2px solid #f2f1ff",
+          bgcolor: theme.palette.background.banner,
+          border: "2px solid",
+          borderColor: theme.palette.text.secondary,
           borderRadius: "8px",
           marginBottom: "40px",
-        }}
+        })}
       >
         <Grid2
           container

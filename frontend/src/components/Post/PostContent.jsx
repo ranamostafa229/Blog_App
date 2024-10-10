@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Toolbar, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import RelatedPosts from "./RelatedPosts";
 import ReplySection from "./ReplySection";
@@ -8,9 +8,9 @@ const PostContent = ({ sections }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "40px" }}>
       <Box
-        sx={{
+        sx={(theme) => ({
           marginLeft: "20px",
-          bgcolor: "#fff",
+          bgcolor: theme.palette.background.banner,
           paddingY: "35px",
           paddingX: "45px",
           flexGrow: 1,
@@ -18,9 +18,10 @@ const PostContent = ({ sections }) => {
           flexDirection: "column",
           borderRadius: "20px",
           gap: "20px",
-          border: "1px solid #f2f1ff",
+          border: "1px solid ",
+          borderColor: theme.palette.text.secondary,
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
-        }}
+        })}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
           <Typography
@@ -31,10 +32,7 @@ const PostContent = ({ sections }) => {
               fontSize: "40px",
               width: "80%",
               placeSelf: "center",
-              //   WebkitBoxOrient: "vertical",
-              //   WebkitLineClamp: 2,
-
-              color: "#282424",
+              // color: "#282424",
             }}
           >
             Crafting Engaging CSS Animations step by step guide
@@ -55,7 +53,10 @@ const PostContent = ({ sections }) => {
           </Typography>
           <Typography
             variant="body1"
-            sx={{ color: "#494545", lineHeight: "30px" }}
+            sx={(theme) => ({
+              color: theme.palette.text.subtitle,
+              lineHeight: "30px",
+            })}
           >
             In the realm of technology blogging, captivating your audience goes
             beyond just the written word. Incorporating eye-catching CSS
@@ -78,7 +79,14 @@ const PostContent = ({ sections }) => {
             <Typography variant="h5" sx={{ fontWeight: "500" }}>
               {section.title}
             </Typography>
-            <Typography variant="body1">Content for {section.body}</Typography>
+            <Typography
+              variant="body1"
+              sx={(theme) => ({
+                color: theme.palette.text.subtitle,
+              })}
+            >
+              Content for {section.body}
+            </Typography>
           </Box>
         ))}
         <hr style={{ border: "1px solid #f2f1ff", width: "100%" }} />

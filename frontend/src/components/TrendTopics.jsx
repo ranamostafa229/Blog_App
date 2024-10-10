@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Typography } from "@mui/material";
+import { Badge, Box, Button, styled, Typography } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import HtmlIcon from "../assets/html-icon.png";
 import CssIcon from "../assets/css-icon.png";
@@ -7,7 +7,27 @@ import CodeIcon from "../assets/code-icon.png";
 import DatabaseIcon from "../assets/databases-icon.png";
 import { useNavigate } from "react-router-dom";
 // import SQLIcon from "../assets/sql-icon.png";
+const shapeCircleStyles = {
+  width: 60,
+  height: 60,
+  position: "absolute",
+  // top: "10px",
+  borderRadius: "50%",
+  boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
+};
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexWrap: "wrap",
+  backgroundColor: theme.palette.background.banner,
+  gap: "50px",
 
+  borderRadius: "60px",
+  width: "75%",
+  border: "2px solid #f2f1ff",
+  borderColor: theme.palette.text.secondary,
+  alignItems: "center",
+  justifyContent: "center",
+}));
 const TrendTopics = () => {
   const icons = [
     {
@@ -42,14 +62,6 @@ const TrendTopics = () => {
     // },
   ];
 
-  const shapeCircleStyles = {
-    width: 60,
-    height: 60,
-    position: "absolute",
-    // top: "10px",
-    borderRadius: "50%",
-    boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
-  };
   const categoryElement = icons.map((icon, index) => {
     return (
       <Typography
@@ -60,14 +72,13 @@ const TrendTopics = () => {
           alignItems: "center",
           gap: "6px",
           fontWeight: "500",
-          color: "black",
         }}
       >
         <Badge
           badgeContent={index + 1}
           overlap="circular"
           sx={{
-            "& .MuiBadge-badge": { backgroundColor: "#FF2AAC" },
+            "& .MuiBadge-badge": { bgcolor: "#FF2AAC" },
             color: "white",
           }}
         >
@@ -77,7 +88,6 @@ const TrendTopics = () => {
               position: "relative",
               width: "70px",
               height: "70px",
-              bgcolor: "white",
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
@@ -118,6 +128,7 @@ const TrendTopics = () => {
     );
   });
   const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -138,22 +149,7 @@ const TrendTopics = () => {
         <BoltIcon sx={{ fontSize: "35px", color: "#ff2aac" }} />
         Trending Topics
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          backgroundColor: "#ffffff",
-          gap: "50px",
-          paddingY: "15px",
-          paddingX: "40px",
-          borderRadius: "60px",
-          width: "75%",
-          border: "2px solid #f2f1ff",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        variant="outlined"
-      >
+      <StyledBox sx={{ paddingY: "15px", paddingX: "23px" }} variant="outlined">
         {categoryElement}
         <Typography
           sx={{
@@ -182,7 +178,7 @@ const TrendTopics = () => {
             Explore All
           </Button>
         </Typography>
-      </Box>
+      </StyledBox>
     </Box>
   );
 };
