@@ -8,11 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const ProfileIcon = () => {
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const settings = ["Profile", "Dashboard", "Logout"];
 
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -20,7 +22,7 @@ const ProfileIcon = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  //flexGrow: 1,
+  console.log(currentUser?.profilePicture);
   return (
     <Box
       sx={{
@@ -30,7 +32,11 @@ const ProfileIcon = () => {
     >
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Profile Picture" src="/static/images/avatar/2.jpg" />
+          <Avatar
+            alt="Profile Picture"
+            src={currentUser.profilePicture}
+            rounded
+          />
         </IconButton>
       </Tooltip>
       <Menu

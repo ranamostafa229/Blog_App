@@ -5,10 +5,13 @@ import {
   Box,
   useScrollTrigger,
   styled,
+  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 // import Logo from "../../assets/logo4.png";
 import ProfileIcon from "./ProfileIcon";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const RoundedAppBar = styled(AppBar)(({ theme }) => ({
   marginInline: "auto",
@@ -25,6 +28,7 @@ const RoundedAppBar = styled(AppBar)(({ theme }) => ({
 
 const Header = () => {
   const trigger = useScrollTrigger();
+  const { currentUser } = useSelector((state) => state.user);
 
   return (
     <RoundedAppBar
@@ -80,7 +84,18 @@ const Header = () => {
           {/* <img src={Logo} alt="logo" height={"50px"} width={"150px"} /> */}
           <strong style={{ color: "#6A4EE9" }}>DEV</strong> JOURNEY
         </Typography>
-        <ProfileIcon />
+        {currentUser ? (
+          <ProfileIcon />
+        ) : (
+          <Link to={"/signin"}>
+            <Button
+              size="large"
+              sx={{ textTransform: "none", color: "#6A4EE9" }}
+            >
+              Login
+            </Button>
+          </Link>
+        )}
       </Toolbar>
     </RoundedAppBar>
   );
