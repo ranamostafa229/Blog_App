@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import BgImg from "../assets/signupbg.png";
-import GoogleIcon from "@mui/icons-material/Google";
 import { useState } from "react";
+import GoogleAuth from "../components/GoogleAuth";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -245,24 +245,7 @@ const SignUp = () => {
               }}
             >
               or
-              <Button
-                variant="outlined"
-                sx={{
-                  color: "#282424",
-                  ":hover": {
-                    background:
-                      "linear-gradient(45deg, #6a4ee9 30%, #ff0081 90%)",
-                    color: "white",
-                  },
-                  border: "3px solid transparent",
-                  borderImage: "linear-gradient(45deg,  #6a4ee9,#ff0081) 1",
-                  fontSize: "14px",
-                  gap: "10px",
-                }}
-              >
-                <GoogleIcon sx={{ fontSize: "20px" }} />
-                <span> Continue with Google</span>
-              </Button>
+              <GoogleAuth />
             </Typography>
             <Typography variant="subtitle1" sx={{}}>
               Already have an account?{" "}
