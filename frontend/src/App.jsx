@@ -11,6 +11,7 @@ import SignIn from "./pages/SignIn";
 import RenderFooter from "./components/RenderFooter";
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/categories/:category" element={<Category />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route element={<Profile />} index />
+          </Route>
         </Route>
 
         <Route path="/*" element={<NotFound />} />

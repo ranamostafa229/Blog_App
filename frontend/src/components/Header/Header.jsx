@@ -82,7 +82,6 @@ const Header = () => {
             fontWeight: "bold",
           }}
         >
-          {/* <img src={Logo} alt="logo" height={"50px"} width={"150px"} /> */}
           <strong style={{ color: "#6A4EE9" }}>DEV</strong> JOURNEY
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>

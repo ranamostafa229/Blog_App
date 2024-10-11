@@ -10,7 +10,6 @@ const ExtendedWidthAppBar = (props) => {
     "/post/:postId",
     "/categories",
     "/categories/:category",
-    "/dashboard",
   ];
   const showHeader = validPaths.some((path) =>
     matchPath(path, location.pathname)
