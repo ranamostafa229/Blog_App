@@ -9,6 +9,8 @@ import NotFound from "./pages/NotFound";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import RenderFooter from "./components/RenderFooter";
+import PrivateRoute from "./components/PrivateRoute";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -22,6 +24,10 @@ function App() {
         <Route path="/post/:postId" element={<Post />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/categories/:category" element={<Category />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+
         <Route path="/*" element={<NotFound />} />
       </Routes>
       <RenderFooter />
