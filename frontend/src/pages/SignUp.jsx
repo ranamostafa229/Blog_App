@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import BgImg from "../assets/signupbg.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoogleAuth from "../components/GoogleAuth";
+import { useSelector } from "react-redux";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -45,7 +46,13 @@ const SignUp = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.confirmPassword !== formData.password) {
