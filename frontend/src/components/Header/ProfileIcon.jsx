@@ -9,9 +9,23 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const ProfileIcon = () => {
-  const settings = ["Profile", "Dashboard", "Logout"];
+  const settings = [
+    {
+      name: "Profile",
+      path: "/profile",
+    },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+    },
+    {
+      name: "Logout",
+      path: "/logout",
+    },
+  ];
 
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
@@ -55,8 +69,15 @@ const ProfileIcon = () => {
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
+          <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+            <Link
+              to={setting.path}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography sx={{ textAlign: "center" }} component={Link}>
+                {setting.name}
+              </Typography>
+            </Link>
           </MenuItem>
         ))}
       </Menu>

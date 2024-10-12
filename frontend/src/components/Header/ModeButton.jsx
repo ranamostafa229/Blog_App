@@ -16,16 +16,14 @@ const ModeButton = () => {
       onChange={() => setSelected((prevSelected) => !prevSelected)}
       sx={{
         borderRadius: "100px",
-        // color: "#6A4EE9",
-        // bgcolor: "white",
         marginLeft: "10px",
       }}
       onClick={() => dispatch(toggleTheme())}
     >
       {theme === "light" ? (
-        <NightlightIcon sx={{ color: "#6A4EE9" }} />
+        <NightlightIcon sx={{ color: "#6A4EE9", fontSize: "20px" }} />
       ) : (
-        <Brightness7Icon sx={{ color: "#6A4EE9" }} />
+        <Brightness7Icon sx={{ color: "#6A4EE9", fontSize: "20px" }} />
       )}
     </ToggleButton>
   );

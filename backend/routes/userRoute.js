@@ -4,6 +4,6 @@ import { verfiyToken } from "../utils/verfiyUser.js";
 
 const router = express.Router();
 
-router.put("/update/:userId", verfiyToken, updateUser);
+router.patch("/update/:userId", verfiyToken, updateUser);
 
 export default router;

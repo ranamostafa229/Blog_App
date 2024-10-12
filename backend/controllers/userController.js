@@ -12,7 +12,7 @@ export const updateUser = async (req, res, next) => {
     }
     req.body.password = bycryptjs.hashSync(req.body.password, 10);
   }
-  if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
+  if (req.body.username && !req.body.username.match(/^[a-zA-Z0-9]+$/)) {
     return next(
       errorHandler(400, "Username must only contain letters and numbers")
     );

@@ -189,7 +189,7 @@ const SignIn = () => {
               sx={{
                 bgcolor: "#6a4ee9",
                 ":hover": { bgcolor: "#000000" },
-                width: "100%",
+                width: "90%",
                 textTransform: "none",
                 gap: "10px",
               }}
