@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -10,7 +11,17 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { app } from "../firebase";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const CssTextField = styled(TextField)(({ theme }) => ({
   "& label": {
@@ -38,9 +49,57 @@ const CssTextField = styled(TextField)(({ theme }) => ({
     },
   },
 }));
+
 const Profile = () => {
   const theme = useTheme();
   const { currentUser } = useSelector((state) => state.user);
+  const [imageFile, setImageFile] = useState("");
+  const [imageFileURL, setImageFileURL] = useState("");
+  const [imageFileUploadProgress, setImageUploadProgress] = useState("");
+  const [imageFileUploadError, setImageUploadError] = useState(null);
+  const inputRef = useRef();
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageFileURL(URL.createObjectURL(file));
+    }
+  };
+  useEffect(() => {
+    if (imageFile) {
+      uploadImage();
+    }
+  }, [imageFile]);
+  const uploadImage = async () => {
+    setImageUploadError(null);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + imageFile.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageUploadProgress(progress.toFixed(0));
+      },
+      () => {
+        setImageUploadError(
+          "Could not upload image, file must be less than 2MB"
+        );
+        setImageUploadProgress(null);
+        setImageFile(null);
+        setImageFileURL("");
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageFileURL(downloadURL);
+        });
+      }
+    );
+  };
+  console.log(imageFileUploadProgress, imageFileUploadError);
   return (
     <Paper
       sx={{
@@ -77,10 +136,32 @@ const Profile = () => {
               alignItems: "center",
               padding: "15px",
               gap: "12px",
+              position: "relative",
             }}
           >
+            {imageFileUploadProgress && (
+              <CircularProgressbar
+                value={imageFileUploadProgress}
+                text={`${imageFileUploadProgress}%`}
+                styles={{
+                  root: {
+                    width: "100px",
+                    height: "100px",
+                    position: "absolute",
+                  },
+                  path: {
+                    stroke: `rgba(237,231,246,0.9) `,
+                  },
+                  text: {
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    fill: "#6A4EE9",
+                  },
+                }}
+              />
+            )}
             <img
-              src={currentUser.profilePicture}
+              src={imageFileURL || currentUser.profilePicture}
               alt="user avatar"
               width="100px"
               height="100px"
@@ -89,6 +170,13 @@ const Profile = () => {
             <Typography variant="subtitle1">
               Upload/Change Your Profile Image
             </Typography>
+            <input
+              type="file"
+              accept="image/*"
+              ref={inputRef}
+              hidden
+              onChange={(e) => handleImageChange(e)}
+            />
             <Button
               variant="contained"
               sx={{
@@ -97,10 +185,14 @@ const Profile = () => {
                 color: "white",
                 textTransform: "none",
               }}
+              onClick={() => inputRef.current.click()}
             >
               Upload Avatar
             </Button>
           </Box>
+          {imageFileUploadError && (
+            <Alert severity="error">{imageFileUploadError}</Alert>
+          )}
         </Card>
         <Card
           sx={{
