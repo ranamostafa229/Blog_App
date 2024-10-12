@@ -24,6 +24,9 @@ export const signup = async (req, res, next) => {
   if (emailExist) {
     return next(errorHandler(409, "Email already exists"));
   }
+  if (req.body.password.length < 6) {
+    return next(errorHandler(400, "Password must be at least 6 characters"));
+  }
   const hashedpassword = bcryptjs.hashSync(password, 10);
 
   const newUser = new User({
