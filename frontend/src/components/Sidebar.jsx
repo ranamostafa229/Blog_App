@@ -1,7 +1,16 @@
 import { Box, Divider, Typography, useTheme } from "@mui/material";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import MyModal from "./MyModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+} from "../redux/userSlice";
 const Sidebar = () => {
   const theme = useTheme();
   const location = useLocation();
@@ -16,7 +25,38 @@ const Sidebar = () => {
       title: "Logout",
       link: "/logout",
     },
+    {
+      icon: <DeleteForeverIcon />,
+      title: "Delete Account",
+      link: "/delete-account",
+    },
   ];
+  const { currentUser } = useSelector((state) => state.user);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+    dispatch(deleteUserFailure(null));
+  };
+  const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
+  const handleDelete = async () => {
+    setOpen(false);
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/v1/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        dispatch(deleteUserSuccess(data));
+      } else {
+        dispatch(deleteUserFailure(data.message));
+      }
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -62,13 +102,17 @@ const Sidebar = () => {
             key={item.title}
             sx={{
               display: "flex",
-              //   flexDirection: "column",
               gap: "20px",
               bgcolor:
                 location.pathname === item.link ? "#ede7f6" : "transparent",
               padding: "10px",
               borderRadius: "10px",
+              cursor: "pointer",
+              "&:hover": {
+                bgcolor: "#faf8ff",
+              },
             }}
+            onClick={handleOpen}
           >
             <Typography
               variant="h6"
@@ -86,6 +130,11 @@ const Sidebar = () => {
           </Box>
         ))}
       </Box>
+      <MyModal
+        open={open}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+      />
     </Box>
   );
 };
