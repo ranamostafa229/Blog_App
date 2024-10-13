@@ -2,7 +2,7 @@ import { Box, Divider, Typography, useTheme } from "@mui/material";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MyModal from "./MyModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  logoutSuccess,
 } from "../redux/userSlice";
 const Sidebar = () => {
   const theme = useTheme();
@@ -33,6 +34,7 @@ const Sidebar = () => {
   ];
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const handleOpen = () => {
     setOpen(true);
     dispatch(deleteUserFailure(null));
@@ -54,6 +56,30 @@ const Sidebar = () => {
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+    }
+  };
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/v1/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        dispatch(logoutSuccess());
+        navigate("/signin");
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClick = (title) => {
+    if (title === "Logout") {
+      handleLogout();
+    } else if (title === "Delete Account") {
+      handleOpen();
     }
   };
 
@@ -112,7 +138,7 @@ const Sidebar = () => {
                 bgcolor: "#faf8ff",
               },
             }}
-            onClick={handleOpen}
+            onClick={() => handleClick(item.title)}
           >
             <Typography
               variant="h6"

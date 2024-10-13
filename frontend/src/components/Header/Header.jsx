@@ -85,8 +85,6 @@ const Header = () => {
           <strong style={{ color: "#6A4EE9" }}>DEV</strong> JOURNEY
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <ModeButton />
-
           {currentUser ? (
             <ProfileIcon />
           ) : (
@@ -99,6 +97,7 @@ const Header = () => {
               </Button>
             </Link>
           )}
+          <ModeButton />
         </Box>
       </Toolbar>
     </RoundedAppBar>

@@ -8,14 +8,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutSuccess } from "../../redux/userSlice";
 
 const ProfileIcon = () => {
   const settings = [
     {
       name: "Profile",
-      path: "/profile",
+      path: "/dashboard",
     },
     {
       name: "Dashboard",
@@ -23,12 +24,16 @@ const ProfileIcon = () => {
     },
     {
       name: "Logout",
-      path: "/logout",
+      onClick: () => {
+        handleLogout();
+      },
     },
   ];
 
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -36,6 +41,23 @@ const ProfileIcon = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/v1/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        dispatch(logoutSuccess());
+        navigate("/signin");
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -72,9 +94,20 @@ const ProfileIcon = () => {
           <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
             <Link
               to={setting.path}
-              style={{ textDecoration: "none", color: "inherit" }}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+              }}
             >
-              <Typography sx={{ textAlign: "center" }} component={Link}>
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+                component={"span"}
+                onClick={setting.onClick}
+              >
                 {setting.name}
               </Typography>
             </Link>
