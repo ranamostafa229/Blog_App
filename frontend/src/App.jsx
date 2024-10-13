@@ -13,6 +13,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import DashboardContent from "./pages/DashboardContent";
+import DashboardPosts from "./pages/DashboardPosts";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route element={<DashboardContent />} index />
             <Route path="profile" element={<Profile />} />
+            <Route path="posts" element={<DashboardPosts />} />
           </Route>
         </Route>
 

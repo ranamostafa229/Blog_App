@@ -29,7 +29,7 @@ const Sidebar = () => {
     {
       icon: <PersonSharpIcon />,
       title: "Profile",
-      link: "/dashboard/profile",
+      link: "profile",
     },
     {
       icon: <CommentRoundedIcon />,
@@ -44,7 +44,7 @@ const Sidebar = () => {
     {
       icon: <PostAddSharpIcon />,
       title: "Posts",
-      link: "/posts",
+      link: "posts",
     },
     {
       icon: <LogoutOutlinedIcon />,
@@ -137,7 +137,9 @@ const Sidebar = () => {
           alignItems: "center",
           fontWeight: "bold",
           fontSize: "25px",
+          cursor: "pointer",
         }}
+        onClick={() => navigate("/")}
       >
         <strong style={{ color: "#6A4EE9" }}>DEV</strong> JOURNEY
       </Typography>
