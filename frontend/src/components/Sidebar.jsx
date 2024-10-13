@@ -2,6 +2,10 @@ import { Box, Divider, Typography, useTheme } from "@mui/material";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import DonutSmallRoundedIcon from "@mui/icons-material/DonutSmallRounded";
+import PeopleIcon from "@mui/icons-material/People";
+import PostAddSharpIcon from "@mui/icons-material/PostAddSharp";
+import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MyModal from "./MyModal";
@@ -12,14 +16,35 @@ import {
   deleteUserSuccess,
   logoutSuccess,
 } from "../redux/userSlice";
+
 const Sidebar = () => {
   const theme = useTheme();
   const location = useLocation();
   const sidebarItems = [
     {
+      icon: <DonutSmallRoundedIcon />,
+      title: "Dashboard",
+      link: "/dashboard",
+    },
+    {
       icon: <PersonSharpIcon />,
       title: "Profile",
-      link: "/dashboard",
+      link: "/dashboard/profile",
+    },
+    {
+      icon: <CommentRoundedIcon />,
+      title: "Comments",
+      link: "/comments",
+    },
+    {
+      icon: <PeopleIcon />,
+      title: "Users",
+      link: "/users",
+    },
+    {
+      icon: <PostAddSharpIcon />,
+      title: "Posts",
+      link: "/posts",
     },
     {
       icon: <LogoutOutlinedIcon />,
@@ -75,11 +100,13 @@ const Sidebar = () => {
     }
   };
 
-  const handleClick = (title) => {
+  const handleClick = ({ title, link }) => {
     if (title === "Logout") {
       handleLogout();
     } else if (title === "Delete Account") {
       handleOpen();
+    } else {
+      navigate(link);
     }
   };
 
@@ -138,7 +165,7 @@ const Sidebar = () => {
                 bgcolor: "#faf8ff",
               },
             }}
-            onClick={() => handleClick(item.title)}
+            onClick={() => handleClick(item)}
           >
             <Typography
               variant="h6"

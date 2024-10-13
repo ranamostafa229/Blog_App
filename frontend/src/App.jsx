@@ -12,6 +12,7 @@ import RenderFooter from "./components/RenderFooter";
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import DashboardContent from "./pages/DashboardContent";
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
         <Route path="/categories/:category" element={<Category />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route element={<Profile />} index />
+            <Route element={<DashboardContent />} index />
+            <Route path="profile" element={<Profile />} />
           </Route>
         </Route>
 
