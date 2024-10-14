@@ -17,6 +17,8 @@ const ThemeProvider = ({ children }) => {
         default: theme === "light" ? "#faf8ff" : "#121212",
         paper: theme === "light" ? "#FFFFFF" : "#121111",
         banner: theme === "light" ? "#FFFFFF" : "#181818",
+        input: theme === "light" ? "#fafafa" : "#121111",
+        drap: theme === "light" ? "#eee" : "#181818",
       },
       text: {
         primary: theme === "light" ? "#121111" : "#FFFFFF",

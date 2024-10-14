@@ -14,6 +14,8 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import DashboardContent from "./pages/DashboardContent";
 import DashboardPosts from "./pages/DashboardPosts";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import CreatePost from "./pages/CreatePost";
 
 function App() {
   return (
@@ -33,6 +35,9 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="posts" element={<DashboardPosts />} />
           </Route>
+        </Route>
+        <Route element={<AdminPrivateRoute />}>
+          <Route path="/create-post" element={<CreatePost />} />
         </Route>
 
         <Route path="/*" element={<NotFound />} />

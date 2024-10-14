@@ -16,7 +16,7 @@ const ProfileIcon = () => {
   const settings = [
     {
       name: "Profile",
-      path: "/dashboard",
+      path: "/dashboard/profile",
     },
     {
       name: "Dashboard",

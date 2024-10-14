@@ -53,7 +53,7 @@ const CssTextField = styled(TextField)(({ theme }) => ({
 
 const Profile = () => {
   const theme = useTheme();
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState("");
   const [imageFileURL, setImageFileURL] = useState("");
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState("");
@@ -297,6 +297,7 @@ const Profile = () => {
                   textTransform: "none",
                 }}
                 type="submit"
+                disabled={loading || imageFileUploading}
               >
                 Change Details
               </Button>

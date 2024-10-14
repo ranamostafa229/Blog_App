@@ -29,7 +29,7 @@ const Sidebar = () => {
     {
       icon: <PersonSharpIcon />,
       title: "Profile",
-      link: "profile",
+      link: "/dashboard/profile",
     },
     {
       icon: <CommentRoundedIcon />,

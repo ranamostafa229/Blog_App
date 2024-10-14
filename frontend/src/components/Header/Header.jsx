@@ -11,7 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 // import Logo from "../../assets/logo4.png";
 import ProfileIcon from "./ProfileIcon";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ModeButton from "./ModeButton";
 
 const RoundedAppBar = styled(AppBar)(({ theme }) => ({
@@ -30,7 +30,7 @@ const RoundedAppBar = styled(AppBar)(({ theme }) => ({
 const Header = () => {
   const trigger = useScrollTrigger();
   const { currentUser } = useSelector((state) => state.user);
-
+  const navigate = useNavigate();
   return (
     <RoundedAppBar
       position="sticky"
@@ -80,7 +80,9 @@ const Header = () => {
               xs: "0px",
             },
             fontWeight: "bold",
+            cursor: "pointer",
           }}
+          onClick={() => navigate("/")}
         >
           <strong style={{ color: "#6A4EE9" }}>DEV</strong> JOURNEY
         </Typography>
