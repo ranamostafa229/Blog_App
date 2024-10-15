@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, styled, Typography } from "@mui/material";
+import { Alert, Box, styled, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -10,6 +10,9 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 const UploadImgBox = ({ addToFormData }) => {
   const [imgFile, setImgFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
@@ -43,6 +46,7 @@ const UploadImgBox = ({ addToFormData }) => {
   const uploadImage = useCallback(async () => {
     //   setImageFileUploadError(null);
     //   setImageFileUploading(true);
+    setImgUploadProgress(null);
     if (!imgFile) {
       return;
     }
@@ -51,28 +55,33 @@ const UploadImgBox = ({ addToFormData }) => {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, imgFile);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setImgUploadProgress(progress.toFixed(0));
-      },
-      () => {
-        setImgUploadError("Could not upload image, file must be less than 2MB");
-        setImgUploadProgress(null);
-        setImgFile(null);
-        setImgUrl("");
-        // setImageUploading(false);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImgUrl(downloadURL);
-          addToFormData(downloadURL);
-          //   setImageUploading(false);
-        });
-      }
-    );
+    try {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setImgUploadProgress(progress.toFixed(0));
+        },
+        () => {
+          setImgUploadError("Could not upload image, please try again");
+          setImgUploadProgress(null);
+          setImgFile(null);
+          setImgUrl("");
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImgUrl(downloadURL);
+            setImgUploadProgress(null);
+            setImgUploadError(null);
+            addToFormData(downloadURL);
+          });
+        }
+      );
+    } catch (error) {
+      setImgUploadError(error.message);
+      setImgUploadProgress(null);
+    }
   }, [addToFormData, imgFile]);
   useEffect(() => {
     if (imgFile) {
@@ -109,9 +118,44 @@ const UploadImgBox = ({ addToFormData }) => {
           background: dragOver
             ? theme.palette.background.drag
             : theme.palette.background.input,
+          pointerEvents:
+            dragOver || imgUploadProgress === null ? "auto" : "none",
         })}
       >
-        <CloudUploadIcon sx={{ fontSize: "50px", color: "#a5a6ad" }} />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            height: "80px",
+          }}
+        >
+          {imgUploadProgress ? (
+            <CircularProgressbar
+              value={imgUploadProgress}
+              text={`${imgUploadProgress}%`}
+              styles={{
+                root: {
+                  width: "80px",
+                  height: "80px",
+                  position: "absolute",
+                },
+                path: {
+                  stroke: `rgba(237,231,246,0.9) `,
+                },
+                text: {
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  fill: "#6A4EE9",
+                },
+              }}
+            />
+          ) : (
+            <CloudUploadIcon sx={{ fontSize: "50px", color: "#a5a6ad" }} />
+          )}
+        </Box>
         <Typography variant="h4" sx={{ fontSize: "25px" }}>
           Drop files here or click to upload.
         </Typography>
@@ -120,8 +164,8 @@ const UploadImgBox = ({ addToFormData }) => {
           uploaded)
         </Typography>
       </CssUploadBox>
-
-      {imgUrl && (
+      {imgUploadError && <Alert severity="error">{imgUploadError}</Alert>}
+      {imgUrl && !imgUploadError && !imgUploadProgress && (
         <Box
           sx={{
             display: "flex",

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Container,
@@ -7,6 +8,8 @@ import {
   MenuItem,
   Select,
   styled,
+  Tab,
+  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,28 +21,73 @@ import { useNavigate } from "react-router-dom";
 import UploadImgBox from "../components/CreatePost/UploadImgBox";
 
 const CreatePost = () => {
-  const [categories, setCategories] = useState("");
-  const [catgory, setCatgory] = useState("");
-  const [formData, setFormData] = useState({ category: "" });
+  const [categories, setCategories] = useState([]);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    category: "",
+    newcategory: "",
+  });
+  const [tab, setTab] = useState(0);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+
+    setFormData((prevFormData) => {
+      const newCategory =
+        name === "newcategory" ? value : prevFormData.newcategory;
+      // const category = name === "category" ? value : prevFormData.category;
+      if (name === "category") {
+        return {
+          ...prevFormData,
+          // category: "",
+          [name]: value,
+        };
+      } else {
+        return {
+          ...prevFormData,
+          [name]: value,
+          category: newCategory,
+        };
+      }
+    });
+
+    console.log(true);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  console.log(formData);
+
   const addToFormData = useCallback((downloadURL) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      profilePicture: downloadURL,
+      image: downloadURL,
     }));
   }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/v1/post/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+        navigate(`/post/${data.slug}`);
+      } else {
+        setError(data.message);
+        return;
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+  // console.log(formData);
   useEffect(() => {
     const getCategories = async () => {
       const res = await fetch("/api/v1/post/categories");
@@ -48,7 +96,13 @@ const CreatePost = () => {
     };
     getCategories();
   }, []);
-
+  useEffect(() => {
+    tab === 1 &&
+      setCategories((prevCategories) => [
+        ...prevCategories,
+        formData.newcategory,
+      ]);
+  }, [formData.newcategory, tab]);
   return (
     <CssContainer>
       <Typography
@@ -91,17 +145,68 @@ const CreatePost = () => {
               required
               name="title"
               value={formData.title}
+              onChange={handleChange}
             />
-            {!categories ? (
+            <Box
+              sx={(theme) => ({
+                maxWidth: { xs: 400, sm: 520 },
+                bgcolor: theme.palette.background.paper,
+              })}
+            >
+              <Tabs
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs "
+                sx={{
+                  "& .MuiTabs-flexContainer": {
+                    gap: "10px",
+                  },
+                  "& .Mui-selected": {
+                    color: "#6a4ee9",
+                  },
+                  "& .Mui-unselected": {
+                    color: "#6e86b2",
+                  },
+                  "& .MuiTabs-indicator": {
+                    backgroundColor: "#6a4ee9",
+                  },
+                }}
+                value={tab}
+              >
+                <Tab
+                  sx={{
+                    color: tab === 0 ? "#6a4ee9" : "#6e86b2",
+                    padding: "10px",
+                    borderBottom: tab === 0 ? "2px solid" : "none",
+                  }}
+                  onClick={() => setTab(0)}
+                  label=" Add New Category"
+                  value={0}
+                />
+                {categories.length > 0 && (
+                  <Tab
+                    sx={{
+                      padding: "10px",
+                      color: tab === 1 ? "#6a4ee9" : "#6e86b2",
+                      borderBottom: tab === 1 ? "2px solid" : "none",
+                    }}
+                    onClick={() => setTab(1)}
+                    label="Select Category"
+                    value={1}
+                  />
+                )}
+              </Tabs>
+            </Box>
+            {categories && tab === 1 ? (
               <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
                 <CssFormControl
                   variant="filled"
-                  sx={{ minWidth: 200 }}
+                  sx={{ minWidth: 485 }}
                   required
                 >
                   <InputLabel
                     id="demo-simple-select-filled-label"
-                    sx={{ color: "#6e86b2" }}
+                    sx={{ color: "green" }}
                   >
                     Select a category
                   </InputLabel>
@@ -110,35 +215,33 @@ const CreatePost = () => {
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     name="category"
-                    value={formData.category || ""}
+                    value={formData.category}
                     onChange={handleChange}
                   >
-                    {categories.map((cat) => (
+                    {categories?.map((cat) => (
                       <MenuItem key={cat} value={cat}>
                         {cat}
                       </MenuItem>
                     ))}
                   </Select>
                 </CssFormControl>
-                or
+              </Box>
+            ) : (
+              tab === 0 && (
                 <CssTextField
                   variant="filled"
                   placeholder="Add New Category"
                   required
-                  name="category"
-                  value={catgory}
-                  onChange={(e) => setCatgory(e.target.value)}
+                  name="newcategory"
+                  value={formData.newcategory || ""}
+                  onChange={handleChange}
+                  // setCategory(e.target.value);
+                  // setFormData((prevFormData) => ({
+                  //   ...prevFormData,
+                  //   newcategory: category,
+                  // }));
                 />
-              </Box>
-            ) : (
-              <CssTextField
-                variant="filled"
-                placeholder="Add New Category"
-                required
-                name="category"
-                value={catgory}
-                onChange={(e) => setCatgory(e.target.value)}
-              />
+              )
             )}
           </CssBox>
           <CssBox>
@@ -156,8 +259,15 @@ const CreatePost = () => {
           >
             Post Content
           </Box>
-          <ReactQuill theme="snow" style={{ height: "300px" }} />
+          <ReactQuill
+            theme="snow"
+            style={{ height: "300px" }}
+            required
+            onChange={(value) => setFormData({ ...formData, content: value })}
+          />
         </CssBox>
+        {error && <Alert severity="error">{error}</Alert>}
+
         <Box sx={{ display: "flex", justifyContent: "center", gap: "20px" }}>
           <Button
             variant="contained"
@@ -171,6 +281,7 @@ const CreatePost = () => {
           >
             Pusblish{" "}
           </Button>
+
           <Button
             variant="outlined"
             sx={{
@@ -241,8 +352,9 @@ const CssTextField = styled(TextField)(({ theme }) => ({
 
 const CssFormControl = styled(FormControl)(({ theme }) => ({
   "& label": {
-    color: "#6e86b2",
+    color: "#9c9a9f",
   },
+
   "& label.Mui-focused": {
     color: "#2196f3",
   },
