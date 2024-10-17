@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
@@ -13,13 +13,13 @@ import ThemeProvider from "./components/ThemeProvider.jsx";
 // import { CssBaseline } from "@mui/material";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <PersistGate persistor={persistor}>
-      <Provider store={store}>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </Provider>
-    </PersistGate>
-  </StrictMode>
+  // <StrictMode>
+  <PersistGate persistor={persistor}>
+    <Provider store={store}>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </Provider>
+  </PersistGate>
+  // </StrictMode>
 );

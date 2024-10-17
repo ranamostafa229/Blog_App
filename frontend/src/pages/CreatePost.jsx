@@ -38,11 +38,9 @@ const CreatePost = () => {
     setFormData((prevFormData) => {
       const newCategory =
         name === "newcategory" ? value : prevFormData.newcategory;
-      // const category = name === "category" ? value : prevFormData.category;
       if (name === "category") {
         return {
           ...prevFormData,
-          // category: "",
           [name]: value,
         };
       } else {
@@ -53,11 +51,7 @@ const CreatePost = () => {
         };
       }
     });
-
-    console.log(true);
   };
-
-  console.log(formData);
 
   const addToFormData = useCallback((downloadURL) => {
     setFormData((prevFormData) => ({
@@ -162,10 +156,7 @@ const CreatePost = () => {
                     gap: "10px",
                   },
                   "& .Mui-selected": {
-                    color: "#6a4ee9",
-                  },
-                  "& .Mui-unselected": {
-                    color: "#6e86b2",
+                    color: "#745ed8",
                   },
                   "& .MuiTabs-indicator": {
                     backgroundColor: "#6a4ee9",
@@ -218,7 +209,7 @@ const CreatePost = () => {
                     value={formData.category}
                     onChange={handleChange}
                   >
-                    {categories?.map((cat) => (
+                    {categories.map((cat) => (
                       <MenuItem key={cat} value={cat}>
                         {cat}
                       </MenuItem>
@@ -266,7 +257,23 @@ const CreatePost = () => {
             onChange={(value) => setFormData({ ...formData, content: value })}
           />
         </CssBox>
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && (
+          <Alert
+            severity="error"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            {error === "You are not authorized" ? (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                {error}
+                <Button onClick={() => navigate("/signin")} variant="text">
+                  Login
+                </Button>
+              </Box>
+            ) : (
+              error
+            )}
+          </Alert>
+        )}
 
         <Box sx={{ display: "flex", justifyContent: "center", gap: "20px" }}>
           <Button

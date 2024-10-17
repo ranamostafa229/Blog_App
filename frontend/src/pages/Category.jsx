@@ -65,7 +65,11 @@ const Category = () => {
               fontWeight: "bold",
             }}
           >
-            <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: "bold" }}
+              component={"div"}
+            >
               CSS
               <Typography variant="subtitle1">
                 A collection of <b style={{ color: "#373333" }}>3 posts</b>

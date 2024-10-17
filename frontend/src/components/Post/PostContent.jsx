@@ -3,8 +3,10 @@ import { Box, Typography } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import RelatedPosts from "./RelatedPosts";
 import ReplySection from "./ReplySection";
+import useModifyHtmlWithIds from "../../hooks/useModifyHtmlWithIds ";
 
-const PostContent = ({ sections }) => {
+const PostContent = ({ post }) => {
+  const modifiedHtml = useModifyHtmlWithIds(post.content);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "40px" }}>
       <Box
@@ -17,7 +19,7 @@ const PostContent = ({ sections }) => {
           display: "flex",
           flexDirection: "column",
           borderRadius: "20px",
-          gap: "20px",
+          // gap: "20px",
           border: "1px solid ",
           borderColor: theme.palette.text.secondary,
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
@@ -35,7 +37,7 @@ const PostContent = ({ sections }) => {
               // color: "#282424",
             }}
           >
-            Crafting Engaging CSS Animations step by step guide
+            {post.title}
           </Typography>
           <Typography
             variant="subtitle1"
@@ -51,44 +53,16 @@ const PostContent = ({ sections }) => {
             <CalendarTodayIcon sx={{ fontSize: "18px", color: "#6a4ee9" }} />
             Published: Jan 19, 2024
           </Typography>
-          <Typography
-            variant="body1"
-            sx={(theme) => ({
-              color: theme.palette.text.subtitle,
-              lineHeight: "30px",
-            })}
-          >
-            In the realm of technology blogging, captivating your audience goes
-            beyond just the written word. Incorporating eye-catching CSS
-            animations can elevate your content and provide a dynamic user
-            experience. In this tutorial, we’ll explore the art of creating CSS
-            animations to add flair and interactivity to your technology blog.
-          </Typography>
         </Box>
-        {sections.map((section) => (
-          <Box
-            key={section.id}
-            id={section.id}
-            sx={{
-              marginBottom: "50px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            <Typography variant="h5" sx={{ fontWeight: "500" }}>
-              {section.title}
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={(theme) => ({
-                color: theme.palette.text.subtitle,
-              })}
-            >
-              Content for {section.body}
-            </Typography>
-          </Box>
-        ))}
+
+        <Typography
+          variant="body1"
+          sx={(theme) => ({
+            color: theme.palette.text.subtitle,
+          })}
+          dangerouslySetInnerHTML={{ __html: post && modifiedHtml }}
+        ></Typography>
+
         <hr style={{ border: "1px solid #f2f1ff", width: "100%" }} />
       </Box>
       <RelatedPosts />

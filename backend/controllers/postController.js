@@ -44,3 +44,16 @@ export const getCategories = async (req, res, next) => {
     next(error);
   }
 };
+export const getPosts = async (req, res, next) => {};
+
+export const getPost = async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ slug: req.params.slug });
+    if (!post) {
+      return next(errorHandler(404, "Post not found"));
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};

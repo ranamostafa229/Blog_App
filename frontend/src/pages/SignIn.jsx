@@ -42,11 +42,11 @@ const SignIn = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/");
-    }
-  }, [currentUser, navigate]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     navigate("/");
+  //   }
+  // }, [currentUser, navigate]);
   const handleChange = (e) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
