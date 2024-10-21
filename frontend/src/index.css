@@ -35,6 +35,26 @@ body {
 .ql-editor {
   font-size: 1.2rem;
 }
+
+.ql-code-block-container,
+.ql-code-editor {
+  background-color: #211d3f;
+  color: #a4a49f;
+  padding: 10px;
+  border-radius: 5px;
+  overflow: auto;
+  font-family: "Courier New", Courier, monospace;
+  /* background-color: red; */
+}
+.blog-post-content pre {
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  overflow: auto;
+  font-family: "Courier New", Courier, monospace;
+}
+
 /* 
 h1 {
   font-size: 3.2em;

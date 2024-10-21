@@ -13,11 +13,12 @@ import PostContent from "../components/Post/PostContent";
 import PostInfoCard from "../components/Post/PostInfoCard";
 import { useParams } from "react-router-dom";
 import useExtractHeadings from "../hooks/useExtractHeadings";
-
+import useFetch from "../hooks/useFetch";
 function Post() {
   const [activeSection, setActiveSection] = useState("");
-  const [post, setPost] = useState({});
+  // const [post, setPost] = useState({});
   const { postSlug } = useParams();
+  const { data: post } = useFetch(`/api/v1/post/${postSlug}`, []);
   const sections = useExtractHeadings(post.content);
 
   useEffect(() => {
@@ -45,27 +46,31 @@ function Post() {
     };
   }, [sections]);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`/api/v1/post/${postSlug}`, {
-          method: "GET",
-        });
-        const data = await res.json();
-        if (res.ok) {
-          setPost(data);
-          console.log(data);
-        } else {
-          console.log(`Error: ${res.status} - ${res.statusText}`);
-          console.log(await res.text());
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchPost();
-  }, [postSlug]);
-
+  // useEffect(() => {
+  //   const fetchPost = async () => {
+  //     try {
+  //       const res = await fetch(`/api/v1/post/${postSlug}`, {
+  //         method: "GET",
+  //       });
+  //       const data = await res.json();
+  //       if (res.ok) {
+  //         setPost(data);
+  //         console.log(data);
+  //       } else {
+  //         console.log(`Error: ${res.status} - ${res.statusText}`);
+  //         console.log(await res.text());
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchPost();
+  // }, [postSlug]);
+  const formattedDate = new Date(post?.updatedAt)
+    .toDateString()
+    .split(" ")
+    .slice(1)
+    .join(" ");
   return (
     <Container sx={{ display: "flex", gap: "58px" }}>
       <Box
@@ -82,10 +87,10 @@ function Post() {
       >
         {/* ******************* Info card**********************  */}
         <PostInfoCard
-          category={post.category}
-          updatedAt={post.updatedAt}
-          userId={post.userId}
-          content={post.content}
+          category={post?.category}
+          updatedAt={formattedDate}
+          userId={post?.userId}
+          content={post?.content}
         />
 
         {/* ******************* Table of contents**********************  */}
@@ -131,7 +136,7 @@ function Post() {
           ))}
         </List>
       </Box>
-      <PostContent post={post} sections={sections} />
+      <PostContent post={post} updatedAt={formattedDate} sections={sections} />
     </Container>
   );
 }

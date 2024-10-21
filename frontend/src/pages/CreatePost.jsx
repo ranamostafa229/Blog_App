@@ -32,6 +32,25 @@ const CreatePost = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { indent: "-1" }, { indent: "+1" }],
+      ["code-block"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "font",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "indent",
+    "code-block",
+  ];
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -174,7 +193,7 @@ const CreatePost = () => {
                   label=" Add New Category"
                   value={0}
                 />
-                {categories.length > 0 && (
+                {categories?.length > 0 && (
                   <Tab
                     sx={{
                       padding: "10px",
@@ -226,11 +245,6 @@ const CreatePost = () => {
                   name="newcategory"
                   value={formData.newcategory || ""}
                   onChange={handleChange}
-                  // setCategory(e.target.value);
-                  // setFormData((prevFormData) => ({
-                  //   ...prevFormData,
-                  //   newcategory: category,
-                  // }));
                 />
               )
             )}
@@ -255,7 +269,9 @@ const CreatePost = () => {
             style={{ height: "300px" }}
             required
             onChange={(value) => setFormData({ ...formData, content: value })}
-          />
+            modules={modules}
+            formats={formats}
+          ></ReactQuill>
         </CssBox>
         {error && (
           <Alert

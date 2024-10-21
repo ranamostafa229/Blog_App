@@ -9,12 +9,13 @@ const useModifyHtmlWithIds = (htmlContent) => {
       const doc = parser.parseFromString(htmlContent, "text/html");
       const elements = doc.body.children;
 
-      Array.from(elements).forEach((element, index) => {
+      Array.from(elements).forEach((element) => {
         if (element instanceof HTMLHeadingElement) {
           element.id = element.textContent;
-        } else {
-          element.id = `element-${index + 1}`;
         }
+        // else {
+        //   element.id = `element-${index + 1}`;
+        // }
       });
 
       setModifiedHtml(doc.body.innerHTML);

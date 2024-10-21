@@ -4,9 +4,11 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import RelatedPosts from "./RelatedPosts";
 import ReplySection from "./ReplySection";
 import useModifyHtmlWithIds from "../../hooks/useModifyHtmlWithIds ";
+import "../../index.css";
 
-const PostContent = ({ post }) => {
+const PostContent = ({ post, updatedAt }) => {
   const modifiedHtml = useModifyHtmlWithIds(post.content);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "40px" }}>
       <Box
@@ -19,7 +21,7 @@ const PostContent = ({ post }) => {
           display: "flex",
           flexDirection: "column",
           borderRadius: "20px",
-          // gap: "20px",
+          gap: "20px",
           border: "1px solid ",
           borderColor: theme.palette.text.secondary,
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
@@ -51,17 +53,16 @@ const PostContent = ({ post }) => {
             }}
           >
             <CalendarTodayIcon sx={{ fontSize: "18px", color: "#6a4ee9" }} />
-            Published: Jan 19, 2024
+            Published: {updatedAt}
           </Typography>
         </Box>
 
-        <Typography
-          variant="body1"
+        <Box
           sx={(theme) => ({
             color: theme.palette.text.subtitle,
           })}
           dangerouslySetInnerHTML={{ __html: post && modifiedHtml }}
-        ></Typography>
+        ></Box>
 
         <hr style={{ border: "1px solid #f2f1ff", width: "100%" }} />
       </Box>

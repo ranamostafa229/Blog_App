@@ -6,14 +6,12 @@ import PersonOutlineSharpIcon from "@mui/icons-material/PersonOutlineSharp";
 import WorkspacePremiumSharpIcon from "@mui/icons-material/WorkspacePremiumSharp";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { useState } from "react";
+import useFetch from "../../hooks/useFetch";
 
 const PostInfoCard = ({ category, updatedAt, userId, content }) => {
   const [value, setValue] = useState(2);
-  const formattedDate = new Date(updatedAt)
-    .toDateString()
-    .split(" ")
-    .slice(1)
-    .join(" ");
+
+  const { data: user } = useFetch(`/api/v1/user/${userId}`, {});
   return (
     <Box
       sx={{
@@ -75,19 +73,28 @@ const PostInfoCard = ({ category, updatedAt, userId, content }) => {
             })}
           >
             <span style={{ fontWeight: "500" }}> Updated: </span>
-            <span style={{ color: "#8493ab" }}>{formattedDate}</span>
+            <span style={{ color: "#8493ab" }}>{updatedAt}</span>
           </Typography>
         </Box>
-        <Box display={"flex"} gap={2}>
+        <Box display={"flex"} gap={2} sx={{ alignItems: "center" }}>
           <PersonOutlineSharpIcon sx={{ color: "#6a4ee9", fontSize: "22px" }} />
           <Typography
             variant="body2"
             sx={(theme) => ({
               color: theme.palette.text.primary,
+              display: "flex",
+              gap: "2px",
             })}
           >
             <span style={{ fontWeight: "500" }}> Author: </span>
-            <span style={{ color: "#8493ab" }}>Jonathan Doe</span>
+            <span
+              style={{
+                color: "#8493ab",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {user.username}
+            </span>
           </Typography>
         </Box>
         <Box display={"flex"} gap={2}>
@@ -106,7 +113,7 @@ const PostInfoCard = ({ category, updatedAt, userId, content }) => {
           >
             <span style={{ fontWeight: "500" }}> Reading time: </span>
             <span style={{ color: "#8493ab" }}>
-              {`${(content.length / 1000).toFixed(0)} Mins`}
+              {`${(content?.length / 1000).toFixed(0)} Mins`}
             </span>
           </Typography>
         </Box>
