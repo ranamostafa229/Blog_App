@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-const PostCard = ({ cmd, csize }) => {
+const PostCard = ({ cmd, csize, posts }) => {
   const [value, setValue] = useState(2);
+  console.log(posts);
   return (
     <Grid2
       container
@@ -21,7 +22,8 @@ const PostCard = ({ cmd, csize }) => {
       spacing={{ xs: 2, md: 3 }}
       columns={{ xs: 1, sm: 8, md: cmd }}
     >
-      {Array.from(Array(6)).map((_, index) => (
+      {/* Array.from(Array(6)) */}
+      {posts?.map((post, index) => (
         <Grid2 key={index} size={{ xs: 2, sm: 4, md: csize }}>
           <Card
             sx={{
@@ -52,7 +54,7 @@ const PostCard = ({ cmd, csize }) => {
                     borderRadius: "0 25px 25px 0",
                   }}
                 >
-                  CSS
+                  {post.category}
                 </Typography>
                 <Box
                   sx={{
@@ -101,7 +103,7 @@ const PostCard = ({ cmd, csize }) => {
                     },
                   })}
                 >
-                  Crafting Engaging CSS Animations Step by step guide
+                  {post.title}
                 </Typography>
               </Link>
               <Typography
@@ -111,10 +113,8 @@ const PostCard = ({ cmd, csize }) => {
                   textAlign: "center",
                   lineHeight: "2",
                 }}
-              >
-                In the realm of technology blogging, captivating your audience
-                goes beyond just the written word. Incorporating eye-catching…
-              </Typography>
+                dangerouslySetInnerHTML={{ __html: post.content.slice(0, 200) }}
+              ></Typography>
             </CardContent>
             <CardActions
               sx={{

@@ -75,7 +75,7 @@ const Header = () => {
             display: "flex",
             alignItems: "center",
             marginRight: {
-              lg: "100px",
+              lg: "10px",
               sm: "50px",
               xs: "0px",
             },

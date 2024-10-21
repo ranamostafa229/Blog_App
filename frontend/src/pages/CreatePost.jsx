@@ -100,12 +100,11 @@ const CreatePost = () => {
       setError(error.message);
     }
   };
-  // console.log(formData);
   useEffect(() => {
     const getCategories = async () => {
       const res = await fetch("/api/v1/post/categories");
       const data = await res.json();
-      data && setCategories(data);
+      data && setCategories(data.categories);
     };
     getCategories();
   }, []);

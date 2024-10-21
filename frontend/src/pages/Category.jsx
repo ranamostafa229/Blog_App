@@ -2,21 +2,17 @@ import { Box, Container, Divider, Typography } from "@mui/material";
 import CssIcon from "../assets/css-icon.png";
 import PostCard from "../components/PostCard";
 import JoinBanner from "../components/JoinBanner";
+import useFetch from "../hooks/useFetch";
+import { useParams } from "react-router-dom";
 
 const Category = () => {
-  const shapeCircleStyles = {
-    width: 65,
-    height: 65,
-    borderRadius: "50%",
-    boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
-  };
+  const { category } = useParams();
+  const { data: posts } = useFetch(`/api/v1/post/categories/${category}`);
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        // textAlign: "center",
-        // color: "#121111",
       }}
     >
       <Container
@@ -70,7 +66,7 @@ const Category = () => {
               sx={{ fontWeight: "bold" }}
               component={"div"}
             >
-              CSS
+              {category}
               <Typography variant="subtitle1">
                 A collection of <b style={{ color: "#373333" }}>3 posts</b>
               </Typography>
@@ -96,7 +92,7 @@ const Category = () => {
       </Container>
       <Box sx={{ height: "100px" }} />
       <Container>
-        <PostCard cmd={6} csize={2} />
+        <PostCard cmd={6} csize={2} posts={posts} />
       </Container>
       <Box sx={{ height: "100px" }} />
       <JoinBanner />
@@ -105,3 +101,10 @@ const Category = () => {
 };
 
 export default Category;
+
+const shapeCircleStyles = {
+  width: 65,
+  height: 65,
+  borderRadius: "50%",
+  boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
+};

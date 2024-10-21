@@ -6,28 +6,9 @@ import JavascriptIcon from "../assets/js-icon.png";
 import CodeIcon from "../assets/code-icon.png";
 import DatabaseIcon from "../assets/databases-icon.png";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../hooks/useFetch";
 // import SQLIcon from "../assets/sql-icon.png";
-const shapeCircleStyles = {
-  width: 60,
-  height: 60,
-  position: "absolute",
-  // top: "10px",
-  borderRadius: "50%",
-  boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
-};
-const StyledBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexWrap: "wrap",
-  backgroundColor: theme.palette.background.banner,
-  gap: "50px",
 
-  borderRadius: "60px",
-  width: "75%",
-  border: "2px solid #f2f1ff",
-  borderColor: theme.palette.text.secondary,
-  alignItems: "center",
-  justifyContent: "center",
-}));
 const TrendTopics = () => {
   const icons = [
     {
@@ -43,7 +24,7 @@ const TrendTopics = () => {
     {
       img: JavascriptIcon,
       bg: "#ffcb29",
-      label: "Javascript",
+      label: "javaScript",
     },
     {
       img: CodeIcon,
@@ -61,9 +42,11 @@ const TrendTopics = () => {
     //   label: "Databases",
     // },
   ];
-
-  const categoryElement = icons.map((icon, index) => {
-    return (
+  const navigate = useNavigate();
+  const { data } = useFetch("/api/v1/post/categories", []);
+  const categoryElement = icons
+    .filter((icon) => data?.categories?.includes(icon.label))
+    .map((icon, index) => (
       <Typography
         key={index}
         sx={{
@@ -72,10 +55,16 @@ const TrendTopics = () => {
           alignItems: "center",
           gap: "6px",
           fontWeight: "500",
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          navigate(`/categories/${icon.label}`);
         }}
       >
         <Badge
-          badgeContent={index + 1}
+          badgeContent={data.countedPosts.map((e) =>
+            e._id === icon.label ? e.count : ""
+          )}
           overlap="circular"
           sx={{
             "& .MuiBadge-badge": { bgcolor: "#FF2AAC" },
@@ -125,9 +114,7 @@ const TrendTopics = () => {
         </Badge>
         {icon.label}
       </Typography>
-    );
-  });
-  const navigate = useNavigate();
+    ));
 
   return (
     <Box
@@ -158,7 +145,7 @@ const TrendTopics = () => {
             gap: "16px",
             display: {
               xs: "none",
-              lg: "flex",
+              md: "flex",
             },
             alignItems: "center",
           }}
@@ -184,3 +171,23 @@ const TrendTopics = () => {
 };
 
 export default TrendTopics;
+
+const shapeCircleStyles = {
+  width: 60,
+  height: 60,
+  position: "absolute",
+  borderRadius: "50%",
+  boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
+};
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexWrap: "wrap",
+  backgroundColor: theme.palette.background.banner,
+  gap: "50px",
+  borderRadius: "60px",
+  width: "75%",
+  border: "2px solid #f2f1ff",
+  borderColor: theme.palette.text.secondary,
+  alignItems: "center",
+  justifyContent: "center",
+}));

@@ -9,6 +9,7 @@ import TechIcon from "../assets/tech-icon.png";
 import DeployIcon from "../assets/deploy-icon.png";
 import JoinBanner from "../components/JoinBanner";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../hooks/useFetch";
 
 const Categories = () => {
   const icons = [
@@ -25,7 +26,7 @@ const Categories = () => {
     {
       img: JavascriptIcon,
       bg: "#ffcb29",
-      label: "Javascript",
+      label: "javaScript",
     },
     {
       img: CodeIcon,
@@ -66,20 +67,16 @@ const Categories = () => {
     boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
   };
   const Item = styled(Box)(({ theme }) => ({
-    // backgroundColor: "#fff",
     ...theme.typography.body2,
-    // padding: theme.spacing(2),
-    // textAlign: "center",
     color: theme.palette.text.primary,
-    // ...theme.applyStyles("dark", {
-    //   backgroundColor: "#1A2027",
-    // }),
     cursor: "pointer",
   }));
   const navigate = useNavigate();
+  const { data } = useFetch("/api/v1/post/categories", []);
 
-  const categoryElement = icons.map((icon, index) => {
-    return (
+  const categoryElement = icons
+    .filter((icon) => data?.categories?.includes(icon.label))
+    .map((icon, index) => (
       <Grid2 key={index} size={{ xs: 2, sm: 2, md: 3 }}>
         <Item onClick={() => navigate(`/categories/${icon.label}`)}>
           <Typography
@@ -153,8 +150,7 @@ const Categories = () => {
           </Typography>
         </Item>
       </Grid2>
-    );
-  });
+    ));
 
   return (
     <Box

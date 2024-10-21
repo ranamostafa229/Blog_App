@@ -39,7 +39,26 @@ export const addPost = async (req, res, next) => {
 export const getCategories = async (req, res, next) => {
   try {
     const categories = await Post.distinct("category");
-    res.status(200).json(categories);
+    const numberOfPostsByCategory = await Post.aggregate([
+      {
+        $group: {
+          _id: "$category",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json({ categories, countedPosts: numberOfPostsByCategory });
+  } catch (error) {
+    next(error);
+  }
+};
+export const getCategoryPosts = async (req, res, next) => {
+  try {
+    const posts = await Post.find({ category: req.params.category });
+    if (!posts) {
+      return next(errorHandler(404, "No Posts available in this category"));
+    }
+    res.status(200).json(posts);
   } catch (error) {
     next(error);
   }

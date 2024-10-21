@@ -2,6 +2,7 @@ import express from "express";
 import {
   addPost,
   getCategories,
+  getCategoryPosts,
   getPost,
   getPosts,
 } from "../controllers/postController.js";
@@ -11,6 +12,7 @@ const router = express.Router();
 
 router.post("/add", verfiyToken, addPost);
 router.get("/categories", getCategories);
+router.get("/categories/:category", getCategoryPosts);
 router.get("/posts", getPosts);
 router.get("/:slug", getPost);
 
