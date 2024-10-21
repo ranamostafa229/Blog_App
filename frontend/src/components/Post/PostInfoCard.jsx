@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Rating, SvgIcon, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import QueryBuilderOutlinedIcon from "@mui/icons-material/QueryBuilderOutlined";
@@ -6,9 +7,13 @@ import WorkspacePremiumSharpIcon from "@mui/icons-material/WorkspacePremiumSharp
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { useState } from "react";
 
-const PostInfoCard = () => {
+const PostInfoCard = ({ category, updatedAt, userId, content }) => {
   const [value, setValue] = useState(2);
-
+  const formattedDate = new Date(updatedAt)
+    .toDateString()
+    .split(" ")
+    .slice(1)
+    .join(" ");
   return (
     <Box
       sx={{
@@ -56,7 +61,7 @@ const PostInfoCard = () => {
             })}
           >
             <span style={{ fontWeight: "500" }}>Category:</span>{" "}
-            <span style={{ color: "#8493ab" }}>CSS</span>
+            <span style={{ color: "#8493ab" }}>{category}</span>
           </Typography>
         </Box>
         <Box display={"flex"} gap={2}>
@@ -70,7 +75,7 @@ const PostInfoCard = () => {
             })}
           >
             <span style={{ fontWeight: "500" }}> Updated: </span>
-            <span style={{ color: "#8493ab" }}>Mar 27, 2024</span>
+            <span style={{ color: "#8493ab" }}>{formattedDate}</span>
           </Typography>
         </Box>
         <Box display={"flex"} gap={2}>
@@ -99,8 +104,10 @@ const PostInfoCard = () => {
               color: theme.palette.text.primary,
             })}
           >
-            <span style={{ fontWeight: "500" }}> Reading time:</span>
-            <span style={{ color: "#8493ab" }}>1 Min</span>
+            <span style={{ fontWeight: "500" }}> Reading time: </span>
+            <span style={{ color: "#8493ab" }}>
+              {`${(content.length / 1000).toFixed(0)} Mins`}
+            </span>
           </Typography>
         </Box>
         <Box display={"flex"} gap={2}>

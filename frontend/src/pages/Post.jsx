@@ -54,6 +54,7 @@ function Post() {
         const data = await res.json();
         if (res.ok) {
           setPost(data);
+          console.log(data);
         } else {
           console.log(`Error: ${res.status} - ${res.statusText}`);
           console.log(await res.text());
@@ -79,8 +80,15 @@ function Post() {
           },
         }}
       >
-        <PostInfoCard />
+        {/* ******************* Info card**********************  */}
+        <PostInfoCard
+          category={post.category}
+          updatedAt={post.updatedAt}
+          userId={post.userId}
+          content={post.content}
+        />
 
+        {/* ******************* Table of contents**********************  */}
         <Typography
           variant="h6"
           sx={(theme) => ({
