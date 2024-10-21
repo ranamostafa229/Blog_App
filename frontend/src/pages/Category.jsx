@@ -1,13 +1,16 @@
 import { Box, Container, Divider, Typography } from "@mui/material";
-import CssIcon from "../assets/css-icon.png";
 import PostCard from "../components/PostCard";
 import JoinBanner from "../components/JoinBanner";
 import useFetch from "../hooks/useFetch";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const Category = () => {
   const { category } = useParams();
   const { data: posts } = useFetch(`/api/v1/post/categories/${category}`);
+  const location = useLocation();
+  const { categoryImg, categoryBg } = location.state || {};
+  console.log(categoryImg, categoryBg);
+
   return (
     <Box
       sx={{
@@ -40,13 +43,13 @@ const Category = () => {
           <Box
             sx={{
               ...shapeCircleStyles,
-              bgcolor: "#227dff",
+              bgcolor: `${categoryBg}`,
               borderRadius: "50%",
               cursor: "pointer",
             }}
           >
             <img
-              src={CssIcon}
+              src={categoryImg}
               alt="Trending"
               style={{
                 width: "65px",
@@ -68,14 +71,15 @@ const Category = () => {
             >
               {category}
               <Typography variant="subtitle1">
-                A collection of <b style={{ color: "#373333" }}>3 posts</b>
+                A collection of{" "}
+                <b style={{ color: "#373333" }}>{posts?.length} posts</b>
               </Typography>
             </Typography>
           </Box>
         </Box>
         <Divider orientation="vertical" flexItem />
 
-        <Box
+        {/* <Box
           sx={(theme) => ({
             // color: "#4e4a4b",
             color: theme.palette.text.subtitle,
@@ -83,12 +87,9 @@ const Category = () => {
           })}
         >
           <Typography variant="body1" sx={{ lineHeight: "30px" }}>
-            CSS is a vital web development language for styling HTML elements.
-            It ensures consistent, visually appealing designs through selectors,
-            flexbox, and transitions, creating responsive and dynamic web
-            interfaces.
+            {posts?.map((post) => post.categoryBrief)}
           </Typography>
-        </Box>
+        </Box> */}
       </Container>
       <Box sx={{ height: "100px" }} />
       <Container>

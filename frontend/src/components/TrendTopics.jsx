@@ -1,47 +1,10 @@
 import { Badge, Box, Button, styled, Typography } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
-import HtmlIcon from "../assets/html-icon.png";
-import CssIcon from "../assets/css-icon.png";
-import JavascriptIcon from "../assets/js-icon.png";
-import CodeIcon from "../assets/code-icon.png";
-import DatabaseIcon from "../assets/databases-icon.png";
+import { icons } from "../utils/icons";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
-// import SQLIcon from "../assets/sql-icon.png";
 
 const TrendTopics = () => {
-  const icons = [
-    {
-      img: HtmlIcon,
-      bg: "#ff8e51",
-      label: "HTML",
-    },
-    {
-      img: CssIcon,
-      bg: "#227dff",
-      label: "CSS",
-    },
-    {
-      img: JavascriptIcon,
-      bg: "#ffcb29",
-      label: "javaScript",
-    },
-    {
-      img: CodeIcon,
-      bg: "#6a4ee9",
-      label: "Fundamentals",
-    },
-    {
-      img: DatabaseIcon,
-      bg: "#5751ff",
-      label: "Databases",
-    },
-    // {
-    //   img: SQLIcon,
-    //   bg: "#f95353",
-    //   label: "Databases",
-    // },
-  ];
   const navigate = useNavigate();
   const { data } = useFetch("/api/v1/post/categories", []);
   const categoryElement = icons
@@ -58,7 +21,12 @@ const TrendTopics = () => {
           cursor: "pointer",
         }}
         onClick={() => {
-          navigate(`/categories/${icon.label}`);
+          navigate(`/categories/${icon.label}`, {
+            state: {
+              categoryImg: icon.img,
+              categoryBg: icon.bg,
+            },
+          });
         }}
       >
         <Badge

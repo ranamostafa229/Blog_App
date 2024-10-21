@@ -75,7 +75,7 @@ function Post() {
     <Container sx={{ display: "flex", gap: "58px" }}>
       <Box
         sx={{
-          width: "650px",
+          width: "30%",
           position: "sticky",
           top: "0",
           height: "100vh",

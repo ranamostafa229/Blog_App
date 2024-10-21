@@ -3,8 +3,10 @@ import TrendTopics from "../components/TrendTopics";
 import PostCard from "../components/PostCard";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import JoinBanner from "../components/JoinBanner";
+import useFetch from "../hooks/useFetch";
 
 const Home = () => {
+  const { data } = useFetch("/api/v1/post/all-posts", []);
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Container>
@@ -32,7 +34,7 @@ const Home = () => {
             <AutoAwesomeIcon sx={{ fontSize: "35px", color: "#ff2aac" }} />
             Recent Topics
           </Typography>
-          <PostCard />
+          <PostCard posts={data.posts} />
         </Container>
       </Container>
       <Toolbar />

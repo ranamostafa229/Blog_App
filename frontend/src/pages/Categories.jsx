@@ -1,76 +1,10 @@
 import { Box, Container, Grid2, styled, Typography } from "@mui/material";
-import HtmlIcon from "../assets/html-icon.png";
-import CssIcon from "../assets/css-icon.png";
-import JavascriptIcon from "../assets/js-icon.png";
-import CodeIcon from "../assets/code-icon.png";
-import DatabaseIcon from "../assets/databases-icon.png";
-import SQLIcon from "../assets/sql-icon.png";
-import TechIcon from "../assets/tech-icon.png";
-import DeployIcon from "../assets/deploy-icon.png";
+import { icons } from "../utils/icons";
 import JoinBanner from "../components/JoinBanner";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 
 const Categories = () => {
-  const icons = [
-    {
-      img: HtmlIcon,
-      bg: "#ff8e51",
-      label: "HTML",
-    },
-    {
-      img: CssIcon,
-      bg: "#227dff",
-      label: "CSS",
-    },
-    {
-      img: JavascriptIcon,
-      bg: "#ffcb29",
-      label: "javaScript",
-    },
-    {
-      img: CodeIcon,
-      bg: "#6a4ee9",
-      label: "Fundamentals",
-    },
-    {
-      img: DatabaseIcon,
-      bg: "#5751ff",
-      label: "Databases",
-    },
-    {
-      img: SQLIcon,
-      bg: "#f95353",
-      label: "Databases",
-    },
-    {
-      img: TechIcon,
-      bg: "#4775ff",
-      label: "Tech",
-    },
-    {
-      img: CodeIcon,
-      bg: "#ff2ed9",
-      label: "Code",
-    },
-    {
-      img: DeployIcon,
-      bg: "#2a2728",
-      label: "Code",
-    },
-  ];
-  const shapeCircleStyles = {
-    width: 60,
-    height: 60,
-    position: "absolute",
-    borderRadius: "50%",
-    boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
-  };
-  const Item = styled(Box)(({ theme }) => ({
-    ...theme.typography.body2,
-    color: theme.palette.text.primary,
-    cursor: "pointer",
-  }));
   const navigate = useNavigate();
   const { data } = useFetch("/api/v1/post/categories", []);
 
@@ -78,7 +12,16 @@ const Categories = () => {
     .filter((icon) => data?.categories?.includes(icon.label))
     .map((icon, index) => (
       <Grid2 key={index} size={{ xs: 2, sm: 2, md: 3 }}>
-        <Item onClick={() => navigate(`/categories/${icon.label}`)}>
+        <Item
+          onClick={() =>
+            navigate(`/categories/${icon.label}`, {
+              state: {
+                categoryImg: icon.img,
+                categoryBg: icon.bg,
+              },
+            })
+          }
+        >
           <Typography
             component={"span"}
             key={index}
@@ -145,7 +88,12 @@ const Categories = () => {
               }}
             >
               <span>{icon.label}</span>
-              <span style={{ color: "#636060" }}>10 Articles</span>
+              <span style={{ color: "#636060" }}>
+                {data.countedPosts.map((e) =>
+                  e._id === icon.label ? e.count : ""
+                )}{" "}
+                Articles
+              </span>
             </Box>
           </Typography>
         </Item>
@@ -192,7 +140,7 @@ const Categories = () => {
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 6, sm: 6, md: 12 }} // sm: 8,
-          sx={{ paddingX: "40px", paddingY: "50px" }}
+          sx={{ paddingX: "40px", paddingY: "50px", justifyContent: "center" }}
         >
           {categoryElement}
         </Grid2>
@@ -203,3 +151,16 @@ const Categories = () => {
 };
 
 export default Categories;
+
+const shapeCircleStyles = {
+  width: 60,
+  height: 60,
+  position: "absolute",
+  borderRadius: "50%",
+  boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
+};
+const Item = styled(Box)(({ theme }) => ({
+  ...theme.typography.body2,
+  color: theme.palette.text.primary,
+  cursor: "pointer",
+}));

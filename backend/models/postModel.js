@@ -24,6 +24,9 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // categoryBrief: {
+    //   type: String,
+    // },
     slug: {
       type: String,
       required: true,

@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/add", verfiyToken, addPost);
 router.get("/categories", getCategories);
 router.get("/categories/:category", getCategoryPosts);
-router.get("/posts", getPosts);
+router.get("/all-posts", getPosts);
 router.get("/:slug", getPost);
 
 export default router;

@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { icons } from "../utils/icons";
+
 const PostCard = ({ cmd, csize, posts }) => {
   const [value, setValue] = useState(2);
-  console.log(posts);
+
   return (
     <Grid2
       container
@@ -22,29 +24,33 @@ const PostCard = ({ cmd, csize, posts }) => {
       spacing={{ xs: 2, md: 3 }}
       columns={{ xs: 1, sm: 8, md: cmd }}
     >
-      {/* Array.from(Array(6)) */}
-      {posts?.map((post, index) => (
-        <Grid2 key={index} size={{ xs: 2, sm: 4, md: csize }}>
+      {posts?.map((post) => (
+        <Grid2 key={post._id} size={{ xs: 2, sm: 4, md: csize }}>
           <Card
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "space-between",
               padding: "10px",
               paddingLeft: "0px",
               position: "relative",
-              // maxWidth: 345,
+              height: "300px",
             }}
           >
             <CardContent
-              sx={{ display: "flex", flexDirection: "column", gap: "14px" }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+              }}
             >
               <Box sx={{ display: "flex", paddingBottom: "14px" }}>
                 <Typography
                   variant="h6"
                   component="div"
                   sx={{
-                    bgcolor: "#227dff",
+                    // bgcolor: `${color}`,
                     color: "#fff",
                     paddingX: "25px",
                     paddingY: "5px",
@@ -52,9 +58,12 @@ const PostCard = ({ cmd, csize, posts }) => {
                     left: "0",
                     fontSize: "14px",
                     borderRadius: "0 25px 25px 0",
+                    bgcolor: `${
+                      icons.find((e) => e.label === post.category).bg
+                    }`,
                   }}
                 >
-                  {post.category}
+                  {post?.category}
                 </Typography>
                 <Box
                   sx={{
@@ -82,7 +91,7 @@ const PostCard = ({ cmd, csize, posts }) => {
                 </Box>
               </Box>
               <Link
-                to={`/post/${index}`}
+                to={`/post/${post.slug}`}
                 style={{
                   textDecoration: "none",
                 }}
@@ -91,7 +100,6 @@ const PostCard = ({ cmd, csize, posts }) => {
                   variant="h6"
                   sx={(theme) => ({
                     fontWeight: "bold",
-                    // color: "#282424",
                     color: theme.palette.text.label,
                     textAlign: "center",
                     paddingX: "24px",
@@ -109,9 +117,13 @@ const PostCard = ({ cmd, csize, posts }) => {
               <Typography
                 variant="body2"
                 sx={{
-                  // color: "#474444",
                   textAlign: "center",
-                  lineHeight: "2",
+                  height: "30%",
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2, // Number of lines to show
+                  textOverflow: "ellipsis",
                 }}
                 dangerouslySetInnerHTML={{ __html: post.content.slice(0, 200) }}
               ></Typography>
