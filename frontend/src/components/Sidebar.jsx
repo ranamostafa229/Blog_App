@@ -44,7 +44,7 @@ const Sidebar = () => {
     {
       icon: <PostAddSharpIcon />,
       title: "Posts",
-      link: "posts",
+      link: "/dashboard/posts",
     },
     {
       icon: <LogoutOutlinedIcon />,
@@ -118,7 +118,8 @@ const Sidebar = () => {
         padding: "20px",
         flexGrow: 0,
         bgcolor: theme.palette.background.banner,
-        height: "100vh",
+        minHeight: "100vh",
+        // height: "100vh",
         gap: "10px",
         width: "300px",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",

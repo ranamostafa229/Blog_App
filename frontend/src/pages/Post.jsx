@@ -16,7 +16,6 @@ import useExtractHeadings from "../hooks/useExtractHeadings";
 import useFetch from "../hooks/useFetch";
 function Post() {
   const [activeSection, setActiveSection] = useState("");
-  // const [post, setPost] = useState({});
   const { postSlug } = useParams();
   const { data: post } = useFetch(`/api/v1/post/${postSlug}`, []);
   const sections = useExtractHeadings(post.content);
