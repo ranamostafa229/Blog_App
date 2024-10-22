@@ -1,7 +1,7 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 // eslint-disable-next-line react/prop-types
-const MyModal = ({ open, handleClose, handleDelete }) => {
+const MyModal = ({ open, handleClose, handleDelete, title }) => {
   return (
     <div>
       <Modal open={open} onClose={handleClose}>
@@ -13,7 +13,7 @@ const MyModal = ({ open, handleClose, handleDelete }) => {
         >
           <ErrorOutlineIcon sx={{ color: "#c81e1e", fontSize: "50px" }} />
           <Typography variant="h6" sx={{ mt: 2, color: "#9ca3af" }}>
-            Are you sure you want to delete your account?
+            {title}
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "space-evenly", mt: 2 }}>
             <Button

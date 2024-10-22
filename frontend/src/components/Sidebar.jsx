@@ -190,6 +190,7 @@ const Sidebar = () => {
         open={open}
         handleClose={handleClose}
         handleDelete={handleDelete}
+        title={"Are you sure you want to delete your account?"}
       />
     </Box>
   );

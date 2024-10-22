@@ -8,15 +8,20 @@ import {
   TableHead,
   TableRow,
   Button,
+  Alert,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useSelector } from "react-redux";
+import MyModal from "../MyModal";
 const TableOfPosts = ({ data, loading }) => {
   const [showMore, setShowMore] = useState(true);
+  const [showModel, setShowModel] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [currentData, setCurrentData] = useState([]);
+  const [error, setError] = useState(null);
+  const [postId, setPostId] = useState("");
 
   useEffect(() => {
     if (data?.posts?.length > 0) {
@@ -38,6 +43,32 @@ const TableOfPosts = ({ data, loading }) => {
         }
       }
     } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(currentData?._id);
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(
+        `/api/v1/post/delete/${postId}/${currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message);
+        setShowModel(false);
+      } else {
+        setCurrentData((prevData) =>
+          prevData.filter((item) => item._id !== postId)
+        );
+        setShowModel(false);
+      }
+    } catch (error) {
+      setShowModel(false);
+      setError(error.message);
       console.log(error);
     }
   };
@@ -110,7 +141,12 @@ const TableOfPosts = ({ data, loading }) => {
                       align="right"
                       sx={{ color: "#f1556c", cursor: "pointer" }}
                     >
-                      <DeleteForeverIcon />
+                      <DeleteForeverIcon
+                        onClick={() => {
+                          setShowModel(true);
+                          setPostId(row._id);
+                        }}
+                      />
                     </TableCell>
                     <TableCell
                       align="right"
@@ -139,6 +175,13 @@ const TableOfPosts = ({ data, loading }) => {
           Show More
         </Button>
       )}
+      {error && <Alert severity="error">{error}</Alert>}
+      <MyModal
+        open={showModel}
+        handleClose={() => setShowModel(false)}
+        handleDelete={handleDelete}
+        title={"Are you sure you want to delete this post?"}
+      />
     </>
   );
 };

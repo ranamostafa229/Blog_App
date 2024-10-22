@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addPost,
+  deletePost,
   getCategories,
   getCategoryPosts,
   getPost,
@@ -15,5 +16,6 @@ router.get("/categories", getCategories);
 router.get("/categories/:category", getCategoryPosts);
 router.get("/all-posts", getPosts);
 router.get("/:slug", getPost);
+router.delete("/delete/:postId/:userId", verfiyToken, deletePost);
 
 export default router;

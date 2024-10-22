@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/userSlice";
 import GoogleAuth from "../components/GoogleAuth";
+
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#A0AAB4",
@@ -63,6 +64,7 @@ const SignIn = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+
       if (data.success === false) {
         dispatch(signInFailure(data.message));
       }
