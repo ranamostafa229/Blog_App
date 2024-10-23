@@ -54,14 +54,15 @@ export const signin = async (req, res, next) => {
     if (!validPassword) {
       return next(errorHandler(400, "Wrong password"));
     }
-    const { password: pass, ...rest } = user._doc;
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
       process.env.JWT_SECRET
     );
+    const { password: pass, ...rest } = user._doc;
+
     res
       .status(200)
-      .cookie("access_token", token, { httpOnly: true, secure: true })
+      .cookie("access_token", token, { httpOnly: true })
       .json(rest);
   } catch (error) {
     next(error);

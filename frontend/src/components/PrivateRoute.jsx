@@ -8,11 +8,12 @@ const PrivateRoute = () => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const tokenValue = Cookies.get("access_token");
+    // const tokenValue = Cookies.get("access_token");
+    const tokenValue = document.cookie.match(/access_token=([^;]*)/);
     setToken(tokenValue);
   }, []);
   console.log(token);
-
+  console.log(document.cookie.match(/access_token=([^;]*)/));
   return currentUser ? <Outlet /> : <Navigate to="/signin" />;
 };
 

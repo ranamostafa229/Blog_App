@@ -16,8 +16,8 @@ const useFetch = (url, initialState) => {
           setData(data);
         } else {
           setLoading(false);
-          console.log(`Error: ${res.status} - ${res.statusText}`);
-          console.log(await res.text());
+          // console.log(`Error: ${res.status} - ${res.statusText}`);
+          // console.log(await res.text());
         }
       } catch (error) {
         setLoading(false);

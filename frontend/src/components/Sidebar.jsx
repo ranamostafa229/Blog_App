@@ -39,7 +39,7 @@ const Sidebar = () => {
     {
       icon: <PeopleIcon />,
       title: "Users",
-      link: "/users",
+      link: "/dashboard/users",
     },
     {
       icon: <PostAddSharpIcon />,

@@ -17,6 +17,7 @@ import DashboardPosts from "./pages/DashboardPosts";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+import DashboardUsers from "./pages/DashboardUsers";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="content" element={<DashboardContent />} />
             <Route path="profile" element={<Profile />} index />
             <Route path="posts" element={<DashboardPosts />} />
+            <Route path="users" element={<DashboardUsers />} />
           </Route>
         </Route>
         <Route element={<AdminPrivateRoute />}>

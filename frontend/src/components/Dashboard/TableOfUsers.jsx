@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import {
+  Alert,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -7,42 +9,42 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Button,
-  Alert,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useSelector } from "react-redux";
-import MyModal from "../MyModal";
 import { useNavigate } from "react-router-dom";
-const TableOfPosts = ({ data, loading }) => {
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import MyModal from "../MyModal";
+
+const TableOfUsers = ({ data, loading }) => {
   const [showMore, setShowMore] = useState(false);
   const [showModel, setShowModel] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [currentData, setCurrentData] = useState([]);
   const [error, setError] = useState(null);
-  const [postId, setPostId] = useState("");
-  const navigate = useNavigate();
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    if (data?.posts?.length > 0) {
-      setCurrentData((prevData) => [...prevData, ...data.posts]);
+    if (data?.users?.length > 0) {
+      setCurrentData(data?.users);
     }
-    if (data?.posts?.length > 9) {
+    if (data?.users?.length > 9) {
       setShowMore(true);
     }
-  }, [data?.posts]);
+  }, [data?.users]);
   const handleShowMore = async () => {
-    const startIndex = currentData.length;
+    const startIndex = data?.users?.length;
+
     try {
       const res = await fetch(
-        `/api/v1/post/all-posts?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/v1/post/all-users?userId=${currentUser._id}&startIndex=${startIndex}`
       );
-      const newData = await res.json();
+      const data = await res.json();
       if (res.ok) {
-        setCurrentData((prevData) => [...prevData, ...newData.posts]);
-        if (newData?.posts?.length < 9) {
+        setCurrentData((prevData) => [...prevData, ...data.users]);
+        if (data?.posts?.length <= 9) {
           setShowMore(false);
         }
       }
@@ -52,12 +54,9 @@ const TableOfPosts = ({ data, loading }) => {
   };
   const handleDelete = async () => {
     try {
-      const res = await fetch(
-        `/api/v1/post/delete/${postId}/${currentUser._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/api/v1/user/delete/${userId}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
 
       if (!res.ok) {
@@ -65,7 +64,7 @@ const TableOfPosts = ({ data, loading }) => {
         setShowModel(false);
       } else {
         setCurrentData((prevData) =>
-          prevData.filter((item) => item._id !== postId)
+          prevData.filter((item) => item._id !== userId)
         );
         setShowModel(false);
       }
@@ -85,7 +84,6 @@ const TableOfPosts = ({ data, loading }) => {
             borderRadius: "10px",
             boxShadow: "0px 5px 10px  rgba(0, 0, 0, 0.1)",
             scrollbarColor: "#ede7f6#ffffff  ",
-            // height: "80%",
             height: "fit-content",
           }}
         >
@@ -94,12 +92,12 @@ const TableOfPosts = ({ data, loading }) => {
               sx={{ bgcolor: "#ede7f6", position: "sticky", top: "0" }}
             >
               <TableRow>
+                <TableCell>Image</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
                 <TableCell>Date</TableCell>
-                <TableCell align="center">Image</TableCell>
-                <TableCell>Title</TableCell>
-                <TableCell align="left">Category</TableCell>
+                <TableCell align="right">Admin</TableCell>
                 <TableCell align="right">Delete</TableCell>
-                <TableCell align="right">Edit</TableCell>
               </TableRow>
             </TableHead>
             {currentData && currentData?.length > 0 && (
@@ -112,33 +110,42 @@ const TableOfPosts = ({ data, loading }) => {
                       // color: "#656b72",
                     }}
                   >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{ color: "#656b72", fontWeight: "600" }}
-                    >
-                      {new Date(row.updatedAt)
-                        .toDateString()
-                        .split(" ")
-                        .slice(1)
-                        .join(" ")}
-                    </TableCell>
-                    <TableCell align="right">
+                    <TableCell>
                       <img
-                        src={row.image}
+                        src={row.profilePicture}
                         style={{
-                          width: "70px",
-                          height: "50px",
-                          borderRadius: "10px",
+                          width: "35px",
+                          height: "35px",
+                          borderRadius: "50%",
                         }}
                         alt="post image"
                       />
                     </TableCell>
-                    <TableCell sx={{ color: "#656b72", fontWeight: "400" }}>
-                      {row.title}
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{
+                        color: "#656b72",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {row.username}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{ color: "#656b72", fontWeight: "400" }}
+                    >
+                      {row.email}
                     </TableCell>
                     <TableCell sx={{ color: "#656b72", fontWeight: "400" }}>
-                      {row.category}
+                      {new Date(row.updatedAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell align="right">
+                      {row.isAdmin ? (
+                        <CheckCircleIcon sx={{ color: "#22c55e" }} />
+                      ) : (
+                        <CancelIcon sx={{ color: "#f1556c" }} />
+                      )}
                     </TableCell>
                     <TableCell
                       align="right"
@@ -147,16 +154,8 @@ const TableOfPosts = ({ data, loading }) => {
                       <DeleteForeverIcon
                         onClick={() => {
                           setShowModel(true);
-                          setPostId(row._id);
+                          setUserId(row._id);
                         }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{ color: "#22c55e", cursor: "pointer" }}
-                    >
-                      <ModeEditIcon
-                        onClick={() => navigate(`/edit-post/${row._id}`)}
                       />
                     </TableCell>
                   </TableRow>
@@ -185,10 +184,10 @@ const TableOfPosts = ({ data, loading }) => {
         open={showModel}
         handleClose={() => setShowModel(false)}
         handleDelete={handleDelete}
-        title={"Are you sure you want to delete this post?"}
+        title={"Are you sure you want to delete this user?"}
       />
     </>
   );
 };
 
-export default TableOfPosts;
+export default TableOfUsers;

@@ -8,7 +8,10 @@ import AddIcon from "@mui/icons-material/Add";
 const DashboardPosts = () => {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
-  const { data, loading } = useFetch("/api/v1/post/all-posts", []);
+  const { data, loading } = useFetch(
+    `/api/v1/post/all-posts?userId=${currentUser._id}`,
+    []
+  );
   return (
     <Box
       sx={{
