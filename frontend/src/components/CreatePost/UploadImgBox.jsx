@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Alert, Box, styled, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CloseIcon from "@mui/icons-material/Close";
+// import CloseIcon from "@mui/icons-material/Close";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   getDownloadURL,
@@ -13,7 +13,7 @@ import { app } from "../../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-const UploadImgBox = ({ addToFormData }) => {
+const UploadImgBox = ({ addToFormData, image }) => {
   const [imgFile, setImgFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const [imgUploadProgress, setImgUploadProgress] = useState(null);
@@ -88,6 +88,11 @@ const UploadImgBox = ({ addToFormData }) => {
       uploadImage();
     }
   }, [imgFile, uploadImage]);
+  useEffect(() => {
+    if (image) {
+      setImgUrl(image);
+    }
+  }, [image]);
   return (
     <>
       <Box
@@ -179,13 +184,15 @@ const UploadImgBox = ({ addToFormData }) => {
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <img src={imgUrl} alt="" style={{ width: "160px" }} />
             <Typography sx={{ fontSize: "15px", color: "#a5a6ad" }}>
-              {imgFile.name}
+              {imgFile?.name}
             </Typography>
           </Box>
-          <CloseIcon
-            onClick={() => setImgUrl(null)}
+          {/* <CloseIcon
+            onClick={() => {
+              setImgUrl(null);
+            }}
             sx={{ fontSize: "25px", color: "#a5a6ad", cursor: "pointer" }}
-          />
+          /> */}
         </Box>
       )}
     </>

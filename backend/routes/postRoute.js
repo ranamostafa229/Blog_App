@@ -6,6 +6,7 @@ import {
   getCategoryPosts,
   getPost,
   getPosts,
+  updatePost,
 } from "../controllers/postController.js";
 import { verfiyToken } from "../utils/verfiyUser.js";
 
@@ -17,5 +18,6 @@ router.get("/categories/:category", getCategoryPosts);
 router.get("/all-posts", getPosts);
 router.get("/:slug", getPost);
 router.delete("/delete/:postId/:userId", verfiyToken, deletePost);
+router.patch("/edit/:postId/:userId", verfiyToken, updatePost);
 
 export default router;

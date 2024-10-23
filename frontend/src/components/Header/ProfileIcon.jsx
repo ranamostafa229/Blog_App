@@ -20,7 +20,7 @@ const ProfileIcon = () => {
     },
     {
       name: "Dashboard",
-      path: "/dashboard",
+      path: "/dashboard/content",
     },
     {
       name: "Logout",
@@ -57,7 +57,14 @@ const ProfileIcon = () => {
       console.log(error);
     }
   };
-
+  const filterSettings = (items) => {
+    if (currentUser?.isAdmin) {
+      return items;
+    } else if (!currentUser?.isAdmin) {
+      return items.filter((item) => item.name !== "Dashboard");
+    }
+    return items;
+  };
   return (
     <Box
       sx={{
@@ -90,7 +97,7 @@ const ProfileIcon = () => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {settings.map((setting) => (
+        {filterSettings(settings).map((setting) => (
           <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
             <Link
               to={setting.path}

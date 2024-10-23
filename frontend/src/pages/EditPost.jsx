@@ -17,10 +17,31 @@ import { useCallback, useEffect, useState } from "react";
 
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UploadImgBox from "../components/CreatePost/UploadImgBox";
+import useFetch from "../hooks/useFetch";
+import { useSelector } from "react-redux";
 
-const CreatePost = () => {
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    ["bold", "italic", "underline"],
+    [{ list: "ordered" }, { indent: "-1" }, { indent: "+1" }],
+    ["code-block"],
+  ],
+};
+
+const formats = [
+  "header",
+  "font",
+  "bold",
+  "italic",
+  "underline",
+  "list",
+  "indent",
+  "code-block",
+];
+const EditPost = () => {
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -30,43 +51,39 @@ const CreatePost = () => {
   });
   const [tab, setTab] = useState(0);
   const [error, setError] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const { postId } = useParams();
+  const { data } = useFetch(`/api/v1/post/all-posts?postId=${postId}`, {});
+  useEffect(() => {
+    if (data?.posts?.length > 0) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        title: data?.posts[0].title,
+        content: data?.posts[0].content,
+        category: data?.posts[0].category,
+        image: data?.posts[0].image,
+        _id: data?.posts[0]._id,
+      }));
+    }
+  }, [data?.posts]);
 
-  const modules = {
-    toolbar: [
-      [{ header: "1" }, { header: "2" }, { font: [] }],
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { indent: "-1" }, { indent: "+1" }],
-      ["code-block"],
-    ],
-  };
-
-  const formats = [
-    "header",
-    "font",
-    "bold",
-    "italic",
-    "underline",
-    "list",
-    "indent",
-    "code-block",
-  ];
   const handleChange = (event) => {
     const { name, value } = event.target;
 
     setFormData((prevFormData) => {
       const newCategory =
         name === "newcategory" ? value : prevFormData.newcategory;
-      if (name === "category") {
+      if (name === "newcategory") {
         return {
           ...prevFormData,
           [name]: value,
+          category: newCategory,
         };
       } else {
         return {
           ...prevFormData,
           [name]: value,
-          category: newCategory,
         };
       }
     });
@@ -81,17 +98,20 @@ const CreatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/v1/post/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `/api/v1/post/edit/${formData._id}/${currentUser._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         console.log(data);
-        navigate(`/post/${data.slug}`);
+        navigate(`/post/${data.slug}`, { replace: true });
       } else {
         setError(data.message);
         return;
@@ -124,7 +144,7 @@ const CreatePost = () => {
           paddingX: "5px",
         }}
       >
-        Add New Post
+        Edit Post
       </Typography>
       <form
         onSubmit={handleSubmit}
@@ -228,7 +248,7 @@ const CreatePost = () => {
                     onChange={handleChange}
                   >
                     {categories.map((cat) => (
-                      <MenuItem key={cat} value={cat}>
+                      <MenuItem key={`${cat}cat`} value={cat}>
                         {cat}
                       </MenuItem>
                     ))}
@@ -249,7 +269,10 @@ const CreatePost = () => {
             )}
           </CssBox>
           <CssBox>
-            <UploadImgBox addToFormData={addToFormData} />
+            <UploadImgBox
+              addToFormData={addToFormData}
+              image={formData.image}
+            />
           </CssBox>
         </Box>
         <CssBox sx={{ height: "450px" }}>
@@ -272,6 +295,7 @@ const CreatePost = () => {
             }
             modules={modules}
             formats={formats}
+            value={formData.content}
           ></ReactQuill>
         </CssBox>
         {error && (
@@ -303,7 +327,7 @@ const CreatePost = () => {
               color: "white",
             }}
           >
-            Pusblish{" "}
+            Update
           </Button>
 
           <Button
@@ -322,7 +346,7 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;
 
 const CssContainer = styled(Container)(() => ({
   display: "flex",

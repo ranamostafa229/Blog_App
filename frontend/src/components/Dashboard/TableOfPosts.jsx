@@ -15,22 +15,27 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useSelector } from "react-redux";
 import MyModal from "../MyModal";
+import { useNavigate } from "react-router-dom";
 const TableOfPosts = ({ data, loading }) => {
-  const [showMore, setShowMore] = useState(true);
+  const [showMore, setShowMore] = useState(false);
   const [showModel, setShowModel] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [currentData, setCurrentData] = useState([]);
   const [error, setError] = useState(null);
   const [postId, setPostId] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data?.posts?.length > 0) {
       setCurrentData(data?.posts);
     }
+    if (data?.posts?.length > 9) {
+      setShowMore(true);
+    }
   }, [data?.posts]);
   const handleShowMore = async () => {
     const startIndex = data?.posts?.length;
-    console.log(startIndex);
+
     try {
       const res = await fetch(
         `/api/v1/post/all-posts?userId=${currentUser._id}&startIndex=${startIndex}`
@@ -38,7 +43,7 @@ const TableOfPosts = ({ data, loading }) => {
       const data = await res.json();
       if (res.ok) {
         setCurrentData((prevData) => [...prevData, ...data.posts]);
-        if (data?.posts?.length < 9) {
+        if (data?.posts?.length <= 9) {
           setShowMore(false);
         }
       }
@@ -46,7 +51,6 @@ const TableOfPosts = ({ data, loading }) => {
       console.log(error);
     }
   };
-  console.log(currentData?._id);
   const handleDelete = async () => {
     try {
       const res = await fetch(
@@ -73,7 +77,6 @@ const TableOfPosts = ({ data, loading }) => {
     }
   };
 
-  console.log(data?.posts);
   return (
     <>
       {!loading && (
@@ -152,7 +155,9 @@ const TableOfPosts = ({ data, loading }) => {
                       align="right"
                       sx={{ color: "#22c55e", cursor: "pointer" }}
                     >
-                      <ModeEditIcon />
+                      <ModeEditIcon
+                        onClick={() => navigate(`/edit-post/${row._id}`)}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}

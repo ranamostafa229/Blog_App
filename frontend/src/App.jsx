@@ -16,6 +16,7 @@ import DashboardContent from "./pages/DashboardContent";
 import DashboardPosts from "./pages/DashboardPosts";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
 
 function App() {
   return (
@@ -31,13 +32,14 @@ function App() {
         <Route path="/categories/:category" element={<Category />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route element={<DashboardContent />} index />
-            <Route path="profile" element={<Profile />} />
+            <Route path="content" element={<DashboardContent />} />
+            <Route path="profile" element={<Profile />} index />
             <Route path="posts" element={<DashboardPosts />} />
           </Route>
         </Route>
         <Route element={<AdminPrivateRoute />}>
           <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/edit-post/:postId" element={<EditPost />} />
         </Route>
 
         <Route path="/*" element={<NotFound />} />

@@ -42,7 +42,9 @@ const PostCard = ({ cmd, csize, posts }) => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "14px",
+                alignItems: "center",
+                // gap: "14px",
+                // justifyContent: "space-between",
               }}
             >
               <Box sx={{ display: "flex", paddingBottom: "14px" }}>
@@ -90,43 +92,53 @@ const PostCard = ({ cmd, csize, posts }) => {
                   />
                 </Box>
               </Box>
-              <Link
-                to={`/post/${post.slug}`}
-                style={{
-                  textDecoration: "none",
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
                 }}
               >
-                <Typography
-                  variant="h6"
-                  sx={(theme) => ({
-                    fontWeight: "bold",
-                    color: theme.palette.text.label,
-                    textAlign: "center",
-                    paddingX: "24px",
-                    fontSize: "22px",
-                    lineHeight: "1.5",
-                    cursor: "pointer",
-                    ":hover": {
-                      textDecoration: "underline",
-                    },
-                  })}
+                <Link
+                  to={`/post/${post.slug}`}
+                  style={{
+                    textDecoration: "none",
+                  }}
                 >
-                  {post.title}
-                </Typography>
-              </Link>
-              <Typography
-                variant="body2"
-                sx={{
-                  textAlign: "center",
-                  height: "30%",
-                  overflow: "hidden",
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 2, // Number of lines to show
-                  textOverflow: "ellipsis",
-                }}
-                dangerouslySetInnerHTML={{ __html: post.content.slice(0, 200) }}
-              ></Typography>
+                  <Typography
+                    variant="h6"
+                    sx={(theme) => ({
+                      fontWeight: "bold",
+                      color: theme.palette.text.label,
+                      textAlign: "center",
+                      paddingX: "24px",
+                      fontSize: "22px",
+                      lineHeight: "1.5",
+                      cursor: "pointer",
+                      ":hover": {
+                        textDecoration: "underline",
+                      },
+                    })}
+                  >
+                    {post.title.slice(0, 40)}
+                  </Typography>
+                </Link>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    textAlign: "center",
+                    height: "30%",
+                    // overflow: "hidden",
+                    // display: "-webkit-box",
+                    // WebkitBoxOrient: "vertical",
+                    // WebkitLineClamp: 2, // Number of lines to show
+                    // textOverflow: "ellipsis",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: post.content.slice(0, 200) + "...",
+                  }}
+                ></Typography>
+              </Box>
             </CardContent>
             <CardActions
               sx={{

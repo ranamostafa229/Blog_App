@@ -24,7 +24,7 @@ const Sidebar = () => {
     {
       icon: <DonutSmallRoundedIcon />,
       title: "Dashboard",
-      link: "/dashboard",
+      link: "/dashboard/content",
     },
     {
       icon: <PersonSharpIcon />,
@@ -109,7 +109,16 @@ const Sidebar = () => {
       navigate(link);
     }
   };
-
+  const filterSidebarItems = (items) => {
+    if (currentUser?.isAdmin) {
+      return items;
+    } else if (!currentUser?.isAdmin) {
+      return items.filter(
+        (item) => item.title === "Profile" || item.title === "Logout"
+      );
+    }
+    return items;
+  };
   return (
     <Box
       sx={{
@@ -153,7 +162,7 @@ const Sidebar = () => {
           mt: "20px",
         }}
       >
-        {sidebarItems.map((item) => (
+        {filterSidebarItems(sidebarItems).map((item) => (
           <Box
             key={item.title}
             sx={{

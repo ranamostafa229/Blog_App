@@ -130,7 +130,12 @@ function Post() {
                 paddingLeft: "11px",
               })}
             >
-              <ListItemText primary={section} />
+              <ListItemText
+                sx={{
+                  overflow: "hidden",
+                }}
+                primary={section}
+              />
             </ListItem>
           ))}
         </List>
