@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -58,7 +57,6 @@ const TableOfUsers = ({ data, loading }) => {
         method: "DELETE",
       });
       const data = await res.json();
-
       if (!res.ok) {
         setError(data.message);
         setShowModel(false);
@@ -71,10 +69,8 @@ const TableOfUsers = ({ data, loading }) => {
     } catch (error) {
       setShowModel(false);
       setError(error.message);
-      console.log(error);
     }
   };
-
   return (
     <>
       {!loading && (
