@@ -10,7 +10,7 @@ import useFetch from "../../hooks/useFetch";
 
 const PostInfoCard = ({ category, updatedAt, userId, content }) => {
   const [value, setValue] = useState(2);
-
+  console.log(typeof userId);
   const { data: user } = useFetch(`/api/v1/user/${userId}`, {});
   return (
     <Box
@@ -93,7 +93,7 @@ const PostInfoCard = ({ category, updatedAt, userId, content }) => {
                 textOverflow: "ellipsis",
               }}
             >
-              {user.username}
+              {user?.username}
             </span>
           </Typography>
         </Box>

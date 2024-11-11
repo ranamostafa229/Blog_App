@@ -8,6 +8,7 @@ import "../../index.css";
 
 const PostContent = ({ post, updatedAt }) => {
   const modifiedHtml = useModifyHtmlWithIds(post.content);
+  console.log(post);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "40px" }}>
@@ -68,7 +69,7 @@ const PostContent = ({ post, updatedAt }) => {
       </Box>
       <RelatedPosts />
       <Box sx={{ height: 10 }} />
-      <ReplySection />
+      <ReplySection postId={post._id} />
     </Box>
   );
 };

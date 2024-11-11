@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/userRoute.js";
 import authRoutes from "./routes/authRoute.js";
 import postRoutes from "./routes/postRoute.js";
+import commentRoutes from "./routes/commentRoute.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
@@ -26,6 +27,7 @@ app.listen(3000, () => console.log("server running on port 3000"));
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/post", postRoutes);
+app.use("/api/v1/comment", commentRoutes);
 
 // middleware to handle errors
 app.use((err, req, res, next) => {

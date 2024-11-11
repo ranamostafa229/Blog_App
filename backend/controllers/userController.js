@@ -53,7 +53,12 @@ export const deleteUser = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const { userId } = req.params; // Validate userId4
+    console.log(userId);
+    // if (!mongoose.Types.ObjectId.isValid(userId)) {
+    //   return next(errorHandler(400, "Invalid user ID"));
+    // }
+    const user = await User.findById(userId);
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }

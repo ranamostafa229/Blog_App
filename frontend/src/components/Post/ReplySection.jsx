@@ -1,24 +1,49 @@
-import { Box, Button, styled, TextField, Typography } from "@mui/material";
+/* eslint-disable react/prop-types */
+import {
+  Alert,
+  Box,
+  Button,
+  styled,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-const ReplySection = () => {
-  const CustomTextField = styled(TextField)(({ theme }) => ({
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        border: "none",
-      },
-    },
-    "& .MuiInputLabel-root": {
-      color: theme.palette.text.subtitle,
-    },
-    "& .MuiInputLabel-root.Mui-focused": {
-      color: "#6a4ee9",
-    },
-    backgroundColor: theme.palette.background.banner,
-    width: "100%",
-    borderRadius: "10px",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
-    color: theme.palette.text.primary,
-  }));
+const ReplySection = ({ postId }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (comment.length > 200) {
+      return;
+    }
+    try {
+      const res = await fetch("/api/v1/comment/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: comment,
+          userId: currentUser._id,
+          postId,
+        }),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) {
+        setComment("");
+        setError(null);
+      }
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -37,29 +62,77 @@ const ReplySection = () => {
       >
         Leave a Reply
       </Typography>
-      <form
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
-        <CustomTextField
-          label="Comment"
-          multiline
-          rows={4}
-          variant="outlined"
-        />
-
-        <Button
-          variant="contained"
-          sx={{ bgcolor: "#6a4ee9", width: "fit-content" }}
+      {currentUser ? (
+        <form
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+          onSubmit={handleSubmit}
         >
-          Post Comment
-        </Button>
-      </form>
+          <CustomTextField
+            label="Comment"
+            multiline
+            rows={4}
+            variant="outlined"
+            name="comment"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            required
+          />
+          {comment.length > 0 && (
+            <Typography variant="subtitle2" sx={{ color: "#6a4ee9" }}>
+              {200 - comment.length} characters remaining
+            </Typography>
+          )}
+
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "#6a4ee9", width: "fit-content" }}
+            type="submit"
+          >
+            Post Comment
+          </Button>
+          {error && <Alert severity="error">{error}</Alert>}
+        </form>
+      ) : (
+        <Box
+          sx={(theme) => ({
+            fontWeight: "600",
+            color: theme.palette.text.primary,
+            backgroundColor: theme.palette.background.banner,
+            padding: "20px",
+            borderRadius: "10px",
+            display: "flex",
+            gap: "5px",
+          })}
+        >
+          You must be logged in to comment.
+          <Link to="/signin">Login</Link>
+        </Box>
+      )}
     </Box>
   );
 };
 
 export default ReplySection;
+
+const CustomTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      border: "none",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: theme.palette.text.subtitle,
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "#6a4ee9",
+  },
+  backgroundColor: theme.palette.background.banner,
+  width: "100%",
+  borderRadius: "10px",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+  color: theme.palette.text.primary,
+}));

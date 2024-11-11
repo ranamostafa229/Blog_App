@@ -18,10 +18,12 @@ import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import DashboardUsers from "./pages/DashboardUsers";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <ExtendedWidthAppBar />
       <Routes>
         <Route path="/" element={<Home />} />
