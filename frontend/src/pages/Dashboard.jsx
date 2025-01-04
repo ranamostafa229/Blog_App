@@ -15,7 +15,6 @@ const Dashboard = () => {
           display: "flex",
           flexDirection: "column",
           padding: "20px",
-          //   width: "100vw",
         }}
       >
         <Outlet />

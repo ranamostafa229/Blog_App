@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import BgImg from "../assets/signupbg.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/userSlice";
 import GoogleAuth from "../components/GoogleAuth";
@@ -39,15 +39,10 @@ const CssTextField = styled(TextField)({
 const SignIn = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const { loading, error, currentUser } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     navigate("/");
-  //   }
-  // }, [currentUser, navigate]);
   const handleChange = (e) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -70,6 +65,7 @@ const SignIn = () => {
         dispatch(signInFailure(data.message));
       }
       if (res.ok) {
+        console.log(data);
         dispatch(signInSuccess(data));
         navigate("/");
       }

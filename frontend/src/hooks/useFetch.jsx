@@ -34,14 +34,14 @@ import { useCallback, useEffect, useState } from "react";
 // };
 
 // export default useFetch;
-const useFetch = (url, initialState) => {
+const useFetch = (url, initialState, options) => {
   const [data, setData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch(url);
+      const res = await fetch(url, options);
       const data = await res.json();
       setData(data);
     } catch (error) {

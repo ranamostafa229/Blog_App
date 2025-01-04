@@ -6,6 +6,7 @@ import postRoutes from "./routes/postRoute.js";
 import commentRoutes from "./routes/commentRoute.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ mongoose
     console.log("db error", err.message);
   });
 
+const __dirname = path.resolve();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -28,6 +30,8 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/comment", commentRoutes);
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 // middleware to handle errors
 app.use((err, req, res, next) => {

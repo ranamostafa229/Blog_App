@@ -364,12 +364,10 @@ const CssBox = styled(Box)(({ theme }) => ({
   padding: "20px",
   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
   gap: "20px",
-  // alignItems: "center",
   width: "100%",
 }));
 const CssTextField = styled(TextField)(({ theme }) => ({
   "& label": {
-    // color: "#6e86b2",
     color: "#6e86b2",
   },
   "& label.Mui-focused": {
@@ -394,7 +392,7 @@ const CssTextField = styled(TextField)(({ theme }) => ({
     },
   },
   "& .MuiFilledInput-input": {
-    padding: "15px", // Adjust padding as needed
+    padding: "15px",
   },
 }));
 

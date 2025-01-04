@@ -34,10 +34,13 @@ function App() {
         <Route path="/post/:postSlug" element={<Post />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/categories/:category" element={<Category />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="content" element={<DashboardContent />} />
+        {/* <Route> */}
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route element={<PrivateRoute />}>
             <Route path="profile" element={<Profile />} index />
+          </Route>
+          <Route element={<AdminPrivateRoute />}>
+            <Route path="content" element={<DashboardContent />} />
             <Route path="posts" element={<DashboardPosts />} />
             <Route path="users" element={<DashboardUsers />} />
             <Route path="comments" element={<DashboardComments />} />

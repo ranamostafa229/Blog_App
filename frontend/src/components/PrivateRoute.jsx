@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import Cookies from "js-cookie";
 
 const PrivateRoute = () => {
   const { currentUser } = useSelector((state) => state.user);

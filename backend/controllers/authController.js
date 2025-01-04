@@ -61,10 +61,7 @@ export const signin = async (req, res, next) => {
     );
     const { password: pass, ...rest } = user._doc;
 
-    res
-      .status(200)
-      .cookie("access_token", token, { httpOnly: true })
-      .json(rest);
+    res.status(200).cookie("access_token", token).json(rest);
   } catch (error) {
     next(error);
   }
@@ -81,10 +78,7 @@ export const googleAuth = async (req, res, next) => {
     );
     const { password, ...rest } = user._doc;
 
-    res
-      .status(200)
-      .cookie("access_token", token, { httpOnly: true })
-      .json(rest);
+    res.status(200).cookie("access_token", token).json(rest);
   }
   // No accocut found,create new user
   else {

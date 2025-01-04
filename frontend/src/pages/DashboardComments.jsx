@@ -1,9 +1,17 @@
 import { Alert, Box, CircularProgress } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 import TableOfComments from "../components/Dashboard/TableOfComments";
+import { getTokenFromCookie } from "../utils/utils";
 
 const DashboardComments = () => {
-  const { data, loading, error } = useFetch(`/api/v1/comment/all-comments`, []);
+  const token = getTokenFromCookie();
+  const { data, loading, error } = useFetch(
+    `/api/v1/comment/all-comments`,
+    {
+      Authorization: `Bearer ${token}`,
+    },
+    []
+  );
   console.log(loading);
   return (
     <Box

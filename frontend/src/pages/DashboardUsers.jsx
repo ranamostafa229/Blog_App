@@ -3,9 +3,17 @@ import { Alert, Box, CircularProgress } from "@mui/material";
 import TableOfUsers from "../components/Dashboard/TableOfUsers";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getTokenFromCookie } from "../utils/utils";
 
 const DashboardUsers = () => {
-  const { data, loading, error } = useFetch("/api/v1/user/all-users", []);
+  const token = getTokenFromCookie();
+  const { data, loading, error } = useFetch(
+    "/api/v1/user/all-users",
+    {
+      Authorization: `Bearer ${token}`,
+    },
+    []
+  );
   const navigate = useNavigate();
   useEffect(() => {
     if (error === "You are not authorized") {
