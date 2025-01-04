@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Box,
+  CircularProgress,
   Container,
   List,
   ListItem,
@@ -17,7 +18,7 @@ import useFetch from "../hooks/useFetch";
 function Post() {
   const [activeSection, setActiveSection] = useState("");
   const { postSlug } = useParams();
-  const { data: post } = useFetch(`/api/v1/post/${postSlug}`, []);
+  const { data: post, loading } = useFetch(`/api/v1/post/${postSlug}`, []);
   const { data: comments } = useFetch(`/api/v1/comment/get/${post._id}`, []);
   const sections = useExtractHeadings(post.content);
 
@@ -62,81 +63,94 @@ function Post() {
 
   return (
     <Container sx={{ display: "flex", gap: "58px" }}>
-      <Box
-        sx={{
-          width: "30%",
-          position: "sticky",
-          top: "0",
-          height: "100vh",
-          display: {
-            xs: "none",
-            md: "block",
-          },
-        }}
-      >
-        {/* ******************* Info card**********************  */}
-        <PostInfoCard
-          category={post?.category}
-          updatedAt={formattedDate}
-          userId={post?.userId}
-          content={post?.content}
+      {loading ? (
+        <CircularProgress
+          size="3rem"
+          sx={{
+            marginX: "auto",
+            color: "#6A4EE9",
+            marginTop: "100px",
+          }}
         />
+      ) : (
+        <>
+          <Box
+            sx={{
+              width: "30%",
+              position: "sticky",
+              top: "0",
+              height: "100vh",
+              display: {
+                xs: "none",
+                md: "block",
+              },
+            }}
+          >
+            {/* ******************* Info card**********************  */}
+            <PostInfoCard
+              category={post?.category}
+              updatedAt={formattedDate}
+              userId={post?.userId}
+              content={post?.content}
+            />
 
-        {/* ******************* Table of contents**********************  */}
-        <Typography
-          variant="h6"
-          sx={(theme) => ({
-            color: theme.palette.text.primary,
-            fontbold: "bold",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          })}
-        >
-          <AutoAwesomeIcon sx={{ fontSize: "25px", color: "#ff2aac" }} />
-          Table of Contents
-        </Typography>
-        <List>
-          {sections.map((section) => (
-            <ListItem
-              key={section}
-              selected={activeSection === section}
-              onClick={() => {
-                document
-                  .getElementById(section)
-                  .scrollIntoView({ behavior: "smooth" });
-              }}
+            {/* ******************* Table of contents**********************  */}
+            <Typography
+              variant="h6"
               sx={(theme) => ({
-                padding: "4px 0",
-                cursor: "pointer",
-                color:
-                  activeSection === section
-                    ? "#6A4EE9"
-                    : theme.palette.text.link,
-                borderLeft:
-                  activeSection === section
-                    ? "2px solid #6A4EE9"
-                    : "2px solid #e9e8ff",
-                paddingLeft: "11px",
+                color: theme.palette.text.primary,
+                fontbold: "bold",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
               })}
             >
-              <ListItemText
-                sx={{
-                  overflow: "hidden",
-                }}
-                primary={section}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-      <PostContent
-        post={post}
-        updatedAt={formattedDate}
-        sections={sections}
-        comments={currentComments}
-        setCurrentComments={setCurrentComments}
-      />
+              <AutoAwesomeIcon sx={{ fontSize: "25px", color: "#ff2aac" }} />
+              Table of Contents
+            </Typography>
+            <List>
+              {sections.map((section) => (
+                <ListItem
+                  key={section}
+                  selected={activeSection === section}
+                  onClick={() => {
+                    document
+                      .getElementById(section)
+                      .scrollIntoView({ behavior: "smooth" });
+                  }}
+                  sx={(theme) => ({
+                    padding: "4px 0",
+                    cursor: "pointer",
+                    color:
+                      activeSection === section
+                        ? "#6A4EE9"
+                        : theme.palette.text.link,
+                    borderLeft:
+                      activeSection === section
+                        ? "2px solid #6A4EE9"
+                        : "2px solid #e9e8ff",
+                    paddingLeft: "11px",
+                  })}
+                >
+                  <ListItemText
+                    sx={{
+                      overflow: "hidden",
+                    }}
+                    primary={section}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+          <PostContent
+            post={post}
+            updatedAt={formattedDate}
+            sections={sections}
+            comments={currentComments}
+            setCurrentComments={setCurrentComments}
+          />
+        </>
+      )}
     </Container>
   );
 }

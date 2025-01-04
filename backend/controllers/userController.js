@@ -56,9 +56,7 @@ export const getUser = async (req, res, next) => {
     console.log(req.params, "req.params");
     const userId = req.params.userId; // Validate userId4
     console.log(userId, "userId");
-    // if (!mongoose.Types.ObjectId.isValid(userId)) {
-    //   return next(errorHandler(400, "Invalid user ID"));
-    // }
+
     const user = await User.findById(userId);
     if (!user) {
       return next(errorHandler(404, "User not found"));
