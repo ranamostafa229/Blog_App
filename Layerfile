@@ -1,31 +1,42 @@
-# Use a base image with Node.js
+# Define the build environment
 
-FROM node:14
+FROM node:14 AS build-env
 
-# Set the working directory
+# Install dependencies for the React app
 
-WORKDIR /app
-
-# Copy the package.json and package-lock.json files
-
+WORKDIR /app/client
 COPY package\*.json ./
-
-# Install dependencies
-
 RUN npm install
-
-# Copy the rest of the application code
-
 COPY . .
 
-# Build the frontend using Vite
+# Build the React app using Vite
 
-RUN npm run build --prefix frontend
+RUN npm run build
 
-# Start the backend server
+# Install dependencies for the Node.js server
 
-CMD ["npm", "start", "--prefix", "backend"]
+WORKDIR /app/server
+COPY package\*.json ./
+RUN npm install
+COPY . .
 
-# Expose the application on port 3000
+# Build the Node.js server
+
+RUN npm run build
+
+# Define the runtime environment
+
+FROM node:14 AS runtime-env
+
+# Copy the built React app and Node.js server into the runtime environment
+
+COPY --from=build-env /app/client/dist /app/client/dist
+COPY --from=build-env /app/server /app/server
+
+# Expose the port for the Node.js server
 
 EXPOSE 3000
+
+# Run the Node.js server
+
+CMD ["node", "/app/server/index.js"]
