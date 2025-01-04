@@ -1,42 +1,23 @@
-# Define the build environment
+#This is an example webapp.io configuration for React!
+FROM vm/ubuntu:18.04
 
-FROM node:14 AS build-env
+# To note: Layerfiles create entire VMs, _not_ containers!
 
-# Install dependencies for the React app
+RUN curl -fSsL https://deb.nodesource.com/setup_12.x | bash && \
+ apt-get install nodejs python3 make gcc build-essential && \
+ rm -f /etc/apt/sources.list.d/nodesource.list
 
-WORKDIR /app/client
-COPY package\*.json ./
-RUN npm install
+# node is a memory hog
+
+MEMORY 2G
+ENV NODE_OPTIONS=--max-old-space-size=8192
+
 COPY . .
+RUN npm install || true
+RUN BACKGROUND npm start || python3 -m http.server 3000
 
-# Build the React app using Vite
+# Create a unique link to share the app in this runner.
 
-RUN npm run build
+# Every time someone clicks the link, we'll wake up this staging server.
 
-# Install dependencies for the Node.js server
-
-WORKDIR /app/server
-COPY package\*.json ./
-RUN npm install
-COPY . .
-
-# Build the Node.js server
-
-RUN npm run build
-
-# Define the runtime environment
-
-FROM node:14 AS runtime-env
-
-# Copy the built React app and Node.js server into the runtime environment
-
-COPY --from=build-env /app/client/dist /app/client/dist
-COPY --from=build-env /app/server /app/server
-
-# Expose the port for the Node.js server
-
-environment PORT=3000
-
-# Run the Node.js server
-
-CMD ["node", "/app/server/index.js"]
+EXPOSE WEBSITE http://localhost:3000
