@@ -4,7 +4,6 @@ import { getTokenFromCookie } from "../utils/utils";
 
 const AdminPrivateRoute = () => {
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser, "c");
   const token = getTokenFromCookie();
   console.log(token);
   return currentUser && currentUser?.isAdmin && token !== "" ? (
