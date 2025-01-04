@@ -35,7 +35,7 @@ COPY --from=build-env /app/server /app/server
 
 # Expose the port for the Node.js server
 
-PORT 3000
+environment PORT=3000
 
 # Run the Node.js server
 
