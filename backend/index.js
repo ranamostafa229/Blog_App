@@ -33,6 +33,9 @@ app.use("/api/v1/comment", commentRoutes);
 
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 // middleware to handle errors
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
