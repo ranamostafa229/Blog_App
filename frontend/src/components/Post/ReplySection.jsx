@@ -11,10 +11,12 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ReplySection = ({ postId }) => {
+const ReplySection = ({ postId, setCurrentComments }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
+  const [success, setSuccess] = useState("");
   const [error, setError] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -28,15 +30,18 @@ const ReplySection = ({ postId }) => {
         },
         body: JSON.stringify({
           content: comment,
-          userId: currentUser._id,
+          userId: currentUser?._id,
           postId,
         }),
       });
       const data = await res.json();
       console.log(data);
       if (res.ok) {
+        setSuccess("Comment added successfully");
         setComment("");
         setError(null);
+        setCurrentComments((prev) => [data, ...prev]);
+        console.log(data, "gett");
       }
     } catch (error) {
       console.log(error);
@@ -78,23 +83,31 @@ const ReplySection = ({ postId }) => {
             variant="outlined"
             name="comment"
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            onChange={(e) => {
+              setComment(e.target.value);
+              setSuccess("");
+            }}
             required
           />
+
           {comment.length > 0 && (
             <Typography variant="subtitle2" sx={{ color: "#6a4ee9" }}>
-              {200 - comment.length} characters remaining
+              {200 - comment.length <= 0
+                ? "You have reached the limit"
+                : 200 - comment.length}{" "}
+              characters remaining
             </Typography>
           )}
-
           <Button
             variant="contained"
             sx={{ bgcolor: "#6a4ee9", width: "fit-content" }}
             type="submit"
+            disabled={comment.length > 200}
           >
             Post Comment
           </Button>
           {error && <Alert severity="error">{error}</Alert>}
+          {success && <Alert severity="success">{success}</Alert>}
         </form>
       ) : (
         <Box

@@ -53,8 +53,9 @@ export const deleteUser = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
   try {
-    const { userId } = req.params; // Validate userId4
-    console.log(userId);
+    console.log(req.params, "req.params");
+    const userId = req.params?.userId; // Validate userId4
+    console.log(userId, "userId");
     // if (!mongoose.Types.ObjectId.isValid(userId)) {
     //   return next(errorHandler(400, "Invalid user ID"));
     // }

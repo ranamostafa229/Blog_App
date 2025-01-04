@@ -34,7 +34,7 @@ const Sidebar = () => {
     {
       icon: <CommentRoundedIcon />,
       title: "Comments",
-      link: "/comments",
+      link: "/dashboard/comments",
     },
     {
       icon: <PeopleIcon />,

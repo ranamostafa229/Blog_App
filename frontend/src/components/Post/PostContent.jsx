@@ -5,10 +5,10 @@ import RelatedPosts from "./RelatedPosts";
 import ReplySection from "./ReplySection";
 import useModifyHtmlWithIds from "../../hooks/useModifyHtmlWithIds ";
 import "../../index.css";
+import PostComments from "./PostComments";
 
-const PostContent = ({ post, updatedAt }) => {
+const PostContent = ({ post, updatedAt, comments, setCurrentComments }) => {
   const modifiedHtml = useModifyHtmlWithIds(post.content);
-  console.log(post);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "40px" }}>
@@ -37,7 +37,6 @@ const PostContent = ({ post, updatedAt }) => {
               fontSize: "40px",
               width: "80%",
               placeSelf: "center",
-              // color: "#282424",
             }}
           >
             {post.title}
@@ -69,7 +68,12 @@ const PostContent = ({ post, updatedAt }) => {
       </Box>
       <RelatedPosts />
       <Box sx={{ height: 10 }} />
-      <ReplySection postId={post._id} />
+      <ReplySection postId={post._id} setCurrentComments={setCurrentComments} />
+      <PostComments
+        postId={post._id}
+        comments={comments}
+        setCurrentComments={setCurrentComments}
+      />
     </Box>
   );
 };

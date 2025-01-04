@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import MyModal from "../MyModal";
 import { useNavigate } from "react-router-dom";
 const TableOfPosts = ({ data, loading }) => {
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
   const [showModel, setShowModel] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [currentData, setCurrentData] = useState([]);
@@ -29,10 +29,11 @@ const TableOfPosts = ({ data, loading }) => {
     if (data?.posts?.length > 0) {
       setCurrentData((prevData) => [...prevData, ...data.posts]);
     }
-    if (data?.posts?.length > 9) {
-      setShowMore(true);
+    if (data?.posts?.length < 9) {
+      setShowMore(false);
     }
   }, [data?.posts]);
+
   const handleShowMore = async () => {
     const startIndex = currentData.length;
     try {
@@ -85,7 +86,6 @@ const TableOfPosts = ({ data, loading }) => {
             borderRadius: "10px",
             boxShadow: "0px 5px 10px  rgba(0, 0, 0, 0.1)",
             scrollbarColor: "#ede7f6#ffffff  ",
-            // height: "80%",
             height: "fit-content",
           }}
         >

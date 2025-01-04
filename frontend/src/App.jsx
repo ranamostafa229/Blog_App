@@ -19,6 +19,7 @@ import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import DashboardUsers from "./pages/DashboardUsers";
 import ScrollToTop from "./components/ScrollToTop";
+import DashboardComments from "./pages/DashboardComments";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="profile" element={<Profile />} index />
             <Route path="posts" element={<DashboardPosts />} />
             <Route path="users" element={<DashboardUsers />} />
+            <Route path="comments" element={<DashboardComments />} />
           </Route>
         </Route>
         <Route element={<AdminPrivateRoute />}>

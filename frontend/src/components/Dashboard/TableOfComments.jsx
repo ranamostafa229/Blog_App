@@ -11,39 +11,36 @@ import {
   TableRow,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MyModal from "../MyModal";
 
-const TableOfUsers = ({ data, loading }) => {
+const TableOfComments = ({ data, loading }) => {
   const [showMore, setShowMore] = useState(true);
   const [showModel, setShowModel] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
   const [currentData, setCurrentData] = useState([]);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState("");
+  const [commentId, setCommentId] = useState("");
 
   useEffect(() => {
-    if (data?.users?.length > 0) {
-      setCurrentData(data?.users);
+    if (data?.comments?.length > 0) {
+      setCurrentData(data?.comments);
     }
-    if (data?.users?.length < 9) {
+    if (data?.comments?.length < 9) {
       setShowMore(false);
     }
-  }, [data?.users]);
+  }, [data?.comments]);
+  console.log(data?.comments?.length);
   const handleShowMore = async () => {
     const startIndex = currentData?.length;
 
     try {
       const res = await fetch(
-        `/api/v1/post/all-users?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/v1/comment/all-comments?startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
-        setCurrentData((prevData) => [...prevData, ...data.users]);
-        if (data?.users?.length < 9) {
+        setCurrentData((prevData) => [...prevData, ...data.comments]);
+        if (data?.comments?.length < 9) {
           setShowMore(false);
         }
       }
@@ -51,9 +48,10 @@ const TableOfUsers = ({ data, loading }) => {
       console.log(error);
     }
   };
+  console.log(currentData);
   const handleDelete = async () => {
     try {
-      const res = await fetch(`/api/v1/user/delete/${userId}`, {
+      const res = await fetch(`/api/v1/comment/delete/${commentId}`, {
         method: "DELETE",
       });
       const data = await res.json();
@@ -62,7 +60,7 @@ const TableOfUsers = ({ data, loading }) => {
         setShowModel(false);
       } else {
         setCurrentData((prevData) =>
-          prevData.filter((item) => item._id !== userId)
+          prevData.filter((item) => item._id !== commentId)
         );
         setShowModel(false);
       }
@@ -88,11 +86,11 @@ const TableOfUsers = ({ data, loading }) => {
               sx={{ bgcolor: "#ede7f6", position: "sticky", top: "0" }}
             >
               <TableRow>
-                <TableCell>Image</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell align="right">Admin</TableCell>
+                <TableCell>Date Updated</TableCell>
+                <TableCell>Comment Content</TableCell>
+                <TableCell>Number of likes</TableCell>
+                <TableCell>POSTID</TableCell>
+                <TableCell>USERID</TableCell>
                 <TableCell align="right">Delete</TableCell>
               </TableRow>
             </TableHead>
@@ -106,16 +104,8 @@ const TableOfUsers = ({ data, loading }) => {
                       // color: "#656b72",
                     }}
                   >
-                    <TableCell>
-                      <img
-                        src={row.profilePicture}
-                        style={{
-                          width: "35px",
-                          height: "35px",
-                          borderRadius: "50%",
-                        }}
-                        alt="post image"
-                      />
+                    <TableCell sx={{ color: "#656b72", fontWeight: "400" }}>
+                      {new Date(row.updatedAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell
                       component="th"
@@ -125,23 +115,25 @@ const TableOfUsers = ({ data, loading }) => {
                         fontWeight: "600",
                       }}
                     >
-                      {row.username}
+                      {row.content}
                     </TableCell>
                     <TableCell
                       align="left"
                       sx={{ color: "#656b72", fontWeight: "400" }}
                     >
-                      {row.email}
+                      {row.likes.length}
                     </TableCell>
-                    <TableCell sx={{ color: "#656b72", fontWeight: "400" }}>
-                      {new Date(row.updatedAt).toLocaleDateString()}
+                    <TableCell
+                      align="left"
+                      sx={{ color: "#656b72", fontWeight: "400" }}
+                    >
+                      {row.postId}
                     </TableCell>
-                    <TableCell align="right">
-                      {row.isAdmin ? (
-                        <CheckCircleIcon sx={{ color: "#22c55e" }} />
-                      ) : (
-                        <CancelIcon sx={{ color: "#f1556c" }} />
-                      )}
+                    <TableCell
+                      align="left"
+                      sx={{ color: "#656b72", fontWeight: "400" }}
+                    >
+                      {row.userId}
                     </TableCell>
                     <TableCell
                       align="right"
@@ -150,7 +142,7 @@ const TableOfUsers = ({ data, loading }) => {
                       <DeleteForeverIcon
                         onClick={() => {
                           setShowModel(true);
-                          setUserId(row._id);
+                          setCommentId(row._id);
                         }}
                       />
                     </TableCell>
@@ -186,4 +178,4 @@ const TableOfUsers = ({ data, loading }) => {
   );
 };
 
-export default TableOfUsers;
+export default TableOfComments;

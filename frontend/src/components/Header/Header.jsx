@@ -6,13 +6,14 @@ import {
   useScrollTrigger,
   styled,
   Button,
+  TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-// import Logo from "../../assets/logo4.png";
 import ProfileIcon from "./ProfileIcon";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ModeButton from "./ModeButton";
+import { useEffect, useState } from "react";
 
 const RoundedAppBar = styled(AppBar)(({ theme }) => ({
   marginInline: "auto",
@@ -30,7 +31,25 @@ const RoundedAppBar = styled(AppBar)(({ theme }) => ({
 const Header = () => {
   const trigger = useScrollTrigger();
   const { currentUser } = useSelector((state) => state.user);
+  const [searchTerm, setSearchTerm] = useState("");
+  const { search } = useLocation();
   const navigate = useNavigate();
+  console.log(searchTerm);
+  useEffect(() => {
+    const urlParams = new URLSearchParams(search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [search]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
   return (
     <RoundedAppBar
       position="sticky"
@@ -54,14 +73,36 @@ const Header = () => {
           sx={{
             display: "flex",
             gap: "10px",
+            alignItems: "center",
           }}
         >
           <SearchIcon style={{ color: "#6A4EE9" }} />
-          <Typography
-            sx={{ color: "#121111", display: { xs: "none", sm: "block" } }}
-          >
-            Quick Search…
-          </Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              // required
+              placeholder="Quick Search…"
+              variant="standard"
+              sx={{
+                color: "#121111",
+                display: { xs: "none", sm: "block" },
+                outline: "none",
+                "& .MuiInputBase-root": {
+                  border: "none",
+                },
+                "& .MuiInput-underline:before": {
+                  borderBottom: "none",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottom: "none",
+                },
+                "& .MuiInputBase-input:focus": {
+                  backgroundColor: "transparent",
+                },
+              }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </form>
         </Box>
         <Typography
           variant="h5"
@@ -75,7 +116,7 @@ const Header = () => {
             display: "flex",
             alignItems: "center",
             marginRight: {
-              lg: "10px",
+              lg: "100px",
               sm: "50px",
               xs: "0px",
             },

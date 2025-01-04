@@ -21,8 +21,6 @@ const DashboardUsers = () => {
         paddingX: "35px",
         height: "100vh",
         paddingTop: "60px",
-        // justifyContent: "space-around",
-        // alignItems: "center",
       }}
     >
       <>
