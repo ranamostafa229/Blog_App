@@ -2,9 +2,9 @@
 
 FROM node:16
 
-# Set the working directory
+# Set the working directory for the backend
 
-WORKDIR /app
+WORKDIR /app/backend
 
 # Install backend dependencies
 
@@ -15,20 +15,32 @@ RUN npm install
 
 COPY backend ./
 
-# Build frontend
+# Set the working directory for the frontend
 
 WORKDIR /app/frontend
+
+# Install frontend dependencies
+
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
+
+# Copy frontend files
+
 COPY frontend ./
+
+# Build the frontend
+
 RUN npm run build
 
-# Move build files to backend public directory
+# Move build files to the backend public directory
 
 RUN mv /app/frontend/dist /app/backend/public
 
-# Expose port and run the backend
+# Set the working directory back to the backend
 
 WORKDIR /app/backend
+
+# Expose port and run the backend
+
 EXPOSE 3000
 CMD ["npm", "start"]
