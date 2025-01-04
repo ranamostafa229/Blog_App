@@ -2,7 +2,6 @@
   "name": "blog_app",
   "version": "1.0.0",
   "description": "",
-  "homepage": "./",
   "main": "index.js",
   "type": "module",
   "scripts": {
