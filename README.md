@@ -1,27 +1,59 @@
-# Chat App Using MERN Stack
+# Blog App Using MERN Stack
 
 #### DevJournwy is a MERN bloag application that allows users to view, search, and comment on posts.
+ ![Screenshot (1363)](https://github.com/user-attachments/assets/610d69e9-8483-4077-82ac-612ad725313c)
 
 ## Features
-
 
 #### - User authentication and authorization using bcrypt
 #### - Google authentication Option
 
- ![Screenshot (1363)](https://github.com/user-attachments/assets/610d69e9-8483-4077-82ac-612ad725313c)
+ ![Screenshot (1364)](https://github.com/user-attachments/assets/7545c469-cac6-4700-a38f-849406b77b4f)
 
-#### - User profile with avatar using this api  <a href='https://api.multiavatar.com/'> https://api.multiavatar.com/</a>
+#### - Explore Categories section
+ 
+ ![Screenshot (1365)](https://github.com/user-attachments/assets/8c04eead-eb4a-4a31-a74f-45e39054ef22)
 
-  ![Screenshot (1342)](https://github.com/ranamostafa229/real_estate_app/assets/57458722/74129e99-15db-4baa-b020-2f70fe75f60e)
-  
-#### - Real-time chat with text, and emoji support
-#### - Chat rooms with multiple participants
 
-  ![Screenshot (1344)](https://github.com/ranamostafa229/real_estate_app/assets/57458722/e138b47f-7b85-43b2-a8d8-c5f5cba72fbb)
-  
-#### - Responsive design
+#### - Get specific categorized topic posts
+ 
+ ![Screenshot (1366)](https://github.com/user-attachments/assets/e49a6339-f621-4c6b-aa7b-f61c0b417b4e)
 
-  ![Screenshot (1345)](https://github.com/ranamostafa229/real_estate_app/assets/57458722/d2b7601b-3149-41c0-97d2-1d1235d5d665)
+#### - View post details with carousel slider to specifc heading section
+
+ ![blogapp-production-3bfd up railway app_post_react-post(Nest Hub)](https://github.com/user-attachments/assets/1c3b6756-3284-4dc4-bd6f-0dd4602fa768)
+
+#### - Add comment with the ability to edit or delete your comment and also like other comments 
+
+ ![Screenshot (1368)](https://github.com/user-attachments/assets/0f554391-170b-4b2e-9572-9423513490ee)
+
+#### - Get related posts based on search term
+
+  ![Screenshot (1369)](https://github.com/user-attachments/assets/1c7248a3-0b8d-4f40-8a15-7431aede28de)
+
+#### - Switch between dark and light mode
+
+  ![Screenshot (1370)](https://github.com/user-attachments/assets/ab71e607-eef8-4597-a21d-ad7ba5098eba)
+
+#### - Dashboard for admin to manage the app 
+
+![blogapp-production-3bfd up railway app_dashboard_content(Nest Hub Max)](https://github.com/user-attachments/assets/a5b1e55a-8528-483e-9682-bfb6556d35ec)
+
+#### - Profile Section to update info avaliable both for admin and logged-in users
+
+![blogapp-production-3bfd up railway app_dashboard_profile(Nest Hub Max0)](https://github.com/user-attachments/assets/d3297b55-1669-4069-9f03-5bf5810af796)
+
+#### - View logged-in users for admin with the ability to delete them
+
+![blogapp-production-3bfd up railway app_dashboard_profile(Nest Hub Max3)](https://github.com/user-attachments/assets/ca68dee2-77fb-4b0f-8267-5a27747587c6)
+
+#### - The ability to make CRUD operation for the posts by the admin
+
+![blogapp-production-3bfd up railway app_dashboard_profile(Nest Hub Max4)](https://github.com/user-attachments/assets/4ea4cb07-ebae-429a-a249-b7515923c980)
+
+#### - Create new Post with text editor 
+
+![blogapp-production-3bfd up railway app_dashboard_profile(Nest Hub Max)5](https://github.com/user-attachments/assets/4811d1c2-f8c4-45ab-82f8-67f45f862d88)
 
 ## Technologies
 
@@ -42,9 +74,9 @@ To run this project locally, you need to have Node.js and MongoDB installed on y
 
 ```
 PORT=5000
-MONGO_URI = your_mongodb_connection_string
-ORIGIN ='http://localhost:3000'
-AVATARAPIKEY = your_api_key //in client folder
+MONGO = your_mongodb_connection_string
+JWT_SECRET = your_jwt_secret
+VITE_FIREBASE_API_KEY = your_api_key //in client folder
 ```
 
 4. Run `npm run dev` to start the development server
