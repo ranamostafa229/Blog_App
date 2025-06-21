@@ -46,7 +46,7 @@ const SignUp = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user) || {};
 
   useEffect(() => {
     if (currentUser) {

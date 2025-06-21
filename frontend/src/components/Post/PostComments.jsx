@@ -43,7 +43,8 @@ const UserInfo = ({ userId, createdAt }) => {
 
 const PostComments = ({ comments, setCurrentComments }) => {
   // const { data } = useFetch(`/api/v1/comment/get/${postId}`, []);
-  const { currentUser } = useSelector((state) => state.user);
+  // const currentUser = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user) || {};
   const [showModel, setShowModel] = useState(false);
   const [error, setError] = useState(null);
   const [commentId, setCommentId] = useState("");

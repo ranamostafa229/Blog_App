@@ -31,7 +31,7 @@ const ProfileIcon = () => {
   ];
 
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user) || {};
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -76,7 +76,7 @@ const ProfileIcon = () => {
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar
             alt="Profile Picture"
-            src={currentUser.profilePicture}
+            src={currentUser?.profilePicture}
             rounded="true"
           />
         </IconButton>

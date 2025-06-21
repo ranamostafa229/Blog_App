@@ -39,7 +39,7 @@ const CssTextField = styled(TextField)({
 const SignIn = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user) || {};
 
   const dispatch = useDispatch();
 

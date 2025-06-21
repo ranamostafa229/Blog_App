@@ -12,7 +12,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const ReplySection = ({ postId, setCurrentComments }) => {
-  const { currentUser } = useSelector((state) => state.user);
+  // const currentUser = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user) || {};
   const [comment, setComment] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState(null);

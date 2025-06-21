@@ -30,11 +30,12 @@ const RoundedAppBar = styled(AppBar)(({ theme }) => ({
 
 const Header = () => {
   const trigger = useScrollTrigger();
-  const { currentUser } = useSelector((state) => state.user);
+  // const currentUser = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.user) || {};
   const [searchTerm, setSearchTerm] = useState("");
   const { search } = useLocation();
   const navigate = useNavigate();
-  console.log(searchTerm);
+  console.log(currentUser);
   useEffect(() => {
     const urlParams = new URLSearchParams(search);
     const searchTermFromUrl = urlParams.get("searchTerm");

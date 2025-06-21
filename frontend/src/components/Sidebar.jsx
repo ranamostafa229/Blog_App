@@ -57,7 +57,7 @@ const Sidebar = () => {
       link: "/delete-account",
     },
   ];
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user) || {};
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const handleOpen = () => {
