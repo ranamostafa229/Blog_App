@@ -2,14 +2,16 @@ import { Box, Container, Divider, Typography } from "@mui/material";
 import PostCard from "../components/PostCard";
 import JoinBanner from "../components/JoinBanner";
 import useFetch from "../hooks/useFetch";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { icons } from "../utils/icons";
 
 const Category = () => {
   const { category } = useParams();
   const { data: posts } = useFetch(`/api/v1/post/categories/${category}`);
-  const location = useLocation();
-  const { categoryImg, categoryBg } = location.state || {};
-  console.log(categoryImg, categoryBg);
+
+  const icon = icons.find(
+    (icon) => icon.label.toLowerCase() === category.toLowerCase()
+  );
 
   return (
     <Box
@@ -43,13 +45,13 @@ const Category = () => {
           <Box
             sx={{
               ...shapeCircleStyles,
-              bgcolor: `${categoryBg}`,
+              bgcolor: `${icon?.bg}`,
               borderRadius: "50%",
               cursor: "pointer",
             }}
           >
             <img
-              src={categoryImg}
+              src={icon?.img}
               alt="Trending"
               style={{
                 width: "65px",
@@ -78,18 +80,6 @@ const Category = () => {
           </Box>
         </Box>
         <Divider orientation="vertical" flexItem />
-
-        {/* <Box
-          sx={(theme) => ({
-            // color: "#4e4a4b",
-            color: theme.palette.text.subtitle,
-            textAlign: "center",
-          })}
-        >
-          <Typography variant="body1" sx={{ lineHeight: "30px" }}>
-            {posts?.map((post) => post.categoryBrief)}
-          </Typography>
-        </Box> */}
       </Container>
       <Box sx={{ height: "100px" }} />
       <Container>

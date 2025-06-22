@@ -12,16 +12,7 @@ const Categories = () => {
     .filter((icon) => data?.categories?.includes(icon.label))
     .map((icon, index) => (
       <Grid2 key={index} size={{ xs: 2, sm: 2, md: 3 }}>
-        <Item
-          onClick={() =>
-            navigate(`/categories/${icon.label}`, {
-              state: {
-                categoryImg: icon.img,
-                categoryBg: icon.bg,
-              },
-            })
-          }
-        >
+        <Item onClick={() => navigate(`/categories/${icon.label}`)}>
           <Typography
             component={"span"}
             key={index}
@@ -34,7 +25,6 @@ const Categories = () => {
               gap: "10px",
               alignItems: "center",
               fontWeight: "500",
-              // color: "black",
             }}
           >
             <Box
@@ -42,7 +32,6 @@ const Categories = () => {
                 position: "relative",
                 width: "70px",
                 height: "70px",
-                // bgcolor: "white",
                 borderRadius: "50%",
                 display: "flex",
                 alignItems: "center",
@@ -103,7 +92,6 @@ const Categories = () => {
   return (
     <Box
       sx={{
-        // color: "#121111",
         display: "flex",
         flexDirection: "column",
         textAlign: "center",

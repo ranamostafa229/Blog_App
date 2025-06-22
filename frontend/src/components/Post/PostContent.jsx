@@ -66,7 +66,7 @@ const PostContent = ({ post, updatedAt, comments, setCurrentComments }) => {
 
         <hr style={{ border: "1px solid #f2f1ff", width: "100%" }} />
       </Box>
-      <RelatedPosts />
+      <RelatedPosts category={post.category} />
       <Box sx={{ height: 10 }} />
       <ReplySection postId={post._id} setCurrentComments={setCurrentComments} />
       <PostComments

@@ -20,7 +20,6 @@ const AuthorInfo = ({ userId }) => {
     userId ? `/api/v1/user/get/${userId}` : null,
     []
   );
-  console.log(user);
   return (
     <>
       <Avatar
@@ -40,12 +39,7 @@ const AuthorInfo = ({ userId }) => {
 };
 const PostCard = ({ cmd, csize, posts }) => {
   const [value, setValue] = useState(2);
-  // const { data: user } = useFetch(
-  //   posts?.userId ? `/api/v1/user/get/${posts?.}` : null,
-  //   {}
-  // );
-  // console.log(user);
-  console.log(posts);
+
   return (
     <Grid2
       container

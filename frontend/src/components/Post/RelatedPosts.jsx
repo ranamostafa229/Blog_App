@@ -1,14 +1,16 @@
+/* eslint-disable react/prop-types */
 import { Box, Button, Divider, Typography } from "@mui/material";
-import CssIcon from "../../assets/css-icon.png";
+import useFetch from "../../hooks/useFetch";
+import { useNavigate, useParams } from "react-router-dom";
+import { icons } from "../../utils/icons";
 
-const RelatedPosts = () => {
-  const shapeCircleStyles = {
-    width: 60,
-    height: 60,
-    // position: "absolute",
-    borderRadius: "50%",
-    boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
-  };
+const RelatedPosts = ({ category }) => {
+  const { postSlug } = useParams();
+  const { data: posts } = useFetch(`/api/v1/post/related/${postSlug}`, []);
+  const navigate = useNavigate();
+  const icon = icons.find(
+    (icon) => icon.label.toLowerCase() === category?.toLowerCase()
+  );
   return (
     <Box
       sx={(theme) => ({
@@ -33,13 +35,13 @@ const RelatedPosts = () => {
           component="span"
           sx={{
             ...shapeCircleStyles,
-            bgcolor: "#ff8e51",
+            bgcolor: `${icon?.bg}`,
             borderRadius: "50%",
             cursor: "pointer",
           }}
         >
           <img
-            src={CssIcon}
+            src={icon?.img}
             alt="Trending"
             style={{
               width: "60px",
@@ -67,26 +69,32 @@ const RelatedPosts = () => {
             }}
           >
             <span>
-              More in this {/* /{ color: "#282424" } */}
+              More in this
               <Box
                 component={"span"}
-                sx={(theme) => ({ color: theme.palette.text.subtitle })}
+                sx={(theme) => ({
+                  color: theme.palette.text.subtitle,
+                  paddingLeft: "4px",
+                })}
               >
                 Category
               </Box>
             </span>
             <Typography
-              variant="h4"
+              variant="h5"
               sx={(theme) => ({
-                //  color: "#282424",
                 color: theme.palette.text.primary,
                 fontWeight: "bold",
               })}
             >
-              CSS
+              {category}
             </Typography>
           </Box>
-          <Button variant="contained" sx={{ bgcolor: "#227dff" }}>
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "#227dff" }}
+            onClick={() => navigate(`/categories`)}
+          >
             View All Articles
           </Button>
         </Typography>
@@ -99,59 +107,62 @@ const RelatedPosts = () => {
           pl: "15px",
         }}
       >
-        <Typography
-          variant="h6"
-          sx={(theme) => ({
-            display: "flex",
-            gap: "10px",
-            // color: "#2d2929",
-            color: theme.palette.text.subtitle,
-            fontSize: "18px",
-          })}
-        >
-          <Box
-            sx={{
-              bgcolor: "#282424",
-              // bgcolor: theme.palette.background.paper,
-              color: "white",
-              borderRadius: "5px",
-              paddingX: "9px",
-              fontSize: "15px",
-              alignSelf: "center",
-            }}
+        {posts && posts.length > 0 ? (
+          posts.map((post, index) => (
+            <div key={post._id}>
+              <Typography
+                variant="h6"
+                sx={(theme) => ({
+                  display: "flex",
+                  gap: "10px",
+                  color: theme.palette.text.subtitle,
+                  fontSize: "18px",
+                  ":hover": {
+                    color: theme.palette.text.primary,
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  },
+                })}
+                onClick={() => navigate(`/post/${post.slug}`)}
+              >
+                <Box
+                  sx={{
+                    bgcolor: "#282424",
+                    color: "white",
+                    borderRadius: "5px",
+                    paddingX: "9px",
+                    fontSize: "15px",
+                    alignSelf: "center",
+                  }}
+                >
+                  {index + 1}
+                </Box>
+                {post.title}
+              </Typography>
+              <Divider></Divider>
+            </div>
+          ))
+        ) : (
+          <Typography
+            variant="subtitle1"
+            sx={(theme) => ({
+              color: theme.palette.text.subtitle,
+              textAlign: "center",
+            })}
           >
-            1
-          </Box>
-          CSS Selectors: Class and ID basic filtering for HTML elements
-        </Typography>
-        <Divider></Divider>
-        <Typography
-          variant="h6"
-          sx={(theme) => ({
-            display: "flex",
-            gap: "10px",
-            // color: "#2d2929",
-            color: theme.palette.text.subtitle,
-            fontSize: "18px",
-          })}
-        >
-          <Box
-            sx={{
-              bgcolor: "#282424",
-              color: "white",
-              borderRadius: "5px",
-              paddingX: "9px",
-              fontSize: "15px",
-              alignSelf: "center",
-            }}
-          >
-            2
-          </Box>
-          Introduction to CSS 🚀
-        </Typography>
+            No related posts found
+          </Typography>
+        )}
       </Box>
     </Box>
   );
 };
 
 export default RelatedPosts;
+
+const shapeCircleStyles = {
+  width: 60,
+  height: 60,
+  borderRadius: "50%",
+  boxshadow: "0 0 2px 2px rgba(0, 0, 0, 0.15)",
+};

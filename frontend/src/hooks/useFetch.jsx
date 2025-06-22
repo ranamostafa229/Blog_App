@@ -38,6 +38,7 @@ const useFetch = (url, initialState, options) => {
   const [data, setData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);

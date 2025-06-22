@@ -113,6 +113,22 @@ export const getPost = async (req, res, next) => {
   }
 };
 
+export const getRelatedPosts = async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ slug: req.params.slug });
+    if (!post) {
+      return next(errorHandler(404, "Post not found"));
+    }
+    const relatedPosts = await Post.find({
+      category: post.category,
+      _id: { $ne: post._id }, // Exclude the current post
+    }).limit(2);
+    res.status(200).json(relatedPosts);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const deletePost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to delete this post"));

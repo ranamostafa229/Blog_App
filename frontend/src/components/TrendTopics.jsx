@@ -21,12 +21,7 @@ const TrendTopics = () => {
           cursor: "pointer",
         }}
         onClick={() => {
-          navigate(`/categories/${icon.label}`, {
-            state: {
-              categoryImg: icon.img,
-              categoryBg: icon.bg,
-            },
-          });
+          navigate(`/categories/${icon.label}`);
         }}
       >
         <Badge
