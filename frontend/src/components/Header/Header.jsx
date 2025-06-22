@@ -7,6 +7,7 @@ import {
   styled,
   Button,
   TextField,
+  useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ProfileIcon from "./ProfileIcon";
@@ -14,6 +15,7 @@ import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ModeButton from "./ModeButton";
 import { useEffect, useState } from "react";
+import { useTheme } from "@emotion/react";
 
 const RoundedAppBar = styled(AppBar)(({ theme }) => ({
   marginInline: "auto",
@@ -30,12 +32,13 @@ const RoundedAppBar = styled(AppBar)(({ theme }) => ({
 
 const Header = () => {
   const trigger = useScrollTrigger();
-  // const currentUser = useSelector((state) => state.user);
-  const currentUser = useSelector((state) => state.user) || {};
+  const { currentUser } = useSelector((state) => state.user) || {};
   const [searchTerm, setSearchTerm] = useState("");
   const { search } = useLocation();
   const navigate = useNavigate();
-  console.log(currentUser);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   useEffect(() => {
     const urlParams = new URLSearchParams(search);
     const searchTermFromUrl = urlParams.get("searchTerm");
@@ -50,7 +53,7 @@ const Header = () => {
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
-
+  console.log(isSmallScreen);
   return (
     <RoundedAppBar
       position="sticky"
@@ -73,19 +76,24 @@ const Header = () => {
         <Box
           sx={{
             display: "flex",
-            gap: "10px",
+            gap: "xs:4px sm:10px",
             alignItems: "center",
+            // width: {
+            //   xs: "100%",
+            //   sm: "200px",
+            // },
           }}
         >
           <SearchIcon style={{ color: "#6A4EE9" }} />
           <form onSubmit={handleSubmit}>
             <TextField
               // required
-              placeholder="Quick Search…"
-              variant="standard"
+              placeholder={isSmallScreen ? "Search…" : "Quick Search…"}
+              variant={"standard"}
               sx={{
                 color: "#121111",
-                display: { xs: "none", sm: "block" },
+                display: { sm: "block" }, //xs: "none",
+                minWidth: "60px",
                 outline: "none",
                 "& .MuiInputBase-root": {
                   border: "none",
@@ -120,6 +128,10 @@ const Header = () => {
               lg: "100px",
               sm: "50px",
               xs: "0px",
+            },
+            fontSize: {
+              xs: "1.4rem",
+              sm: "1.6rem",
             },
             fontWeight: "bold",
             cursor: "pointer",

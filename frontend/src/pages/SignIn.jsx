@@ -9,11 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import BgImg from "../assets/signupbg.png";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/userSlice";
 import GoogleAuth from "../components/GoogleAuth";
+import AuthImg from "../components/AuthImg";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -40,7 +40,8 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { loading, error } = useSelector((state) => state.user) || {};
-
+  const { theme } = useSelector((state) => state.theme);
+  const isDarkMode = theme === "dark";
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -84,41 +85,7 @@ const SignIn = () => {
       }}
     >
       {/* Left side */}
-      <Box
-        sx={{
-          flexGrow: 1,
-          width: "30%",
-          display: {
-            xs: "none",
-            md: "flex",
-          },
-          flexDirection: "column",
-        }}
-      >
-        <img
-          src={BgImg}
-          alt="image"
-          style={{
-            objectFit: "cover",
-            height: "100vh",
-            position: "relative",
-          }}
-        />
-        <Button
-          variant="contained"
-          size="large"
-          sx={{
-            position: "absolute",
-            bgcolor: "#000000",
-            // ":hover": { bgcolor: "#000000" },
-            top: "6%",
-            left: "5%",
-          }}
-          onClick={() => navigate("/")}
-        >
-          Go back to home
-        </Button>
-      </Box>
+      <AuthImg />
       {/* Right side */}
       <Box
         sx={{
@@ -227,7 +194,7 @@ const SignIn = () => {
                 style={{
                   textDecoration: "underline",
                   cursor: "pointer",
-                  color: "#282424",
+                  color: `${isDarkMode ? "#B2BAC2" : "#282424"}`,
                   fontWeight: "bold",
                 }}
               >

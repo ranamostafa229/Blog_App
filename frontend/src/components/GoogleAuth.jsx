@@ -2,15 +2,17 @@ import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../firebase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signInSuccess } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
+
 const GoogleAuth = () => {
   const provider = new GoogleAuthProvider();
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { theme } = useSelector((state) => state.theme);
+  const isDarkMode = theme === "dark";
   const handleClick = async () => {
     provider.setCustomParameters({
       prompt: "select_account",
@@ -42,7 +44,7 @@ const GoogleAuth = () => {
     <Button
       variant="outlined"
       sx={{
-        color: "#282424",
+        color: `${isDarkMode ? "white" : "#282424"}`,
         ":hover": {
           background: "linear-gradient(45deg, #6a4ee9 30%, #ff0081 90%)",
           color: "white",
