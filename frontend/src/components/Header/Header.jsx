@@ -155,8 +155,8 @@ const Header = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      e.preventDefault(); // Prevent form default if necessary
-                      handleSubmit(e); // manually call your submit handler
+                      e.preventDefault();
+                      handleSubmit(e);
                     }
                   }}
                 />
