@@ -14,28 +14,6 @@ import GoogleAuth from "../components/GoogleAuth";
 import { useSelector } from "react-redux";
 import AuthImg from "../components/AuthImg";
 
-const CssTextField = styled(TextField)({
-  "& label.Mui-focused": {
-    color: "#A0AAB4",
-    bgcolor: "red",
-  },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "#B2BAC2",
-  },
-  "& .MuiFilledInput-root": {
-    backgroundColor: "white",
-    "& fieldset": {
-      borderColor: "#E0E3E7",
-    },
-    "&:hover fieldset": {
-      borderColor: "#B2BAC2",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#6F7E8C",
-    },
-  },
-});
-
 const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -46,6 +24,8 @@ const SignUp = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { theme } = useSelector((state) => state.theme);
+  const isDarkMode = theme === "dark";
   const { currentUser } = useSelector((state) => state.user) || {};
 
   useEffect(() => {
@@ -143,9 +123,6 @@ const SignUp = () => {
               label="Enter your Username"
               variant="filled"
               type="text"
-              sx={{
-                "& .MuiFilledInput-root": {},
-              }}
               name="username"
               value={formData.username}
               onChange={(e) => handleChange(e)}
@@ -155,9 +132,6 @@ const SignUp = () => {
               label="Enter your Email"
               variant="filled"
               type="email"
-              sx={{
-                "& .MuiFilledInput-root": {},
-              }}
               name="email"
               value={formData.email}
               onChange={(e) => handleChange(e)}
@@ -167,9 +141,6 @@ const SignUp = () => {
               label="Password"
               variant="filled"
               type="password"
-              sx={{
-                "& .MuiFilledInput-root": {},
-              }}
               name="password"
               value={formData.password}
               onChange={(e) => handleChange(e)}
@@ -179,9 +150,6 @@ const SignUp = () => {
               label="Confirm Password"
               variant="filled"
               type="password"
-              sx={{
-                "& .MuiFilledInput-root": {},
-              }}
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={(e) => handleChange(e)}
@@ -227,7 +195,7 @@ const SignUp = () => {
                 style={{
                   textDecoration: "underline",
                   cursor: "pointer",
-                  color: "#282424",
+                  color: `${isDarkMode ? "#B2BAC2" : "#282424"}`,
                   fontWeight: "bold",
                 }}
               >
@@ -243,3 +211,29 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+export const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#A0AAB4",
+    bgcolor: "red",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiFilledInput-root": {
+    backgroundColor: "white",
+    color: "#121111",
+    "& fieldset": {
+      borderColor: "#E0E3E7",
+    },
+    "&:hover fieldset": {
+      borderColor: "#B2BAC2",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#6F7E8C",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: "#A0AAB4",
+  },
+});

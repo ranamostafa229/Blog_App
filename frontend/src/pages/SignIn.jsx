@@ -4,8 +4,6 @@ import {
   Button,
   CircularProgress,
   FormControl,
-  styled,
-  TextField,
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,28 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/userSlice";
 import GoogleAuth from "../components/GoogleAuth";
 import AuthImg from "../components/AuthImg";
+import { CssTextField } from "./SignUp";
 
-const CssTextField = styled(TextField)({
-  "& label.Mui-focused": {
-    color: "#A0AAB4",
-    bgcolor: "red",
-  },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "#B2BAC2",
-  },
-  "& .MuiFilledInput-root": {
-    backgroundColor: "white",
-    "& fieldset": {
-      borderColor: "#E0E3E7",
-    },
-    "&:hover fieldset": {
-      borderColor: "#B2BAC2",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#6F7E8C",
-    },
-  },
-});
 const SignIn = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });

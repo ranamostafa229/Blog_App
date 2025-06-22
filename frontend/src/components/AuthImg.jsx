@@ -1,12 +1,9 @@
 import { Box, Button } from "@mui/material";
 import BgImg from "../assets/signupbg.png";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AuthImg = () => {
   const navigate = useNavigate();
-  const { theme } = useSelector((state) => state.theme);
-  const isDarkMode = theme === "dark";
   return (
     <Box
       sx={{
@@ -34,7 +31,7 @@ const AuthImg = () => {
         sx={{
           position: "absolute",
           bgcolor: "#000000",
-          color: `${isDarkMode ? "white" : "#121111"}`,
+          color: "white",
           top: "6%",
           left: "5%",
         }}
