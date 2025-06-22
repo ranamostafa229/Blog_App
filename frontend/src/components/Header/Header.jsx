@@ -8,6 +8,7 @@ import {
   Button,
   TextField,
   useMediaQuery,
+  Popover,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ProfileIcon from "./ProfileIcon";
@@ -17,23 +18,11 @@ import ModeButton from "./ModeButton";
 import { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 
-const RoundedAppBar = styled(AppBar)(({ theme }) => ({
-  marginInline: "auto",
-  marginTop: "25px",
-  padding: "10px",
-  backgroundColor: theme.palette.background.paper,
-  color: "black",
-  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-}));
-
 const Header = () => {
   const trigger = useScrollTrigger();
   const { currentUser } = useSelector((state) => state.user) || {};
   const [searchTerm, setSearchTerm] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
   const { search } = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -46,14 +35,26 @@ const Header = () => {
       setSearchTerm(searchTermFromUrl);
     }
   }, [search]);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(search);
     urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+    handleClose();
   };
-  console.log(isSmallScreen);
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   return (
     <RoundedAppBar
       position="sticky"
@@ -78,39 +79,89 @@ const Header = () => {
             display: "flex",
             gap: "xs:4px sm:10px",
             alignItems: "center",
-            // width: {
-            //   xs: "100%",
-            //   sm: "200px",
-            // },
+            mr: { xs: "10px", sm: "0px" },
           }}
         >
-          <SearchIcon style={{ color: "#6A4EE9" }} />
+          <SearchIcon style={{ color: "#6A4EE9" }} onClick={handleClick} />
           <form onSubmit={handleSubmit}>
-            <TextField
-              // required
-              placeholder={isSmallScreen ? "Search…" : "Quick Search…"}
-              variant={"standard"}
-              sx={{
-                color: "#121111",
-                display: { sm: "block" }, //xs: "none",
-                minWidth: "60px",
-                outline: "none",
-                "& .MuiInputBase-root": {
-                  border: "none",
-                },
-                "& .MuiInput-underline:before": {
-                  borderBottom: "none",
-                },
-                "& .MuiInput-underline:after": {
-                  borderBottom: "none",
-                },
-                "& .MuiInputBase-input:focus": {
-                  backgroundColor: "transparent",
-                },
-              }}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            {!isSmallScreen && (
+              <TextField
+                placeholder={isSmallScreen ? "" : "Quick Search…"}
+                variant={"standard"}
+                sx={{
+                  color: "#121111",
+                  display: { xs: "none", sm: "block" },
+                  minWidth: "60px",
+                  outline: "none",
+                  "& .MuiInputBase-root": {
+                    border: "none",
+                  },
+                  "& .MuiInput-underline:before": {
+                    borderBottom: "none",
+                  },
+                  "& .MuiInput-underline:after": {
+                    borderBottom: "none",
+                  },
+                  "& .MuiInputBase-input:focus": {
+                    backgroundColor: "transparent",
+                  },
+                }}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            )}
+
+            {isSmallScreen && (
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                slotProps={{
+                  paper: {
+                    sx: {
+                      mt: 1,
+                    },
+                  },
+                }}
+              >
+                <TextField
+                  required
+                  placeholder={isSmallScreen ? "Search..." : "Quick Search…"}
+                  variant={"standard"}
+                  sx={{
+                    color: "#121111",
+                    minWidth: "60px",
+                    padding: "8px",
+                    outline: "none",
+                    "& .MuiInputBase-root": {
+                      border: "none",
+                    },
+                    "& .MuiInput-underline:before": {
+                      borderBottom: "none",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottom: "none",
+                    },
+                    "& .MuiInputBase-input:focus": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault(); // Prevent form default if necessary
+                      handleSubmit(e); // manually call your submit handler
+                    }
+                  }}
+                />
+              </Popover>
+            )}
           </form>
         </Box>
         <Typography
@@ -129,10 +180,7 @@ const Header = () => {
               sm: "50px",
               xs: "0px",
             },
-            fontSize: {
-              xs: "1.4rem",
-              sm: "1.6rem",
-            },
+
             fontWeight: "bold",
             cursor: "pointer",
           }}
@@ -161,3 +209,16 @@ const Header = () => {
 };
 
 export default Header;
+
+const RoundedAppBar = styled(AppBar)(({ theme }) => ({
+  marginInline: "auto",
+  marginTop: "25px",
+  padding: "10px",
+  backgroundColor: theme.palette.background.paper,
+  color: "black",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+}));
