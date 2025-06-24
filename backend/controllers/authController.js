@@ -64,7 +64,6 @@ export const signin = async (req, res, next) => {
     res
       .status(200)
       .cookie("access_token", token, {
-        httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .json(rest);
@@ -84,7 +83,14 @@ export const googleAuth = async (req, res, next) => {
     );
     const { password, ...rest } = user._doc;
 
-    res.status(200).cookie("access_token", token).json(rest);
+    res
+      .status(200)
+      .cookie(
+        "access_token",
+        token,
+        { maxAge: 30 * 24 * 60 * 60 * 1000 } // persist for 30 days
+      )
+      .json(rest);
   }
   // No accocut found,create new user
   else {
@@ -108,7 +114,6 @@ export const googleAuth = async (req, res, next) => {
     res
       .status(200)
       .cookie("access_token", token, {
-        httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000, // persist for 30 days
       })
       .json(rest);
