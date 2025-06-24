@@ -7,8 +7,10 @@ import useFetch from "../hooks/useFetch";
 const TrendTopics = () => {
   const navigate = useNavigate();
   const { data } = useFetch("/api/v1/post/categories", []);
+
   const categoryElement = icons
     .filter((icon) => data?.categories?.includes(icon.label))
+    .slice(0, 5)
     .map((icon, index) => (
       <Typography
         key={index}
