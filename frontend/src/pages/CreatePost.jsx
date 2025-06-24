@@ -27,6 +27,7 @@ const CreatePost = () => {
     content: "",
     category: "",
     newcategory: "",
+    difficulty: "",
   });
   const [tab, setTab] = useState(0);
   const [error, setError] = useState("");
@@ -60,12 +61,12 @@ const CreatePost = () => {
       if (name === "category") {
         return {
           ...prevFormData,
-          [name]: value,
+          [name]: name === "difficulty" ? +value : value,
         };
       } else {
         return {
           ...prevFormData,
-          [name]: value,
+          [name]: name === "difficulty" ? +value : value,
           category: newCategory,
         };
       }
@@ -89,6 +90,7 @@ const CreatePost = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+
       if (res.ok) {
         console.log(data);
         navigate(`/post/${data.slug}`);
@@ -157,6 +159,16 @@ const CreatePost = () => {
               required
               name="title"
               value={formData.title}
+              onChange={handleChange}
+            />
+            <CssTextField
+              variant="filled"
+              placeholder="Difficulty (1-3)"
+              required
+              name="difficulty"
+              type="number"
+              slotProps={{ htmlInput: { min: 1, max: 3 } }}
+              value={formData.difficulty}
               onChange={handleChange}
             />
             <Box
@@ -238,6 +250,7 @@ const CreatePost = () => {
             ) : (
               tab === 0 && (
                 <CssTextField
+                  type="text"
                   variant="filled"
                   placeholder="Add New Category"
                   required
@@ -328,7 +341,6 @@ const CssContainer = styled(Container)(() => ({
   display: "flex",
   flexDirection: "column",
   gap: "20px",
-  // alignItems: "center",
   width: "100%",
   padding: "15px",
 }));
@@ -340,12 +352,10 @@ const CssBox = styled(Box)(({ theme }) => ({
   padding: "20px",
   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
   gap: "20px",
-  // alignItems: "center",
   width: "100%",
 }));
 const CssTextField = styled(TextField)(({ theme }) => ({
   "& label": {
-    // color: "#6e86b2",
     color: "#6e86b2",
   },
   "& label.Mui-focused": {
@@ -370,7 +380,7 @@ const CssTextField = styled(TextField)(({ theme }) => ({
     },
   },
   "& .MuiFilledInput-input": {
-    padding: "15px", // Adjust padding as needed
+    padding: "15px",
   },
 }));
 

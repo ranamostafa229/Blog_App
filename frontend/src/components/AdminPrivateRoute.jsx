@@ -9,7 +9,7 @@ const AdminPrivateRoute = () => {
   return currentUser && currentUser?.isAdmin && token !== "" ? (
     <Outlet />
   ) : (
-    <Navigate to="/signin" />
+    <Navigate to="/" />
   );
 };
 

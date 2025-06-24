@@ -56,7 +56,26 @@ const PostContent = ({ post, updatedAt, comments, setCurrentComments }) => {
             Published: {updatedAt}
           </Typography>
         </Box>
-
+        {post.image && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={post.image}
+              alt={post.title}
+              style={{
+                width: "100%",
+                maxHeight: "400px",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            />
+          </Box>
+        )}
         <Box
           sx={(theme) => ({
             color: theme.palette.text.subtitle,

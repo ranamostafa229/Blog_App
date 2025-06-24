@@ -48,6 +48,7 @@ const EditPost = () => {
     content: "",
     category: "",
     newcategory: "",
+    difficulty: "",
   });
   const [tab, setTab] = useState(0);
   const [error, setError] = useState("");
@@ -63,6 +64,7 @@ const EditPost = () => {
         content: data?.posts[0].content,
         category: data?.posts[0].category,
         image: data?.posts[0].image,
+        difficulty: data?.posts[0].difficulty,
         _id: data?.posts[0]._id,
       }));
     }
@@ -77,13 +79,13 @@ const EditPost = () => {
       if (name === "newcategory") {
         return {
           ...prevFormData,
-          [name]: value,
+          [name]: name === "difficulty" ? +value : value,
           category: newCategory,
         };
       } else {
         return {
           ...prevFormData,
-          [name]: value,
+          [name]: name === "difficulty" ? +value : value,
         };
       }
     });
@@ -177,6 +179,16 @@ const EditPost = () => {
               required
               name="title"
               value={formData.title}
+              onChange={handleChange}
+            />
+            <CssTextField
+              variant="filled"
+              placeholder="Difficulty (1-3)"
+              required
+              name="difficulty"
+              type="number"
+              slotProps={{ htmlInput: { min: 1, max: 3 } }}
+              value={formData.difficulty}
               onChange={handleChange}
             />
             <Box

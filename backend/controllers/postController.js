@@ -2,17 +2,21 @@ import Post from "../models/postModel.js";
 import { errorHandler } from "../utils/error.js";
 
 export const addPost = async (req, res, next) => {
-  const { title, content, category, categoryBrief } = req.body;
+  const { title, content, category, categoryBrief, difficulty } = req.body;
   // access from the token
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "You are not allowed to add post"));
   }
-  if (!title || !content || !category) {
-    return next(errorHandler(400, "Please provide all required fields  "));
-  }
+
   const titleExist = await Post.findOne({ title });
   if (titleExist) {
     return next(errorHandler(409, "Please provide unique title"));
+  }
+  if (typeof difficulty !== "number") {
+    return next(errorHandler(400, "Difficulty must be a number"));
+  }
+  if (!title || !content || !category || !difficulty) {
+    return next(errorHandler(400, "Please provide all required fields  "));
   }
   const slug = title
     .split(" ")
@@ -25,6 +29,7 @@ export const addPost = async (req, res, next) => {
     content,
     category,
     categoryBrief,
+    difficulty: +difficulty,
     slug,
     userId: req.user.id,
   });
@@ -144,6 +149,9 @@ export const updatePost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to update this post"));
   }
+  if (typeof req.body.difficulty !== "number") {
+    return next(errorHandler(400, "Difficulty must be a number"));
+  }
   try {
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.postId,
@@ -152,6 +160,7 @@ export const updatePost = async (req, res, next) => {
           title: req.body.title,
           content: req.body.content,
           category: req.body.category,
+          difficulty: +req.body.difficulty,
           image: req.body.image,
         },
       },

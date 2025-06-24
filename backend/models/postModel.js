@@ -32,6 +32,11 @@ const postSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    difficulty: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
     //   likes: [
     //     {
     //       type: mongoose.Schema.Types.ObjectId,

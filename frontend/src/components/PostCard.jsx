@@ -10,7 +10,6 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { icons } from "../utils/icons";
 import useFetch from "../hooks/useFetch";
@@ -38,8 +37,6 @@ const AuthorInfo = ({ userId }) => {
   );
 };
 const PostCard = ({ cmd, csize, posts }) => {
-  const [value, setValue] = useState(2);
-
   return (
     <Grid2
       container
@@ -85,7 +82,11 @@ const PostCard = ({ cmd, csize, posts }) => {
                       fontSize: "14px",
                       borderRadius: "0 25px 25px 0",
                       bgcolor: `${
-                        icons.find((e) => e.label === post?.category).bg
+                        icons.find(
+                          (e) =>
+                            e.label.toLowerCase() ===
+                            post?.category.trim().toLowerCase()
+                        )?.bg
                       }`,
                     }}
                   >
@@ -109,7 +110,7 @@ const PostCard = ({ cmd, csize, posts }) => {
 
                     <Rating
                       name="read-only"
-                      value={value}
+                      value={+post?.difficulty}
                       max={3}
                       readOnly
                       size="small"

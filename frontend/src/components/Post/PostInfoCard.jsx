@@ -5,16 +5,13 @@ import QueryBuilderOutlinedIcon from "@mui/icons-material/QueryBuilderOutlined";
 import PersonOutlineSharpIcon from "@mui/icons-material/PersonOutlineSharp";
 import WorkspacePremiumSharpIcon from "@mui/icons-material/WorkspacePremiumSharp";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import { useState } from "react";
 import useFetch from "../../hooks/useFetch";
 
-const PostInfoCard = ({ category, updatedAt, userId, content }) => {
-  const [value, setValue] = useState(2);
+const PostInfoCard = ({ category, updatedAt, userId, content, difficulty }) => {
   const { data: user, isLoading } = useFetch(
     userId ? `/api/v1/user/get/${userId}` : null,
     {}
   );
-
   return (
     <Box
       sx={{
@@ -139,10 +136,9 @@ const PostInfoCard = ({ category, updatedAt, userId, content }) => {
               })}
             >
               <span style={{ fontWeight: "500" }}>Difficulty:</span>
-              {/* <span style={{ color: "#8493ab" }}>1 Min</span> */}
               <Rating
                 name="read-only"
-                value={value}
+                value={difficulty}
                 max={3}
                 readOnly
                 size="small"

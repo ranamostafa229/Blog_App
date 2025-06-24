@@ -92,6 +92,7 @@ function Post() {
               updatedAt={formattedDate}
               userId={post?.userId}
               content={post?.content}
+              difficulty={post?.difficulty}
             />
 
             {/* ******************* Table of contents**********************  */}
