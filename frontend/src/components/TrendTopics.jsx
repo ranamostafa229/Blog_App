@@ -109,13 +109,21 @@ const TrendTopics = () => {
             fontWeight: "bold",
             gap: "16px",
             display: {
-              xs: "none",
               md: "flex",
             },
             alignItems: "center",
           }}
         >
-          or...
+          {
+            <Box
+              component={"span"}
+              sx={{
+                display: { xs: "none", md: "flex" },
+              }}
+            >
+              or...
+            </Box>
+          }
           <Button
             variant="contained"
             sx={{
