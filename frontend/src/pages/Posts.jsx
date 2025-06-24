@@ -53,6 +53,20 @@ const Posts = () => {
         justifyContent: "space-between",
       }}
     >
+      {!loading && currentData.length === 0 && (
+        <h2
+          style={{
+            textAlign: "center",
+            marginTop: "60px",
+            fontFamily: "cursive",
+          }}
+        >
+          No posts found
+          <br />
+          Please try a different
+          <span style={{ color: "#6A4EE9" }}> search term.</span>
+        </h2>
+      )}
       {loading ? (
         <CircularProgress
           size="3rem"
@@ -61,6 +75,7 @@ const Posts = () => {
       ) : (
         <PostCard cmd={10} csize={4} posts={currentData} />
       )}
+
       {showMore && (
         <Button
           sx={{

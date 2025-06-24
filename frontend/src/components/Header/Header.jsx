@@ -27,7 +27,7 @@ const Header = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  console.log(currentUser);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(search);
     const searchTermFromUrl = urlParams.get("searchTerm");
