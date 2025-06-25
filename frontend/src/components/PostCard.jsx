@@ -64,8 +64,6 @@ const PostCard = ({ cmd, csize, posts }) => {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  // gap: "14px",
-                  // justifyContent: "space-between",
                 }}
               >
                 <Box sx={{ display: "flex", paddingBottom: "14px" }}>
@@ -73,7 +71,6 @@ const PostCard = ({ cmd, csize, posts }) => {
                     variant="h6"
                     component="div"
                     sx={{
-                      // bgcolor: `${color}`,
                       color: "#fff",
                       paddingX: "25px",
                       paddingY: "5px",
@@ -153,14 +150,9 @@ const PostCard = ({ cmd, csize, posts }) => {
                     sx={{
                       textAlign: "center",
                       height: "30%",
-                      // overflow: "hidden",
-                      // display: "-webkit-box",
-                      // WebkitBoxOrient: "vertical",
-                      // WebkitLineClamp: 2, // Number of lines to show
-                      // textOverflow: "ellipsis",
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: post.content.slice(0, 200) + "...",
+                      __html: post.content.slice(0, 150) + "...",
                     }}
                   ></Typography>
                 </Box>
