@@ -73,7 +73,12 @@ const Header = () => {
         },
       }}
     >
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <Box
           sx={{
             display: "flex",

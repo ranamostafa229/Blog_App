@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography, useMediaQuery } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
 import { useNavigate, useParams } from "react-router-dom";
 import { icons } from "../../utils/icons";
+import { useTheme } from "@emotion/react";
 
 const RelatedPosts = ({ category }) => {
   const { postSlug } = useParams();
   const { data: posts } = useFetch(`/api/v1/post/related/${postSlug}`, []);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const icon = icons.find(
     (icon) => icon.label.toLowerCase() === category?.toLowerCase()
   );
@@ -16,7 +19,10 @@ const RelatedPosts = ({ category }) => {
       sx={(theme) => ({
         display: "flex",
         flexDirection: "column",
-        marginLeft: "20px",
+        marginLeft: {
+          xs: "0px",
+          sm: "20px",
+        },
         borderRadius: "20px",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
         padding: "35px",
@@ -92,10 +98,13 @@ const RelatedPosts = ({ category }) => {
           </Box>
           <Button
             variant="contained"
-            sx={{ bgcolor: "#227dff" }}
+            sx={{
+              bgcolor: "#227dff",
+              fontSize: "14px",
+            }}
             onClick={() => navigate(`/categories`)}
           >
-            View All Articles
+            <span>{isSmallScreen ? "View All" : "View All Articles"}</span>
           </Button>
         </Typography>
       </Box>

@@ -11,10 +11,24 @@ const PostContent = ({ post, updatedAt, comments, setCurrentComments }) => {
   const modifiedHtml = useModifyHtmlWithIds(post.content);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "40px",
+        width: "110%",
+      }}
+    >
       <Box
         sx={(theme) => ({
-          marginLeft: "20px",
+          marginLeft: {
+            xs: "0px",
+            sm: "20px",
+          },
+          marginRight: {
+            xs: "20px",
+            sm: "0px",
+          },
           bgcolor: theme.palette.background.banner,
           paddingY: "35px",
           paddingX: "45px",
@@ -26,6 +40,7 @@ const PostContent = ({ post, updatedAt, comments, setCurrentComments }) => {
           border: "1px solid ",
           borderColor: theme.palette.text.secondary,
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+          wordBreak: "break-word",
         })}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>

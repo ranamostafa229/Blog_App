@@ -9,16 +9,19 @@ import {
   Rating,
   SvgIcon,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { icons } from "../utils/icons";
 import useFetch from "../hooks/useFetch";
+import { useTheme } from "@emotion/react";
 
 const AuthorInfo = ({ userId }) => {
   const { data: user } = useFetch(
     userId ? `/api/v1/user/get/${userId}` : null,
     []
   );
+
   return (
     <>
       <Avatar
@@ -37,6 +40,9 @@ const AuthorInfo = ({ userId }) => {
   );
 };
 const PostCard = ({ cmd, csize, posts }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const numWords = isSmallScreen ? 100 : 200;
   return (
     <Grid2
       container
@@ -152,7 +158,7 @@ const PostCard = ({ cmd, csize, posts }) => {
                       height: "30%",
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: post.content.slice(0, 150) + "...",
+                      __html: post.content.slice(0, numWords) + "...",
                     }}
                   ></Typography>
                 </Box>
