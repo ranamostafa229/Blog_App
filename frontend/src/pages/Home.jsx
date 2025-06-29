@@ -42,32 +42,31 @@ const Home = () => {
       <Container>
         <TrendTopics />
         <Toolbar />
-        {!loading ? (
-          <Container
+
+        <Container
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "40px",
+          }}
+        >
+          <Typography
+            variant="h5"
             sx={{
-              flexGrow: 1,
+              fontSize: "20px",
+              fontWeight: "bold",
               display: "flex",
-              flexDirection: "column",
               alignItems: "center",
-              gap: "40px",
+              gap: "10px",
             }}
           >
-            <Typography
-              variant="h5"
-              sx={{
-                fontSize: "20px",
-                fontWeight: "bold",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              <AutoAwesomeIcon sx={{ fontSize: "35px", color: "#ff2aac" }} />
-              Recent Topics
-            </Typography>
-            <PostCard posts={data.posts} loading={loading} />
-          </Container>
-        ) : null}
+            <AutoAwesomeIcon sx={{ fontSize: "35px", color: "#ff2aac" }} />
+            Recent Topics
+          </Typography>
+          {!loading ? <PostCard posts={data.posts} loading={loading} /> : null}
+        </Container>
       </Container>
       <Toolbar />
       <JoinBanner />
