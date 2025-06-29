@@ -6,7 +6,7 @@ import useFetch from "../hooks/useFetch";
 
 const TrendTopics = () => {
   const navigate = useNavigate();
-  const { data } = useFetch("/api/v1/post/categories", []);
+  const { data, loading } = useFetch("/api/v1/post/categories", []);
 
   const categoryElement = icons
     .filter((icon) => data?.categories?.includes(icon.label))
@@ -101,44 +101,49 @@ const TrendTopics = () => {
         <BoltIcon sx={{ fontSize: "35px", color: "#ff2aac" }} />
         Trending Topics
       </Typography>
-      <StyledBox sx={{ paddingY: "15px", paddingX: "23px" }} variant="outlined">
-        {categoryElement}
-        <Typography
-          sx={{
-            fontSize: "15px",
-            fontWeight: "bold",
-            gap: "16px",
-            display: {
-              md: "flex",
-            },
-            alignItems: "center",
-          }}
+      {!loading ? (
+        <StyledBox
+          sx={{ paddingY: "15px", paddingX: "23px" }}
+          variant="outlined"
         >
-          {
-            <Box
-              component={"span"}
-              sx={{
-                display: { xs: "none", md: "flex" },
-              }}
-            >
-              or...
-            </Box>
-          }
-          <Button
-            variant="contained"
+          {categoryElement}
+          <Typography
             sx={{
-              placeSelf: "center",
-              bgcolor: "#6a4ee9",
-              ":hover": { bgcolor: "#363853" },
-            }}
-            onClick={() => {
-              navigate("categories");
+              fontSize: "15px",
+              fontWeight: "bold",
+              gap: "16px",
+              display: {
+                md: "flex",
+              },
+              alignItems: "center",
             }}
           >
-            Explore All
-          </Button>
-        </Typography>
-      </StyledBox>
+            {
+              <Box
+                component={"span"}
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                }}
+              >
+                or...
+              </Box>
+            }
+            <Button
+              variant="contained"
+              sx={{
+                placeSelf: "center",
+                bgcolor: "#6a4ee9",
+                ":hover": { bgcolor: "#363853" },
+              }}
+              onClick={() => {
+                navigate("categories");
+              }}
+            >
+              Explore All
+            </Button>
+          </Typography>
+        </StyledBox>
+      ) : null}
     </Box>
   );
 };

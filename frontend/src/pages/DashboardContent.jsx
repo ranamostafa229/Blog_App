@@ -9,7 +9,7 @@ import { Box, styled } from "@mui/material";
 const DashboardContent = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = getTokenFromCookie();
-  console.log(token);
+
   const { data: usersData } = useFetch(
     `/api/v1/user/all-users?limit=5`,
     {

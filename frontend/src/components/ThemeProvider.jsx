@@ -10,8 +10,6 @@ const ThemeProvider = ({ children }) => {
   const { theme } = useSelector((state) => state.theme);
 
   const muiTheme = createTheme({
-    //#10172a 1A2027 121111 1E1E1E 121212 181818
-
     palette: {
       mode: theme,
       background: {

@@ -62,7 +62,7 @@ function Post() {
   }, [comments]);
 
   return (
-    <Container sx={{ display: "flex", gap: "58px" }}>
+    <Container sx={{ display: "flex", gap: "58px", minHeight: "100vh" }}>
       {loading ? (
         <CircularProgress
           size="3rem"

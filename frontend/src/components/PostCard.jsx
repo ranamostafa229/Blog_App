@@ -7,6 +7,7 @@ import {
   CardContent,
   Grid2,
   Rating,
+  Skeleton,
   SvgIcon,
   Typography,
   useMediaQuery,
@@ -39,7 +40,7 @@ const AuthorInfo = ({ userId }) => {
     </>
   );
 };
-const PostCard = ({ cmd, csize, posts }) => {
+const PostCard = ({ cmd, csize, posts, loading }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const numWords = isSmallScreen ? 100 : 200;
@@ -50,9 +51,31 @@ const PostCard = ({ cmd, csize, posts }) => {
       spacing={{ xs: 2, md: 3 }}
       columns={{ xs: 1, sm: 8, md: cmd }}
     >
+      {loading &&
+        Array.from({ length: posts?.length }).map((_, index) => (
+          <Grid2 key={index} xs={12} sm={4} md={3}>
+            <Skeleton
+              variant="rectangular"
+              height={300}
+              animation="wave"
+              sx={{ backgroundColor: "#6a4ee9" }}
+            />
+          </Grid2>
+        ))}
       {posts?.length > 0 &&
         posts?.map((post) => (
           <Grid2 key={post?._id} size={{ xs: 2, sm: 4, md: csize }}>
+            {/* {loading ? (
+              Array.from({ length: 6 }).map((_, index) => (
+                <Grid2 key={index} xs={12} sm={4} md={3}>
+                  <Skeleton
+                    variant="rectangular"
+                    // height={300}
+                    animation="wave"
+                  />
+                </Grid2>
+              ))
+            ) : ( */}
             <Card
               sx={{
                 display: "flex",
@@ -184,6 +207,7 @@ const PostCard = ({ cmd, csize, posts }) => {
                 </Typography>
               </CardActions>
             </Card>
+            {/* )} */}
           </Grid2>
         ))}
     </Grid2>
