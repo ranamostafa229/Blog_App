@@ -52,24 +52,32 @@ const Home = () => {
             gap: "40px",
           }}
         >
-          <Typography
-            variant="h5"
-            sx={{
-              fontSize: "20px",
-              fontWeight: "bold",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-            }}
-          >
-            <AutoAwesomeIcon sx={{ fontSize: "35px", color: "#ff2aac" }} />
-            Recent Topics
-          </Typography>
-          {!loading ? <PostCard posts={data.posts} loading={loading} /> : null}
+          {!loading ? (
+            <>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <AutoAwesomeIcon sx={{ fontSize: "35px", color: "#ff2aac" }} />
+                Recent Topics
+              </Typography>
+              <PostCard posts={data.posts} loading={loading} />
+            </>
+          ) : null}
         </Container>
       </Container>
-      <Toolbar />
-      <JoinBanner />
+      {!loading && (
+        <>
+          <Toolbar />
+          <JoinBanner />
+        </>
+      )}
     </Box>
   );
 };
