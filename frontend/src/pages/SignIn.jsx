@@ -72,17 +72,27 @@ const SignIn = () => {
           flexDirection: "column",
           alignItems: "center",
           gap: "30px",
+          mx: { xs: "-10px", md: "0px" },
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Typography variant="h4" sx={{ fontWeight: "500", fontSize: "40px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "500", fontSize: { xs: "30px", md: "40px" } }}
+          >
             Hey,<strong style={{ color: "#6a4ee9" }}> Welcome back!</strong> 👋
           </Typography>
         </Box>
         <Typography
           variant="subtitle1"
           sx={{
-            fontSize: "18px",
+            fontSize: { xs: "15px", md: "18px" },
             width: {
               xs: "95%",
               md: "45%",
@@ -95,7 +105,7 @@ const SignIn = () => {
         <form onSubmit={handleSubmit}>
           <FormControl
             sx={{
-              width: "55ch",
+              width: { xs: "35ch", md: "55ch" },
               display: "flex",
               flexDirection: "row",
               flexWrap: "wrap",
@@ -108,7 +118,12 @@ const SignIn = () => {
               variant="filled"
               type="email"
               sx={{
-                "& .MuiFilledInput-root": {},
+                "& .MuiFilledInput-root": {
+                  width: {
+                    xs: "32ch",
+                    md: "100%",
+                  },
+                },
               }}
               name="email"
               value={formData.email}
@@ -120,7 +135,12 @@ const SignIn = () => {
               variant="filled"
               type="password"
               sx={{
-                "& .MuiFilledInput-root": {},
+                "& .MuiFilledInput-root": {
+                  width: {
+                    xs: "32ch",
+                    md: "100%",
+                  },
+                },
               }}
               name="password"
               value={formData.password}
@@ -133,7 +153,7 @@ const SignIn = () => {
               sx={{
                 bgcolor: "#6a4ee9",
                 ":hover": { bgcolor: "#000000" },
-                width: "90%",
+                width: { xs: "80%", md: "90%" },
                 textTransform: "none",
                 gap: "10px",
               }}

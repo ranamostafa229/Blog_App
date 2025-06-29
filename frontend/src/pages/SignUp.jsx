@@ -87,10 +87,15 @@ const SignUp = () => {
           flexDirection: "column",
           alignItems: "center",
           gap: "30px",
+          // width: { xs: "100vw", md: "50%" },
+          // mx: { xs: "-26px", md: "0px" },
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Typography variant="h4" sx={{ fontWeight: "500" }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "500", fontSize: { xs: "25px", md: "40px" } }}
+          >
             Join now to <strong style={{ color: "#6a4ee9" }}>DEVJOURNEY</strong>{" "}
             👋
           </Typography>
@@ -98,7 +103,7 @@ const SignUp = () => {
         <Typography
           variant="subtitle1"
           sx={{
-            fontSize: "20px",
+            fontSize: { xs: "17px", md: "20px" },
             width: {
               xs: "95%",
               md: "45%",
@@ -111,7 +116,7 @@ const SignUp = () => {
         <form onSubmit={handleSubmit}>
           <FormControl
             sx={{
-              width: "55ch",
+              width: { xs: "35ch", md: "55ch" },
               display: "flex",
               flexDirection: "row",
               flexWrap: "wrap",
@@ -124,6 +129,14 @@ const SignUp = () => {
               variant="filled"
               type="text"
               name="username"
+              sx={{
+                "& .MuiFilledInput-root": {
+                  width: {
+                    xs: "32ch",
+                    md: "100%",
+                  },
+                },
+              }}
               value={formData.username}
               onChange={(e) => handleChange(e)}
               required
@@ -133,6 +146,14 @@ const SignUp = () => {
               variant="filled"
               type="email"
               name="email"
+              sx={{
+                "& .MuiFilledInput-root": {
+                  width: {
+                    xs: "32ch",
+                    md: "100%",
+                  },
+                },
+              }}
               value={formData.email}
               onChange={(e) => handleChange(e)}
               required
@@ -142,6 +163,14 @@ const SignUp = () => {
               variant="filled"
               type="password"
               name="password"
+              sx={{
+                "& .MuiFilledInput-root": {
+                  width: {
+                    xs: "32ch",
+                    md: "100%",
+                  },
+                },
+              }}
               value={formData.password}
               onChange={(e) => handleChange(e)}
               required
@@ -151,6 +180,14 @@ const SignUp = () => {
               variant="filled"
               type="password"
               name="confirmPassword"
+              sx={{
+                "& .MuiFilledInput-root": {
+                  width: {
+                    xs: "32ch",
+                    md: "100%",
+                  },
+                },
+              }}
               value={formData.confirmPassword}
               onChange={(e) => handleChange(e)}
               required
@@ -161,7 +198,7 @@ const SignUp = () => {
               sx={{
                 bgcolor: "#6a4ee9",
                 ":hover": { bgcolor: "#000000" },
-                width: "100%",
+                width: { xs: "77%", md: "90%" },
                 textTransform: "none",
                 gap: "10px",
               }}
