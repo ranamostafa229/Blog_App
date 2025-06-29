@@ -102,7 +102,7 @@ const RelatedPosts = ({ category }) => {
               bgcolor: "#227dff",
               fontSize: "14px",
             }}
-            onClick={() => navigate(`/categories`)}
+            onClick={() => navigate(`/categories/${category}`)}
           >
             <span>{isSmallScreen ? "View All" : "View All Articles"}</span>
           </Button>
