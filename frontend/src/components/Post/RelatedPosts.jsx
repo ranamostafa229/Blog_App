@@ -27,6 +27,7 @@ const RelatedPosts = ({ category }) => {
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
         padding: "35px",
         gap: "30px",
+        width: { xs: "96%", md: "100%" },
         bgcolor: theme.palette.background.banner,
       })}
     >

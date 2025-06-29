@@ -16,7 +16,6 @@ const PostContent = ({ post, updatedAt, comments, setCurrentComments }) => {
         display: "flex",
         flexDirection: "column",
         gap: "40px",
-        width: "110%",
       }}
     >
       <Box
