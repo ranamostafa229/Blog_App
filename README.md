@@ -84,5 +84,5 @@ VITE_FIREBASE_API_KEY = your_api_key //in client folder
 
 ## Demo
 
-You can view a live demo of the app here: [https://blogapp-production-3bfd.up.railway.app/](https://blogapp-production-3bfd.up.railway.app/)
+You can view a live demo of the app here: [https://devjourney-tau.vercel.app/](https://devjourney-tau.vercel.app/)
 
